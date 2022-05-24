@@ -1,2 +1,2 @@
-# Taj-Game
-A game involving our lord and savoiur, TAJ THE TERRORIST!
+# Bird-Game
+A game involving our lord and savoiur, TOMA(HAWK) THE TERRORIST!
