@@ -24,7 +24,7 @@ def clearConsole():
     return
 
 def resetVariables():
-    global player_name; player_name = 'Taj'
+    global player_name; player_name = 'Tom'
     global txt; txt = ''
     global max_stat; max_stat = 300
     global stats; stats = [200, 300, 300, 50, 15, 15]  # Health, Hunger, Mental Health, Intelligence, Evasion, Accuracy
