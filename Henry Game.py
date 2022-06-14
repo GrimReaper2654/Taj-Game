@@ -23,6 +23,12 @@ def clearConsole():
     os.system('cls' if os.name == 'nt' else 'clear')
     return
 
+def wait(time): # Determines whether to wait between events
+    if timers == True:
+        t.sleep(time)
+        
+
+
 def resetVariables():
     global player_name; player_name = 'Tom'
     global txt; txt = ''
@@ -236,17 +242,17 @@ def level(type, rewards=[r.randint(0,1), r.randint(0,1), r.randint(0,1)], enemie
     if type == 'fight':
         if boss:
             print('Boss Music Starts')
-            # t.sleep(0.5)
+            wait(0.5)
         if not fight(enemies):
             print(f'{player_name} defeats all the enemies in the room.')
-            # t.sleep(1)
+            wait(1)
             if boss:
                 print('Boss Music Stops')
-            # t.sleep(1)
+            wait(1)
             print(f'{player_name} finds some ammo and items on the ground.')
-            # t.sleep(1)
+            wait(1)
             print(f'A staircase to the next floor appears and {player_name} climbs to the next level.')
-            # t.sleep(1)
+            wait(1)
             for i in range(3):
                 item[i]+=rewards[i]
             item[5][1] += r.randint(0,2)
@@ -256,11 +262,11 @@ def level(type, rewards=[r.randint(0,1), r.randint(0,1), r.randint(0,1)], enemie
 
     elif type == 'loot':
         print(f'{player_name} see a large loot chest in the middle of the room. ')
-        # t.sleep(2.5)
+        wait(2.5)
         print('There are many useful items in the chest')
-        # t.sleep(2.5)
+        wait(2.5)
         print(f'{player_name} take the the items in the chest before he ascends to the next floor.')
-        # t.sleep(2.5)
+        wait(2.5)
         if special:
             if special[0]:
                 c = ask(f'''{r.choice(pos)}, there is also a {attacks[special[1]][0]}
@@ -270,10 +276,10 @@ Do you take it? [yes, no]''', ['yes', 'no'])
                     c+=2
                     item[c] = special[1]
                     print(f"You take the {attacks[item[c]][0]}")
-                    # t.sleep(2)
+                    wait(2)
                 else:
                     print(f"You leave the {attacks[special[1]][0]}")
-                    # t.sleep(2)
+                    wait(2)
             else:
                 c = ask(f'''{r.choice(pos)}, there is a {secondaries[special[1]][0].replace('[q]', '')}
 Do you take it? [yes, no]''', ['yes', 'no'])
@@ -281,12 +287,12 @@ Do you take it? [yes, no]''', ['yes', 'no'])
                     item[5][0] = special[1]
                     item[5][1] = secondaries[special[1]][8]
                     print(f"You take the {secondaries[special[1]][0].replace('[q]', f'({item[5][1]})')}")
-                    # t.sleep(2)
+                    wait(2)
                 else:
                     print(f"You leave the {secondaries[special[1]][0].replace('[q]', f'({item[5][1]})')}")
-                    # t.sleep(2)
+                    wait(2)
         print(f'You gain some valuable items that could help you defeat henry.')
-        # t.sleep(3)
+        wait(3)
         for i in range(3):
             item[i]+=rewards[i]*2+1
         if item[5][0] != 3 and item[5][0] != 6 and item[5][0] != 7:
@@ -311,12 +317,12 @@ Secondary:
  Hunger {bar(stats[1], 0, max_stat)}   Intelligence  {bar(stats[3], 0, max_stat)}
 ----------------------------------------------------------------------------------------
 ''')
-        # t.sleep(8)
+        wait(8)
         return 0
     elif type == 'cutscene':
         for line in special:
             print(line)
-            # t.sleep(1)
+            wait(1)
         return 0
     else:
         raise ERROR(f"Level type incorrect. '{type}' is not a valid type of level.")
@@ -339,7 +345,7 @@ def fight(enemies):
     else:
         a = ''
     print(f'{player_name} is confronted by {enemy_template[6]} {enemy_template[0]}{a}.')
-    # t.sleep(1)
+    wait(1)
     clearConsole()
     while 1:
         skip_enemy=False
@@ -455,10 +461,10 @@ def fight(enemies):
                                                 death_message = death_message.replace('[lastwords]', enemy[5])
                                             death_message = death_message.replace('[a]', enemy[0])
                                             print(death_message)
-                                            # t.sleep(1.5)
+                                            wait(1.5)
                                         elif enemy[1] < 10:
                                             print(f'{enemy[0]} is severely injured.')
-                                            # t.sleep(1.5)
+                                            wait(1.5)
                                 for enemy in enemy_army:
                                     if enemy[1] <= 0:
                                         enemy_army = []
@@ -471,7 +477,7 @@ def fight(enemies):
                                 print(f'{txt} doing {dmg} damage.')
                                 if dmg == 0:
                                     print(f'The attack is blocked by {enemy_army[0][0]}\'s armour.')
-                                # t.sleep(1.5)
+                                wait(1.5)
                                 if enemy_army[0][1] <= 0:
                                     if enemy_army[0][5] is None:
                                         death_message = deaths[2]
@@ -481,16 +487,16 @@ def fight(enemies):
                                     death_message = death_message.replace('[a]', enemy_army[0][0])
                                     enemy_army.pop(0)
                                     print(death_message)
-                                    # t.sleep(1.5)
+                                    wait(1.5)
                                 elif enemy_army[0][1] < 10:
                                     print(f'{enemy_army[0][0]} is severely injured.')
-                                    # t.sleep(1.5)
+                                    wait(1.5)
                         else:
                             print(f'{r.choice(enemy_army[0][9])}')
-                            # t.sleep(1.5)
+                            wait(1.5)
                     else:
                         print(f'The attack misses.')
-                        # t.sleep(1.5)
+                        wait(1.5)
                     clearConsole()
                     if enemy_army == [] or enemy_army[0][1] == 2147483647:
                         stats[0] = health
@@ -513,7 +519,7 @@ def fight(enemies):
                     item[0] -= 1
                     health += r.randint(50, 75)
                     print(f'{player_name} drinks a voodoo medicine.')
-                    # t.sleep(1)
+                    wait(1)
                     clearConsole()
             elif action == 2:
                 if item[1] > 0:
@@ -522,16 +528,16 @@ def fight(enemies):
                     hunger += r.randint(40, 80)
                     mental += r.randint(0, 15)
                     print(f'{player_name} eats a delicious dried kelp.')
-                    # t.sleep(1)
+                    wait(1)
                     clearConsole()
                     if hunger >= 130:
                         print(f'The dried kelp makes {player_name} fat.')
-                        # t.sleep(1)
+                        wait(1)
                         clearConsole()
                         evasion -= 10
                     elif hunger >= 100:
                         print(f'The dried kelp makes {player_name} feel full.')
-                        # t.sleep(1)
+                        wait(1)
                         clearConsole()
             else:
                 if item[2] > 0:
@@ -539,16 +545,16 @@ def fight(enemies):
                     hunger += r.randint(5, 15)
                     mental += r.randint(15, 25)
                     print(f'{player_name} drank a bottle of seawater.')
-                    # t.sleep(1)
+                    wait(1)
                     clearConsole()
                     if hunger >= 130:
                         print(f'The bottle of seawater makes {player_name} fat.')
-                        # t.sleep(1)
+                        wait(1)
                         clearConsole()
                         evasion -= 10
                     elif hunger >= 100:
                         print(f'The bottle of seawater makes {player_name} feel full.')
-                        # t.sleep(1)
+                        wait(1)
                         clearConsole()
         else:
             action = ask('''
@@ -561,7 +567,7 @@ def fight(enemies):
                 insult = r.choice(insults)
                 print(f'{player_name}: {insult}')
                 print(f'{enemy_army[0][0]} is very angry.')
-                # t.sleep(2)
+                wait(2)
                 clearConsole()
                 mental += r.randint(10, 35)
                 mental_dmg = 10
@@ -579,10 +585,10 @@ def fight(enemies):
                     death_message = death_message.replace('[a]', enemy_army[0][0])
                     enemy_army.pop(0)
                     print(death_message)
-                    # t.sleep(1.5)
+                    wait(1.5)
                 elif enemy_army[0][1] < 10:
                     print(f'{enemy_army[0][0]} is severely injured.')
-                    # t.sleep(1.5)
+                    wait(1.5)
                 if enemy_army == [] or enemy_army[0][1] == 2147483647:
                     stats[0] = health
                     stats[1] = hunger
@@ -596,7 +602,7 @@ def fight(enemies):
                 compliment = r.choice(compliments)
                 print(f'{player_name}: {compliment}')
                 print(f'{enemy_army[0][0]} is feeling good.')
-                # t.sleep(2)
+                wait(2)
                 skip_enemy=True
 
         # Enemy turn
@@ -614,9 +620,9 @@ def fight(enemies):
                                     txt = txt.replace('[a]', attacker[0])
                                     txt = txt.replace('[body]', r.choice(body))
                                     print(f'{attacker[0]}: {r.choice(attacker[4])}')
-                                    # t.sleep(1.5)
+                                    wait(1.5)
                                     print(f'{txt} healing {dmg} health.')
-                                    # t.sleep(1.5)
+                                    wait(1.5)
                                 else:
                                     if attack[3] != 'mental':
                                         if dmg <= 0:
@@ -638,26 +644,26 @@ def fight(enemies):
                                     txt = txt.replace('[a]', attacker[0])
                                     txt = txt.replace('[body]', r.choice(body))
                                     print(f'{attacker[0]}: {r.choice(attacker[4])}')
-                                    # t.sleep(1.5)
+                                    wait(1.5)
                                     print(f'{txt} doing {dmg} damage.')
-                                    # t.sleep(1.5)
+                                    wait(1.5)
                             else:
                                 txt = attack[1].replace('[b]', player_name)
                                 txt = txt.replace('[a]', attacker[0])
                                 txt = txt.replace('[body]', r.choice(body))
                                 print(f'{attacker[0]}: {r.choice(attacker[4])}')
-                                # t.sleep(1.5)
+                                wait(1.5)
                                 print(f'{txt} but {player_name} flew out of the way')
-                                # t.sleep(1.5)
+                                wait(1.5)
                         else:
                             txt = attack[1].replace('[b]', player_name)
                             txt = txt.replace('[a]', attacker[0])
                             txt = txt.replace('[body]', r.choice(body))
                             print(f'{attacker[0]}: {r.choice(attacker[4])}')
-                            # t.sleep(1.5)
+                            wait(1.5)
                             print(f'{txt} but {player_name} flew out of the way.')
-                            # t.sleep(1.5)
-        # t.sleep(2)
+                            wait(1.5)
+        wait(2)
         clearConsole()
         # Calculations
         hunger -= 1
@@ -706,7 +712,7 @@ def fight(enemies):
  Hunger {bar(stats[1], hunger_lost, max_stat)}    Intelligence  {bar(stats[3], 0, max_stat)}
 --------------------------------------------------------------------------------
 ''')
-        # t.sleep(1.5)
+        wait(1.5)
         clearConsole()
         print(f'''
 ----------------------------------Player Stats----------------------------------
@@ -715,7 +721,7 @@ def fight(enemies):
  Hunger {bar(stats[1], 0, max_stat)}   Intelligence  {bar(stats[3], 0, max_stat)}
 --------------------------------------------------------------------------------
 ''')
-        # t.sleep(2)
+        wait(2)
         clearConsole()
 
 def game(levels = 40, room_list = []):
@@ -805,6 +811,18 @@ def main(levels=-1, room_list = []):
 # Main Game
 #main(levels = 40)
 resetVariables()
+global timers
+timers = input("Do you want to wait between commands (yes/no)?").lower()
+while True:
+    if timers == "yes" or timers == "y":
+        timers = True
+        break
+    elif timers == "no" or timers == "n":
+        timers = False
+        break
+    else:
+        print("You did not enter a valid input")
+
 game(40)
 '''
 Block
