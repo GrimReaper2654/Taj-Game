@@ -1,6 +1,6 @@
 #
-# --------------------------------------- henry fight ---------------------------------------
-# [Insert creative description here]
+# --------------------------------------- Henry Game ---------------------------------------
+# Created by MQ9_Reaper2 and GrimReaper2654
 #
 #
 #
@@ -19,7 +19,8 @@ class ERROR(Exception):
     pass
 from platform   import system as system_name 
 from subprocess import call   as system_call
-def clearConsole():
+
+def clearConsole(): # Clears console
     os.system('cls' if os.name == 'nt' else 'clear')
     return
 
@@ -36,9 +37,9 @@ def resetVariables():
     global stats; stats = [200, 300, 300, 50, 15, 15]  # Health, Hunger, Mental Health, Intelligence, Evasion, Accuracy
     global player_armour; player_armour = 10 # player only has physical armour
     global item; item = [10, 20, 50, 42, 42, [0, 3]]  # voodoo medicine [0] , dried kelp [1] , bottle of seawater [2], main weapon [3], main weapon [4], secondary weapon [5][0], secondary ammo [5][1] Default weapon is 42 (none)
-    global insults; insults = ['You smell bad.', 'You are stupid.', 'u moron', 'ur trash.', 'LMAO ur bad.', 'LMAO noob.', 'Imagine being you.', 'ur mum fat.', 'you spedlord', 'imagine being sped', 'ur mom fatter than henry', 'bir - d']
+    global insults; insults = ['You smell bad.', 'You are stupid.', 'u moron', 'ur trash.', 'LMAO ur bad.', 'LMAO noob.', 'Imagine being you.', 'ur mum fat.', 'you spedlord', 'imagine being sped', 'ur mom fatter than henry', 'bir - d', 'tom - a', 'tom - a - hawk', 'handball', 'defensive rookie of the year']
     global compliments; compliments = ['You look good.', 'You are smart.', 'You are cool.']
-    global body; body = ['head', 'arm', 'leg', 'chest']
+    global body; body = ['head', 'arm', 'leg', 'chest', 'foot', 'shoulder', 'stomach', 'back']
     global deaths; deaths = ['"[lastwords]" shouts [a] as his lifeless body falls onto the floor.', '[a] falls onto the ground, dead.', '[a] falls onto the ground, dead.']
     global auto_loot; auto_loot = [[1, 4], [1, 5], [1, 10], [1, 11], [1, 13], [1, 14], [1,17], [1, 18], [1, 30], [1, 35], [1, 36], [1, 37], [0, 0], [0, 1], [0, 2], [0, 3], [0, 13], [0, 6], [0, r.randint(0, 10)], [0, r.randint(0, 10)], [0, r.randint(0, 10)]]
     global god_loot; god_loot = [[1, 16], [1, 19], [1, 20], [1, 21], [1, 22], [0, 6], [0, 7], [0, 9], [0, 12]]
@@ -811,6 +812,9 @@ def main(levels=-1, room_list = []):
 # Main Game
 #main(levels = 40)
 resetVariables()
+
+print(aaa())
+
 global timers
 timers = input("Do you want to wait between commands (yes/no)?").lower()
 while True:
