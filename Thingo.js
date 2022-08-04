@@ -56,10 +56,6 @@ function init() {
 
 
     ]
-
-<<<<<<< HEAD
-        },
-    };
     const player_weapons = {
         fist: {
             damage: 10,
@@ -69,8 +65,8 @@ function init() {
 
         },
     };
-=======
->>>>>>> 862793be5ff6e2128ebae074198bce74ce78a078
+
+
 }
 
 function main() {
