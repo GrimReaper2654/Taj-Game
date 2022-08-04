@@ -32,10 +32,12 @@ function init() {
     };
     const enemies = [
         // Python:
-        // ['Name [0]', 'Health [1]', 'Damage Multiplier [2]', ['Attacks [3]'], ['Quotes [4]'], 'Last Words [5]', 'Quantity [6]', 'Can Die [7]', 'evasion [8]', ['Block description [9]'], [['physical armour [10][0][0]', 'durability [10][0][1]'], ['heat armour [10][1][0]', 'durability [10][1][1]'], ['mental armour [10][2][0]', 'durability [10][2][1]']]],
+        // ['Name [0]', 'Health [1]', 'Damage Multiplier [2]', ['Attacks [3]'], ['Quotes [4]'], 'Last Words [5]', 'Quantity [6]',
+        // 'Can Die [7]', 'evasion [8]', ['Block description [9]'], [['physical armour [10][0][0]', 'durability [10][0][1]'],
+        // ['heat armour [10][1][0]', 'durability [10][1][1]'], ['mental armour [10][2][0]', 'durability [10][2][1]']]],
 
         // JS Example
-        /*
+        
         {name: "Tom",
         health: 10,
         damage_multiplier: 1.5,
@@ -44,9 +46,11 @@ function init() {
         last_words: "Goodbye, World!",
         quantity: 2,
         can_die: true,
-        evasion_chance: 
+        evasion_chance: 10,
+        armour: {physical: [1],
+        fire: []}
         }
-        */
+        
         
 
 
@@ -69,9 +73,7 @@ function main() {
 
 }
 
-function testing() {
-    console.log(enemies)
-}
+
 
 
 
@@ -81,3 +83,7 @@ function testing() {
 init()
 main()
 testing()
+
+function testing() {
+    console.log(enemies[0].armour.physical[0])
+}
