@@ -84,14 +84,13 @@ const player_weapons = {
     },
 };
 
-let input = ""
 
 
 
 function main() {
-    input = ""
-
+    
 }
+
 
 
 
