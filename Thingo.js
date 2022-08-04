@@ -1,4 +1,4 @@
-
+// INSTALL "npm install prompt"
 // Damage Type
 const physical = 'physical';
 const fire = 'fire';
@@ -84,9 +84,12 @@ const player_weapons = {
     },
 };
 
+let input = ""
+
 
 
 function main() {
+    input = ""
 
 }
 
