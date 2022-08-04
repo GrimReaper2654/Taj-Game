@@ -1,4 +1,4 @@
-// INSTALL "npm install prompt"
+// INSTALL "npm install inquirer"
 // Damage Type
 const physical = 'physical';
 const fire = 'fire';
@@ -90,6 +90,9 @@ const player_weapons = {
 function main() {
     
 }
+
+
+
 
 
 
