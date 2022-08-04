@@ -32,14 +32,10 @@ function init() {
         last_words: "Goodbye, World!",
         quantity: 2,
         can_die: true,
-        block_chance: 
+        evasion_chance: 
         }
         */
         
-        {name: "Bodyguard",
-        health: 300,
-
-        }
 
 
 
