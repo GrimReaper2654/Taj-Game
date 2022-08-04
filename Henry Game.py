@@ -480,7 +480,7 @@ def fight(enemies):
                                     else:
                                         death_message = r.choice(deaths)
                                         death_message = death_message.replace('[lastwords]', enemy_army[0][5])
-                                   death_message = death_message.replace('[a]', enemy_army[0][0])
+                                    death_message = death_message.replace('[a]', enemy_army[0][0])
                                     enemy_army.pop(0)
                                     print(death_message)
                                     # t.sleep(1.5)
