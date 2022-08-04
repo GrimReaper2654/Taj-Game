@@ -1,3 +1,18 @@
+// ----------------------------------------------------------------------------------------------------
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// ----------------------------------------------------------------------------------------------------
+
 function init() {
     // Damage Type
     const physical = 'physical';
@@ -56,13 +71,32 @@ function init() {
 
 
     ]
-    const player_weapons = {
+    const attacks = {
         fist: {
-            damage: 10,
+            name: 'fist',
+            damage: [min, max],
             type: physical,
             multiplier: str,
-            
-
+            log: ['[attacker] punched [defender] in the [body] doing [dmg] damage!'],
+            effects: null,
+            rapidfire: 1,
+            max_rapidfire: 10,
+        },
+        stick: {
+            name: 'stick',
+            damage: [min, max],
+            type: physical,
+            multiplier: str,
+            log: ['[attacker] hit [defender] in the [body] with a stick doing [dmg] damage!'],
+            effects: null,
+        },
+        bat: {
+            name: 'bat',
+            damage: [min, max],
+            type: physical,
+            multiplier: str,
+            log: ['[attacker] hit [defender] in the [body] with a baseball bat doing [dmg] damage!'],
+            effects: null,
         },
     };
 
