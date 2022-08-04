@@ -30,10 +30,23 @@ function init() {
         max_levels: 50,
         
     };
-    const enemies = {
-        name: {
-            health: 10,
+    const enemies = [
+        // Example
+        // {name: "Tom",
+        // health: 10,
+        // insults: ["TOMAHAWK", "TOM-A-HAWK"]}
+        
+        {name: "Bodyguard",
+        health: 300,
+        
+        }
 
+
+
+    ]
+    console.log(enemies)
+
+<<<<<<< HEAD
         },
     };
     const player_weapons = {
@@ -45,13 +58,17 @@ function init() {
 
         },
     };
+=======
+>>>>>>> 862793be5ff6e2128ebae074198bce74ce78a078
 }
 
 function main() {
 
 }
 
-
+function testing() {
+    console.log(enemies)
+}
 
 
 
