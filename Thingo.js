@@ -4,19 +4,23 @@ function init() {
         stat_limit: 1000,
         
     };
-    const enemies = {
-        name: {
-            health: 10,
+    const enemies = [
+        // Example
+        // {name: "Tom"
+        // health: 
+        // insults: []}
+    ]
+    console.log(enemies)
 
-        },
-    };
 }
 
 function main() {
 
 }
 
-
+function testing() {
+    console.log(enemies)
+}
 
 
 
