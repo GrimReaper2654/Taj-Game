@@ -7,11 +7,16 @@ function init() {
         rapid_regeneration: false,
         weapon_durability: false,
         secondary_ammo: true,
+        taunting: true,
+        intelligence: true,
+        evasion: true,
         dmg_multilier: 1,
         heal_multiplier: 1,
         shield_protection_multiplier: 1,
         shield_durability_multiplier: 1,
+        enemy_intelligence_multiplier: 1,
         max_levels: 50,
+        
     };
     const enemies = {
         name: {
