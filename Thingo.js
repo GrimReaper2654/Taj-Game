@@ -1,4 +1,4 @@
-// INSTALL "npm install inquirer"
+
 // Damage Type
 const physical = 'physical';
 const fire = 'fire';
