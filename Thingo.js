@@ -1,4 +1,16 @@
 function init() {
+    // Damage Type
+    const physical = 'physical';
+    const fire = 'fire';
+    const energy = 'energy';
+    const magical = 'magical';
+    const poison = 'poison';
+    const mental = 'mental';
+    // Stats
+    const str = 'strength';
+    const intel = 'intelligence';
+
+    // Constants
     const player_name = 'Taj';
     const settings = {
         stat_limit: 1000,
@@ -21,6 +33,15 @@ function init() {
     const enemies = {
         name: {
             health: 10,
+
+        },
+    };
+    const player_weapons = {
+        fist: {
+            damage: 10,
+            type: physical,
+            multiplier: str,
+            
 
         },
     };
