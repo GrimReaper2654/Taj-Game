@@ -31,20 +31,31 @@ function init() {
         
     };
     const enemies = [
-        // Example
-        // {name: "Tom",
-        // health: 10,
-        // insults: ["TOMAHAWK", "TOM-A-HAWK"]}
+        // Python:
+        // ['Name [0]', 'Health [1]', 'Damage Multiplier [2]', ['Attacks [3]'], ['Quotes [4]'], 'Last Words [5]', 'Quantity [6]', 'Can Die [7]', 'evasion [8]', ['Block description [9]'], [['physical armour [10][0][0]', 'durability [10][0][1]'], ['heat armour [10][1][0]', 'durability [10][1][1]'], ['mental armour [10][2][0]', 'durability [10][2][1]']]],
+
+        // JS Example
+        /*
+        {name: "Tom",
+        health: 10,
+        damage_multiplier: 1.5,
+        attacks: [1,2,5],
+        quotes: ["Hi", "TOMAHAWK"],
+        last_words: "Goodbye, World!",
+        quantity: 2,
+        can_die: true,
+        block_chance: 
+        }
+        */
         
         {name: "Bodyguard",
         health: 300,
-        
+
         }
 
 
 
     ]
-    console.log(enemies)
 
 <<<<<<< HEAD
         },
@@ -77,3 +88,4 @@ function testing() {
 
 init()
 main()
+testing()
