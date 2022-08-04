@@ -1,6 +1,6 @@
 #
-# --------------------------------------- Henry Game ---------------------------------------
-# Created by MQ9_Reaper2 and GrimReaper2654
+# --------------------------------------- henry fight ---------------------------------------
+# [Insert creative description here]
 #
 #
 #
@@ -17,29 +17,23 @@ import os
 
 class ERROR(Exception):
     pass
-from platform   import system as system_name 
+from platform   import system as system_name
 from subprocess import call   as system_call
-
-def clearConsole(): # Clears console
-    os.system('cls' if os.name == 'nt' else 'clear')
+def clearConsole():
+    # how to do this, I do not know
     return
 
-def wait(time): # Determines whether to wait between events
-    if timers == True:
-        t.sleep(time)
-        
-
-
 def resetVariables():
-    global player_name; player_name = 'Tom'
+    global player_name; player_name = 'Taj'
     global txt; txt = ''
     global max_stat; max_stat = 300
     global stats; stats = [200, 300, 300, 50, 15, 15]  # Health, Hunger, Mental Health, Intelligence, Evasion, Accuracy
     global player_armour; player_armour = 10 # player only has physical armour
-    global item; item = [10, 20, 50, 42, 42, [0, 3]]  # voodoo medicine [0] , dried kelp [1] , bottle of seawater [2], main weapon [3], main weapon [4], secondary weapon [5][0], secondary ammo [5][1] Default weapon is 42 (none)
-    global insults; insults = ['You smell bad.', 'You are stupid.', 'u moron', 'ur trash.', 'LMAO ur bad.', 'LMAO noob.', 'Imagine being you.', 'ur mum fat.', 'you spedlord', 'imagine being sped', 'ur mom fatter than henry', 'bir - d', 'tom - a', 'tom - a - hawk', 'handball', 'defensive rookie of the year']
+    global item; item = [10, 20, 50, 42, 42, [0, 3]]  # voodoo medicine [0] , dried kelp [1] , bottle of seawater [2]
+    global weapons; weapons = [42, 42, [0, 3]]  # main weapon [3], main weapon [4], secondary weapon [5][0], secondary ammo [5][1] Default weapon is 42 (none)
+    global insults; insults = ['You smell bad.', 'You are stupid.', 'u moron', 'ur trash.', 'LMAO ur bad.', 'LMAO noob.', 'Imagine being you.', 'ur mum fat.', 'you spedlord', 'imagine being sped', 'ur mom fatter than henry', 'bir - d']
     global compliments; compliments = ['You look good.', 'You are smart.', 'You are cool.']
-    global body; body = ['head', 'arm', 'leg', 'chest', 'foot', 'shoulder', 'stomach', 'back']
+    global body; body = ['head', 'arm', 'leg', 'chest']
     global deaths; deaths = ['"[lastwords]" shouts [a] as his lifeless body falls onto the floor.', '[a] falls onto the ground, dead.', '[a] falls onto the ground, dead.']
     global auto_loot; auto_loot = [[1, 4], [1, 5], [1, 10], [1, 11], [1, 13], [1, 14], [1,17], [1, 18], [1, 30], [1, 35], [1, 36], [1, 37], [0, 0], [0, 1], [0, 2], [0, 3], [0, 13], [0, 6], [0, r.randint(0, 10)], [0, r.randint(0, 10)], [0, r.randint(0, 10)]]
     global god_loot; god_loot = [[1, 16], [1, 19], [1, 20], [1, 21], [1, 22], [0, 6], [0, 7], [0, 9], [0, 12]]
@@ -90,7 +84,7 @@ def resetVariables():
         ['sales pitch2      ', '[a] tries to make [b] buy Maceline™ products, annoying [b]', [20, 35], 'mental', True, 0, 0, 1],    # 39
         ['lawyering         ', '[a] sues [b]', [15, 35], 'mental', True, 0, 0, 1],                                                  # 40
         ['lawyering 2       ', '[a] gets [b] into complicated legal trouble', [20, 30], 'mental', True, 0, 0, 1],                   # 41
-        ['none              ', '[a] attacks [b] with a nonexistant weapon', [0, 0], 'mental', True, 0, 0, 1],                       # 42
+        ['none              ', '[a] attacks [b] with a nonexistant weapon', [0, 1], 'mental', True, 0, 0, 1],                       # 42
         ['voodoo magic      ', '[a] does a cultist dance while trying to curse [b]', [0, 20], 'mental', True, 0, 0, 1],             # 43
         ['voodoo curse      ', '[a] chants an ancient curse at [b]', [5, 15], 'mental', True, 0, 0, 1],                             # 44
         ['voodoo medicine   ', '[a] drinks a jar of voodoo medicine', [50, 75], 'heal', True, 0, 0, 1],                             # 45
@@ -102,7 +96,7 @@ def resetVariables():
         ['martial arts      ', '[a] uses kung - fu to pummel [b]', [2, 5], 'physical', True, 0.25, 0, 15],                          # 51
         ['henry heal power  ', '[a] uses a healing spell', [15, 50], 'heal', True, 0, 0, 1],                                        # 52
     ]
-    global secondaries 
+    global secondaries
     secondaries = [
         # ['Name [0]', 'description [1]', ['min damage [2][0]', 'max damage [2][1]'], 'damage type [3]', 'can be multiplied [4]', 'block chance [5]', 'miss chance [6]', 'piercing [7]'], ['amount [8]']
         ['pistol [q]        ', '[a] shot [b] repeatedly with a pistol', [4, 8], 'physical', False, 0.01, 0.2, 8, 4],                       # 0
@@ -117,7 +111,7 @@ def resetVariables():
         ['flamethrower [q]  ', '[a] burned his enemies with a flamethrower dealing [dmg] damage', [15, 25], 'splash', False, 0, 0, 1, 3],  # 9
         ['plasma pistol [q] ', '[a] shot [b] with a plasma pistol', [20, 40], 'plasma', False, 0, 0.2, 4, 3],                              # 10
         ['revolver [q]      ', '[a] shot [b] with a revolver', [5, 10], 'physical', False, 0, 0.1, 6, 5],                                  # 11
-        ['laser pointer [q] ', '[a] beamed [b] with a laser pointer', [3, 10], 'true', False, 0, 0, 4, -1],                                # 12
+       ['laser pointer [q] ', '[a] beamed [b] with a laser pointer', [3, 10], 'true', False, 0, 0, 4, -1],                                # 12
         ['dynamite [q]      ', '[a] threw a stick of dynamite at [b]', [5, 15], 'splash', False, 0, 0, 1, 5],                              # 13
         ['combat knife      ', '[a] slashed at [b] with a combat knife', [10, 15], 'physical', True, 0.01, 0, 3, -1],                      # 14
     ]
@@ -243,17 +237,17 @@ def level(type, rewards=[r.randint(0,1), r.randint(0,1), r.randint(0,1)], enemie
     if type == 'fight':
         if boss:
             print('Boss Music Starts')
-            wait(0.5)
+            # t.sleep(0.5)
         if not fight(enemies):
             print(f'{player_name} defeats all the enemies in the room.')
-            wait(1)
+            # t.sleep(1)
             if boss:
                 print('Boss Music Stops')
-            wait(1)
+            # t.sleep(1)
             print(f'{player_name} finds some ammo and items on the ground.')
-            wait(1)
+            # t.sleep(1)
             print(f'A staircase to the next floor appears and {player_name} climbs to the next level.')
-            wait(1)
+            # t.sleep(1)
             for i in range(3):
                 item[i]+=rewards[i]
             item[5][1] += r.randint(0,2)
@@ -263,11 +257,11 @@ def level(type, rewards=[r.randint(0,1), r.randint(0,1), r.randint(0,1)], enemie
 
     elif type == 'loot':
         print(f'{player_name} see a large loot chest in the middle of the room. ')
-        wait(2.5)
+        # t.sleep(2.5)
         print('There are many useful items in the chest')
-        wait(2.5)
+        # t.sleep(2.5)
         print(f'{player_name} take the the items in the chest before he ascends to the next floor.')
-        wait(2.5)
+        # t.sleep(2.5)
         if special:
             if special[0]:
                 c = ask(f'''{r.choice(pos)}, there is also a {attacks[special[1]][0]}
@@ -275,25 +269,25 @@ Do you take it? [yes, no]''', ['yes', 'no'])
                 if c == 'yes':
                     c = int(ask(f'Which weapon slot do you put it in? [1, 2]', [1, 2]))
                     c+=2
-                    item[c] = special[1]
-                    print(f"You take the {attacks[item[c]][0]}")
-                    wait(2)
+                    weapons[c] = special[1]
+                    print(f"You take the {attacks[weapons[c]][0]}")
+                    # t.sleep(2)
                 else:
                     print(f"You leave the {attacks[special[1]][0]}")
-                    wait(2)
+                    # t.sleep(2)
             else:
                 c = ask(f'''{r.choice(pos)}, there is a {secondaries[special[1]][0].replace('[q]', '')}
 Do you take it? [yes, no]''', ['yes', 'no'])
                 if c == 'yes':
-                    item[5][0] = special[1]
-                    item[5][1] = secondaries[special[1]][8]
+                    weapons[2][0] = special[1]
+                    weapons[2][1] = secondaries[special[1]][8]
                     print(f"You take the {secondaries[special[1]][0].replace('[q]', f'({item[5][1]})')}")
-                    wait(2)
+                    # t.sleep(2)
                 else:
                     print(f"You leave the {secondaries[special[1]][0].replace('[q]', f'({item[5][1]})')}")
-                    wait(2)
+                    # t.sleep(2)
         print(f'You gain some valuable items that could help you defeat henry.')
-        wait(3)
+        # t.sleep(3)
         for i in range(3):
             item[i]+=rewards[i]*2+1
         if item[5][0] != 3 and item[5][0] != 6 and item[5][0] != 7:
@@ -305,25 +299,25 @@ Items:
   dried kelp ({item[1]})
   bottle of seawater ({item[2]})
 Weapons:
-  {attacks[item[3]][0]}
-  {attacks[item[4]][0]}
+  {attacks[weapons[0]][0]}
+  {attacks[weapons[1]][0]}
 Secondary:
-  {secondaries[item[5][0]][0].replace('[q]', f'({item[5][1]})')}
+  {secondaries[weapons[2][0]][0].replace('[q]', f'({weapons[2][1]})')}
 ----------------------------------------------------------------------------------------
 ''')
         print(f'''
 --------------------------------------Player Stats--------------------------------------
- Health {bar(stats[0], 0, max_stat)}   Mental Health {bar(stats[2], 0, max_stat)}
+Health {bar(stats[0], 0, max_stat)}   Mental Health {bar(stats[2], 0, max_stat)}
 
- Hunger {bar(stats[1], 0, max_stat)}   Intelligence  {bar(stats[3], 0, max_stat)}
+Hunger {bar(stats[1], 0, max_stat)}   Intelligence  {bar(stats[3], 0, max_stat)}
 ----------------------------------------------------------------------------------------
 ''')
-        wait(8)
+        # t.sleep(8)
         return 0
     elif type == 'cutscene':
         for line in special:
             print(line)
-            wait(1)
+            # t.sleep(1)
         return 0
     else:
         raise ERROR(f"Level type incorrect. '{type}' is not a valid type of level.")
@@ -331,6 +325,7 @@ Secondary:
 def fight(enemies):
     global stats, mental_dmg
     global item
+    global weapons
     if enemies == 'auto':
         enemy_template = r.choice(auto_enemies)
     else:
@@ -346,7 +341,7 @@ def fight(enemies):
     else:
         a = ''
     print(f'{player_name} is confronted by {enemy_template[6]} {enemy_template[0]}{a}.')
-    wait(1)
+    # t.sleep(1)
     clearConsole()
     while 1:
         skip_enemy=False
@@ -371,7 +366,7 @@ def fight(enemies):
         if action == 1:
             action = ask('''
 ------------------------Which Attack?-------------------------
- [1] Punch   [2] Kick   [3] Head but   [4] Bite   [5] Weapon
+[1] Punch   [2] Kick   [3] Head but   [4] Bite   [5] Weapon
 --------------------------------------------------------------
 ''', [1, 2, 3, 4, 5])
             clearConsole()
@@ -383,15 +378,15 @@ def fight(enemies):
                 while 1:
                     action = ask(f'''
 ------------------------Which Weapon?-------------------------
-[1] {attacks[item[3]][0]} [2] {attacks[item[4]][0]} [3] {secondaries[item[5][0]][0].replace('[q]', f'({item[5][1]})')}
+[1] {attacks[weapons[0]][0]} [2] {attacks[weapons[1]][0]} [3] {secondaries[weapons[2][0]][0].replace('[q]', f'({weapons[2][1]})')}
 --------------------------------------------------------------
 ''', [1, 2, 3])
-                    if int(action) == 3 and item[5][1] > 0:
-                        item[5][1] -= 1
-                        attack = secondaries[item[5][0]]
+                    if int(action) == 3 and weapons[2][1] > 0:
+                        weapons[2][1] -= 1
+                        attack = secondaries[weapons[2][0]]
                         break
                     elif int(action) != 3:
-                        attack = attacks[item[int(action) + 2]]
+                        attack = attacks[weapons[int(action) + 2]]
                         break
                     print('Secondary has no ammo. Use another Weapon.')
             if enemy_army[0][0] == 'henry Hologram':
@@ -427,7 +422,7 @@ def fight(enemies):
                                     else:
                                         print(f'{enemy_army[0][0]}\'s armour is broken by the attack.')
                             elif attack[3] == 'plasma':
-                                if enemy_army[0][10][1][1] > 0:
+                               if enemy_army[0][10][1][1] > 0:
                                     if enemy_army[0][10][1][1] > 0:
                                         enemy_army[0][10][1][1] -= dmg*2
                                     if enemy_army[0][10][1][1] > 0:
@@ -462,10 +457,10 @@ def fight(enemies):
                                                 death_message = death_message.replace('[lastwords]', enemy[5])
                                             death_message = death_message.replace('[a]', enemy[0])
                                             print(death_message)
-                                            wait(1.5)
+                                            # t.sleep(1.5)
                                         elif enemy[1] < 10:
                                             print(f'{enemy[0]} is severely injured.')
-                                            wait(1.5)
+                                            # t.sleep(1.5)
                                 for enemy in enemy_army:
                                     if enemy[1] <= 0:
                                         enemy_army = []
@@ -478,26 +473,26 @@ def fight(enemies):
                                 print(f'{txt} doing {dmg} damage.')
                                 if dmg == 0:
                                     print(f'The attack is blocked by {enemy_army[0][0]}\'s armour.')
-                                wait(1.5)
+                                # t.sleep(1.5)
                                 if enemy_army[0][1] <= 0:
                                     if enemy_army[0][5] is None:
                                         death_message = deaths[2]
                                     else:
                                         death_message = r.choice(deaths)
                                         death_message = death_message.replace('[lastwords]', enemy_army[0][5])
-                                    death_message = death_message.replace('[a]', enemy_army[0][0])
+                                   death_message = death_message.replace('[a]', enemy_army[0][0])
                                     enemy_army.pop(0)
                                     print(death_message)
-                                    wait(1.5)
+                                    # t.sleep(1.5)
                                 elif enemy_army[0][1] < 10:
                                     print(f'{enemy_army[0][0]} is severely injured.')
-                                    wait(1.5)
+                                    # t.sleep(1.5)
                         else:
                             print(f'{r.choice(enemy_army[0][9])}')
-                            wait(1.5)
+                            # t.sleep(1.5)
                     else:
                         print(f'The attack misses.')
-                        wait(1.5)
+                        # t.sleep(1.5)
                     clearConsole()
                     if enemy_army == [] or enemy_army[0][1] == 2147483647:
                         stats[0] = health
@@ -520,7 +515,7 @@ def fight(enemies):
                     item[0] -= 1
                     health += r.randint(50, 75)
                     print(f'{player_name} drinks a voodoo medicine.')
-                    wait(1)
+                    # t.sleep(1)
                     clearConsole()
             elif action == 2:
                 if item[1] > 0:
@@ -529,16 +524,16 @@ def fight(enemies):
                     hunger += r.randint(40, 80)
                     mental += r.randint(0, 15)
                     print(f'{player_name} eats a delicious dried kelp.')
-                    wait(1)
+                    # t.sleep(1)
                     clearConsole()
                     if hunger >= 130:
                         print(f'The dried kelp makes {player_name} fat.')
-                        wait(1)
+                        # t.sleep(1)
                         clearConsole()
                         evasion -= 10
                     elif hunger >= 100:
                         print(f'The dried kelp makes {player_name} feel full.')
-                        wait(1)
+                        # t.sleep(1)
                         clearConsole()
             else:
                 if item[2] > 0:
@@ -546,16 +541,16 @@ def fight(enemies):
                     hunger += r.randint(5, 15)
                     mental += r.randint(15, 25)
                     print(f'{player_name} drank a bottle of seawater.')
-                    wait(1)
+                    # t.sleep(1)
                     clearConsole()
                     if hunger >= 130:
                         print(f'The bottle of seawater makes {player_name} fat.')
-                        wait(1)
+                        # t.sleep(1)
                         clearConsole()
                         evasion -= 10
                     elif hunger >= 100:
                         print(f'The bottle of seawater makes {player_name} feel full.')
-                        wait(1)
+                        # t.sleep(1)
                         clearConsole()
         else:
             action = ask('''
@@ -568,7 +563,7 @@ def fight(enemies):
                 insult = r.choice(insults)
                 print(f'{player_name}: {insult}')
                 print(f'{enemy_army[0][0]} is very angry.')
-                wait(2)
+                # t.sleep(2)
                 clearConsole()
                 mental += r.randint(10, 35)
                 mental_dmg = 10
@@ -586,10 +581,10 @@ def fight(enemies):
                     death_message = death_message.replace('[a]', enemy_army[0][0])
                     enemy_army.pop(0)
                     print(death_message)
-                    wait(1.5)
+                    # t.sleep(1.5)
                 elif enemy_army[0][1] < 10:
                     print(f'{enemy_army[0][0]} is severely injured.')
-                    wait(1.5)
+                    # t.sleep(1.5)
                 if enemy_army == [] or enemy_army[0][1] == 2147483647:
                     stats[0] = health
                     stats[1] = hunger
@@ -598,12 +593,12 @@ def fight(enemies):
                     stats[4] = evasion
                     stats[5] = accuracy
                     return 0
-                
+               
             else:
                 compliment = r.choice(compliments)
                 print(f'{player_name}: {compliment}')
                 print(f'{enemy_army[0][0]} is feeling good.')
-                wait(2)
+                # t.sleep(2)
                 skip_enemy=True
 
         # Enemy turn
@@ -621,9 +616,9 @@ def fight(enemies):
                                     txt = txt.replace('[a]', attacker[0])
                                     txt = txt.replace('[body]', r.choice(body))
                                     print(f'{attacker[0]}: {r.choice(attacker[4])}')
-                                    wait(1.5)
+                                    # t.sleep(1.5)
                                     print(f'{txt} healing {dmg} health.')
-                                    wait(1.5)
+                                    # t.sleep(1.5)
                                 else:
                                     if attack[3] != 'mental':
                                         if dmg <= 0:
@@ -645,26 +640,26 @@ def fight(enemies):
                                     txt = txt.replace('[a]', attacker[0])
                                     txt = txt.replace('[body]', r.choice(body))
                                     print(f'{attacker[0]}: {r.choice(attacker[4])}')
-                                    wait(1.5)
+                                    # t.sleep(1.5)
                                     print(f'{txt} doing {dmg} damage.')
-                                    wait(1.5)
+                                    # t.sleep(1.5)
                             else:
                                 txt = attack[1].replace('[b]', player_name)
                                 txt = txt.replace('[a]', attacker[0])
                                 txt = txt.replace('[body]', r.choice(body))
                                 print(f'{attacker[0]}: {r.choice(attacker[4])}')
-                                wait(1.5)
+                                # t.sleep(1.5)
                                 print(f'{txt} but {player_name} flew out of the way')
-                                wait(1.5)
+                                # t.sleep(1.5)
                         else:
                             txt = attack[1].replace('[b]', player_name)
                             txt = txt.replace('[a]', attacker[0])
                             txt = txt.replace('[body]', r.choice(body))
                             print(f'{attacker[0]}: {r.choice(attacker[4])}')
-                            wait(1.5)
+                            # t.sleep(1.5)
                             print(f'{txt} but {player_name} flew out of the way.')
-                            wait(1.5)
-        wait(2)
+                            # t.sleep(1.5)
+        # t.sleep(2)
         clearConsole()
         # Calculations
         hunger -= 1
@@ -708,21 +703,21 @@ def fight(enemies):
         stats[5] = accuracy
         print(f'''
 ----------------------------------Player Stats----------------------------------
- Health {bar(stats[0], health_lost, max_stat)}   Mental Health {bar(stats[2], mental_lost, max_stat)}
+Health {bar(stats[0], health_lost, max_stat)}   Mental Health {bar(stats[2], mental_lost, max_stat)}
 
- Hunger {bar(stats[1], hunger_lost, max_stat)}    Intelligence  {bar(stats[3], 0, max_stat)}
+Hunger {bar(stats[1], hunger_lost, max_stat)}    Intelligence  {bar(stats[3], 0, max_stat)}
 --------------------------------------------------------------------------------
 ''')
-        wait(1.5)
+        # t.sleep(1.5)
         clearConsole()
         print(f'''
 ----------------------------------Player Stats----------------------------------
- Health {bar(stats[0], 0, max_stat)}   Mental Health {bar(stats[2], 0, max_stat)}
+Health {bar(stats[0], 0, max_stat)}   Mental Health {bar(stats[2], 0, max_stat)}
 
- Hunger {bar(stats[1], 0, max_stat)}   Intelligence  {bar(stats[3], 0, max_stat)}
+Hunger {bar(stats[1], 0, max_stat)}   Intelligence  {bar(stats[3], 0, max_stat)}
 --------------------------------------------------------------------------------
 ''')
-        wait(2)
+        # t.sleep(2)
         clearConsole()
 
 def game(levels = 40, room_list = []):
@@ -756,7 +751,6 @@ def game(levels = 40, room_list = []):
                     else:
                         room = 'weapon'
             room_list.append(room)
-    print(room_list)
     for room in room_list:
         if room == 'henry':
             if level('fight', enemies=['henry', 750, 4, [0,1,8,23,27,48,49,50,51,52], ['Die Spedlords!', 'You can not defeat me', 'You shall die to me', 'I am the henry'], 'I will not die to you', 1, True, 4, ['The attack is blocked by henry\'s power'], [[25, 300], [0, 0], [0, 0]]], boss=True):
@@ -792,9 +786,27 @@ def game(levels = 40, room_list = []):
             if level('loot', rewards=[r.randint(1,3), r.randint(2,4), r.randint(1,5)], special=r.choice(god_loot)):
                 return 1
 
+def chooseCharacter(characters='all'):
+    if characters == 'all':
+        choices = [
+            # name, stat capacity, starting hp, starting hunger, starting intelligence, damage multiplier, starting weapons, description
+            ['Spedry', 'Spedry is a difficult character to play as. Sperdy has reduced health and damage due to his sped characteristics.', 90, 90, 90, 90, 0.75, [42, 42]],
+            ['Mace', 'Mace is the default character.', 150, 150, 150, 150, 1, [42, 42]],
+            ['Widjaja', 'Widjaja has high damage but low health. ', 100, 100, 100, 100, 3, [42, 42]],
+            ['Taj', 'Taj is a tanky character.',  300, 300, 300, 10,  1, [42, 42]],
+            ['Taj the Terrorist', 'Terrorist Taj is a blatant cheater who is incredibly OP.', 500, 500, 500, 100, 3, [42, 42]],
+            ['The Yu that flew', 'Yu will be the choice you make - Yu', 0, 0, 0, 0, 0, [42, 42]]
+        ]
+        print('Pick your character:')
+        i=0
+        for character in choices:
+            print(f'[{i}] Name: {character[0]}  Description: {character[1]}')
+            i+=1
+        return ask(': ', [0,1,2,3,4])
 
 def main(levels=-1, room_list = []):
-    resetVariables()
+    character = chooseCharacter()
+    resetVariables(character)
     if levels != -1:
         if game(levels):
             print('you died')
@@ -812,21 +824,6 @@ def main(levels=-1, room_list = []):
 # Main Game
 #main(levels = 40)
 resetVariables()
-
-print(aaa())
-
-global timers
-timers = input("Do you want to wait between commands (yes/no)?").lower()
-while True:
-    if timers == "yes" or timers == "y":
-        timers = True
-        break
-    elif timers == "no" or timers == "n":
-        timers = False
-        break
-    else:
-        print("You did not enter a valid input")
-
 game(40)
 '''
 Block
@@ -850,5 +847,3 @@ Bar full (20×5=100)
 ▕████████████████████▏
 ▕███████████████████░▏
 '''
-
-
