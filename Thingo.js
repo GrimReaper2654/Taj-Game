@@ -15,9 +15,17 @@ function init() {
     };
     const enemies = [
         // Example
-        // {name: "Tom"
-        // health: 
-        // insults: []}
+        // {name: "Tom",
+        // health: 10,
+        // insults: ["TOMAHAWK", "TOM-A-HAWK"]}
+        
+        {name: "Bodyguard",
+        health: 300,
+        
+        }
+
+
+
     ]
     console.log(enemies)
 
