@@ -107,5 +107,5 @@ main()
 testing()
 
 function testing() {
-    console.log(enemies[0].armour.physical[0])
+    
 }
