@@ -20,7 +20,7 @@ class ERROR(Exception):
 from platform   import system as system_name
 from subprocess import call   as system_call
 def clearConsole():
-    # how to do this, I do not know
+    os.system('cls' if os.name == 'nt' else 'clear')
     return
 
 def resetVariables():
