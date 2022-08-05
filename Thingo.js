@@ -87,9 +87,6 @@ const player_weapons = {
 
 
 
-function main() {
-    
-}
 
 
 
@@ -103,7 +100,8 @@ function main() {
 
 
 
-main()
+
+
 testing()
 
 function testing() {
