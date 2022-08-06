@@ -105,5 +105,5 @@ const player_weapons = {
 testing()
 
 function testing() {
-    
+    console.log("Hello")
 }
