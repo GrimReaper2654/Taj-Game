@@ -84,19 +84,29 @@ const player_weapons = {
     },
 };
 
+function init() {
+    hideInventory()
+}
+
+
 
 
 function hideInventory() {
     document.getElementById("inventory").innerHTML = ''
+    return "Done"
 }
 
 function showInventory() {
     document.getElementById("inventory").innerHTML = '<button id="invSlot1">1</button> <button id="invSlot2">2</button> <button id="invSlot3">3</button> <button id="invSlot4">4</button> <button id="invSlot5">5</button>'
+    return "Done"
 }
 
 
 
 
+
+
+document.onload = init()
 
 
 
