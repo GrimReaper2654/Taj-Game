@@ -137,10 +137,14 @@ function init() {
     hideOptions()
     hideAttackOptions()
     hideWeapons()
-    player_name = window.localStorage.getItem('playerName')
+    
 }
 
-
+const admin = window.localStorage.getItem('admin')
+if (admin !== "true") {
+    window.localStorage.setItem("playerName", "Tom")
+    player_name = window.localStorage.getItem('playerName')
+}
 
 function hideInventory() {
     document.getElementById("inventory").style.display = "none"
@@ -238,4 +242,3 @@ function testing() {
 
 
 
-window.localStorage.setItem("playerName", "Tom")
