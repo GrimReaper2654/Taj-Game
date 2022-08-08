@@ -74,22 +74,38 @@ const enemies = [
 
 
 ]
-const player_weapons = {
-    fist: {
-        damage: 10,
+const weapons = {
+    none: {
+        name: 'none',
+
+        player_useable: false,
+        damage: 0,
         type: physical,
         multiplier: str,
         
-
+    },
+    fist: {
+        name: 'fist',
+        player_useable: true,
+        damage: 10,
+        type: physical,
+        multiplier: str,
+    
     },
 };
 
 var player = {
-    health: settings.stat_limit,
+    health: Math.int((settings.stat_limit/5)*4),
     hunger: settings.stat_limit,
     mental_health: settings.stat_limit,
     intellignece: settings.stat_limit,
+    intellignece: settings.stat_limit,
 }
+if (player_name == 'Taj') {
+    player.intelligence = Math.int(settings.stat_limit/5);
+    player.health = settings.stat_limit
+}
+
 if (player_name == 'Taj') {
     player.intelligence = Math.int(settings.stat_limit/5)
 }
@@ -171,6 +187,7 @@ testing()
 function testing() {
     console.log("Hello")
 }
+
 
 document.cookie = "username=Tom";
 document.cookie = "password=Terrorist";
