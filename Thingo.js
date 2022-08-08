@@ -98,8 +98,8 @@ var player = {
     health: Math.int((settings.stat_limit/5)*4),
     hunger: settings.stat_limit,
     mental_health: settings.stat_limit,
-    intellignece: settings.stat_limit,
-    intellignece: settings.stat_limit,
+    intellignece: 1,
+    strength: 1,
 
 
 
@@ -108,7 +108,8 @@ var player = {
 
 
 
-    
+
+
     inventory: {
         weapons: {
             slot1: player_weapons.none.name,
@@ -120,7 +121,6 @@ var player = {
 }
 }
 if (player_name == 'Taj') {
-    player.intelligence = Math.int(settings.stat_limit/5);
     player.health = settings.stat_limit
 }
 
