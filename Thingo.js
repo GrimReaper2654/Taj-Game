@@ -124,6 +124,11 @@ var player = {
             slot1: "None",
             slot2: "None",
             slot3: "None"
+        },
+        items: {
+            medicine: 10,
+            food: 30,
+            water: 50
         }
     }
 
@@ -146,7 +151,10 @@ function init() {
     hideOptions()
     hideAttackOptions()
     hideWeapons()
-    
+    hideItems()
+
+
+    return "Done"
 }
 
 const admin = window.localStorage.getItem('admin')
@@ -197,6 +205,24 @@ function showWeapons() {
     document.getElementById("weaponSlot3").innerHTML = player.inventory.weapons.slot3;
     return "Done"
 }
+
+function hideItems() {
+    document.getElementById("items").style.display = "none";
+    return "Done"
+}
+
+function showItems() {
+    document.getElementById("items").style.display = "block";
+    return "Done"
+}
+
+
+
+
+
+
+
+
 
 
 
