@@ -112,6 +112,17 @@ function showOptions() {
     return "Done"
 }
 
+function hideAttackOptions() {
+    document.getElementById("attackOptions").style.display = "none";
+    return "Done"
+}
+
+function showAttackOptions() {
+    document.getElementById("attackOptions").style.display = "block";
+    return "Done"
+}
+
+
 
 
 
