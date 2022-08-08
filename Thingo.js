@@ -111,14 +111,15 @@ var player = {
     
     inventory: {
         weapons: {
-            slot1: player_weapons.none.name,
-            slot2: player_weapons.none.name,
-            slot3: player_weapons.none.name
+            slot1: "None",
+            slot2: "None",
+            slot3: "None"
         }
     }
 
 }
-}
+
+
 if (player_name == 'Taj') {
     player.intelligence = Math.int(settings.stat_limit/5);
     player.health = settings.stat_limit
@@ -180,8 +181,31 @@ function showAttackOptions() {
     return "Done"
 }
 
+function hideWeapons() {
+    document.getElementById("weapons").style.display = "none";
+    return "Done"
+}
+
+function showWeapons() {
+    document.getElementById("weapons").style.display = "block";
+    return "Done"
+}
 
 
+
+
+
+function pickupWeapon(weapon, slot) {
+    if (slot == "slot1") {
+        player.inventory.weapons.slot1 = weapon
+    } else if (slot == "slot2") {
+        player.inventory.weapons.slot2 = weapon
+    } else if (slot == "slot3") {
+        player.inventory.weapons.slot3 = weapon
+    } else {
+        console.log("pickupWeapon() error. Weapon:", weapon, "Slot:", slot)
+    }
+}
 
 
 
