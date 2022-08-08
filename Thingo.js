@@ -1,3 +1,12 @@
+/*
+Run window.localStorage.Name = "Tom" in web console for personal testing.
+This is testing that will only run on your device.
+Put any testing in the tomTesting() function
+
+
+
+*/
+
 
 // Damage Type
 const physical = 'physical';
@@ -225,12 +234,18 @@ function game() {
     return 0;
 }
 
-document.onload = init()
-
-testing()
 
 function testing() {
     
+}
+
+
+function tajTesting() {
+
+}
+
+function tomTesting() {
+
 }
 
 
@@ -242,3 +257,27 @@ function testing() {
 
 
 
+
+
+
+
+
+
+
+
+
+// Read the info at the top of the document
+if (window.localStorage.getItem("Name") == "Taj") {
+    tajTesting()
+} else if (window.localStorage.getItem("Name") == "Tom") {
+    tomTesting()
+}
+
+
+
+
+
+
+document.onload = init()
+
+testing()
