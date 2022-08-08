@@ -86,20 +86,32 @@ const player_weapons = {
 
 function init() {
     hideInventory()
+    hideOptions()
 }
 
 
 
 
 function hideInventory() {
-    document.getElementById("inventory").innerHTML = ''
+    document.getElementById("inventory").style.display = "none"
     return "Done"
 }
 
 function showInventory() {
-    document.getElementById("inventory").innerHTML = '<button id="invSlot1">1</button> <button id="invSlot2">2</button> <button id="invSlot3">3</button> <button id="invSlot4">4</button> <button id="invSlot5">5</button>'
+    document.getElementById("inventory").style.display = "block"
     return "Done"
 }
+
+function hideOptions() {
+    document.getElementById("options").style.display = "none";
+    return "Done"
+}
+
+function showOptions() {
+    document.getElementById("options").style.display = "block";
+    return "Done"
+}
+
 
 
 
