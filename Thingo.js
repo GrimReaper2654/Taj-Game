@@ -137,6 +137,7 @@ function init() {
     hideOptions()
     hideAttackOptions()
     hideWeapons()
+    player_name = window.localStorage.getItem('playerName')
 }
 
 
@@ -225,9 +226,16 @@ document.onload = init()
 testing()
 
 function testing() {
-    console.log("Hello")
+    
 }
 
 
-document.cookie = "username=Tom";
-document.cookie = "password=Terrorist";
+
+
+
+
+
+
+
+
+window.localStorage.setItem("playerName", "Tom")
