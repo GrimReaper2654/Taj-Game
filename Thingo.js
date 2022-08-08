@@ -100,6 +100,24 @@ var player = {
     mental_health: settings.stat_limit,
     intellignece: settings.stat_limit,
     intellignece: settings.stat_limit,
+
+
+
+
+
+
+
+
+    
+    inventory: {
+        weapons: {
+            slot1: player_weapons.none.name,
+            slot2: player_weapons.none.name,
+            slot3: player_weapons.none.name
+        }
+    }
+
+}
 }
 if (player_name == 'Taj') {
     player.intelligence = Math.int(settings.stat_limit/5);
@@ -107,8 +125,10 @@ if (player_name == 'Taj') {
 }
 
 if (player_name == 'Taj') {
-    player.intelligence = Math.int(settings.stat_limit/5)
+    player.intelligence = Math.int(settings.stat_limit/5);
 }
+    
+
 
 //Functions
 
@@ -125,7 +145,10 @@ if (player_name == 'Taj') {
 function init() {
     hideInventory()
     hideOptions()
+    hideAttackOptions()
 }
+
+
 
 function hideInventory() {
     document.getElementById("inventory").style.display = "none"
