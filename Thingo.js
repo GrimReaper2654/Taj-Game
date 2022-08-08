@@ -11,8 +11,8 @@ const str = 'strength';
 const intel = 'intelligence';
 
 // Constants
-const player_name = 'Taj';
-const settings = {
+var player_name = 'Taj';
+var settings = {
     stat_limit: 1000,
     enable_shield: true,
     enable_hunger: true,
@@ -84,12 +84,20 @@ const player_weapons = {
     },
 };
 
+var player = {
+    health: settings.stat_limit,
+    hunger: settings.stat_limit,
+    mental_health: settings.stat_limit,
+    intellignece: settings.stat_limit,
+}
+if (player_name == 'Taj') {
+    player.intelligence = Math.int(settings.stat_limit/5)
+}
+
+//Functions
 function init() {
     hideInventory()
 }
-
-
-
 
 function hideInventory() {
     document.getElementById("inventory").innerHTML = ''
@@ -101,48 +109,29 @@ function showInventory() {
     return "Done"
 }
 
+function playerTurn() {
+    return 0;
+}
 
+function enemyTurn() {
+    return 0;
+}
 
-
-
+function game() {
+    while (1) {
+        playerTurn();
+        enemyTurn();
+    };
+    return 0;
+}
 
 document.onload = init()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 testing()
 
 function testing() {
     console.log("Hello")
 }
-
-
-
-
-
-
-
 
 document.cookie = "username=Tom";
 document.cookie = "password=Terrorist";
