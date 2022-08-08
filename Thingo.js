@@ -42,7 +42,7 @@ const enemies = [
     health: 100,
     damage_multiplier: 1.5,
     attacks: [1,2,5],
-    quotes: ["Hi", "TOMAHAWK"],
+    quotes: ["Hi BIRD-A", "TOMAHAWK"],
     last_words: "Goodbye, World!",
     quantity: 2,
     can_die: true,
@@ -95,7 +95,7 @@ const weapons = {
 };
 
 var player = {
-    health: Math.int((settings.stat_limit/5)*4),
+    health: (settings.stat_limit/5),
     hunger: settings.stat_limit,
     mental_health: settings.stat_limit,
     intellignece: 1,
@@ -126,27 +126,17 @@ if (player_name == 'Taj') {
 }
 
 if (player_name == 'Taj') {
-    player.intelligence = Math.int(settings.stat_limit/5);
+    player.intelligence = settings.stat_limit/5;
 }
     
 
 
 //Functions
-
-
-
-
-
-
-
-
-
-
-
 function init() {
     hideInventory()
     hideOptions()
     hideAttackOptions()
+    hideWeapons()
 }
 
 
@@ -188,6 +178,9 @@ function hideWeapons() {
 
 function showWeapons() {
     document.getElementById("weapons").style.display = "block";
+    document.getElementById("weaponSlot1").innerHTML = player.inventory.weapons.slot1;
+    document.getElementById("weaponSlot2").innerHTML = player.inventory.weapons.slot2;
+    document.getElementById("weaponSlot3").innerHTML = player.inventory.weapons.slot3;
     return "Done"
 }
 
