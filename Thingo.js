@@ -54,29 +54,48 @@ const enemies = [
     last_words: "Goodbye, World!",
     quantity: 2,
     can_die: true,
-    evasion_chance: 10,
-    evasion_description: [''],
-    armour: {physical: {durability: 100},
+    evasion_chance: 10,                          hit_chance = weapon_accuracy * player_intelligence * enemy_evasion * randint(0.5,1.5)
+    armour: {
+        physical: {durability: 100},
         fire: {durability: 100},
         energy: {durability: 100},
         magical: {durability: 100}}
     }
     */
-    {name: "Bodyguard",
-    health: 300,
-    damage_multiplier: 1.5,
-    attacks: [1,2,5],
-    quotes: ["I will defend henry with my life!", "Death to the enemies of henry!", "I shall protect henry!"],
-    last_words: false,
-    quantity: 3,
-    can_die: true,
-    evasion_chance: 0,
-    evasion_description: ['The attack is blocked by his baseball bat', 'The attack fails to penetrate his armour'],
-    armour: {physical: {durability: 100, resistance: 10},
-        fire: {durability: 100, resistance: 10},
-        energy: {durability: 100, resistance: 10},
-        magical: {durability: 100}, resistance: 10}
-    }
+    {
+        name: "Bodyguard",
+        health: 300,
+        damage_multiplier: 1.5,
+        attacks: [1,2,5],
+        quotes: ["I shall defend Henry with my life!", "Death to the enemies of Henry!", "I shall protect Henry!", "You shall not Pass!"],
+        last_words: null,
+        quantity: [1,3],
+        can_die: true,
+        evasion_chance: 1,
+        armour: {
+            physical: {durability: 100, resistance: 10},
+            fire: {durability: 100, resistance: 10},
+            energy: {durability: 100, resistance: 10},
+            magical: {durability: 100, resistance: 10}
+        }
+    },
+    {
+        name: "Bodyguard",
+        health: 300,
+        damage_multiplier: 1.5,
+        attacks: [1,2,5],
+        quotes: ["I shall defend Henry with my life!", "Death to the enemies of Henry!", "I shall protect Henry!", "You shall not Pass!"],
+        last_words: null,
+        quantity: [1,3],
+        can_die: true,
+        evasion_chance: 1,
+        armour: {
+            physical: {durability: 100, resistance: 10},
+            fire: {durability: 100, resistance: 10},
+            energy: {durability: 100, resistance: 10},
+            magical: {durability: 100, resistance: 10}
+        }
+    },
     
 
 
@@ -297,10 +316,14 @@ function intro() {
 
 
 function playerTurn() {
+    // Show player controlls
     return 0;
 }
 
-function enemyTurn() {
+function enemyTurn(enemies) {
+    for (enemy in enemies) {
+
+    }
     return 0;
 }
 
