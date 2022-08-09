@@ -3,7 +3,9 @@ Run window.localStorage.Name = "Tom" in web console for personal testing.
 This is testing that will only run on your device.
 Put any testing in the tomTesting() function
 
-Map
+Info
+hit_chance = weapon_accuracy * player_intelligence * enemy_evasion * randint(0.5,1.5)
+enemy evasion lower means more likely to dodge
 */
 
 
@@ -54,7 +56,7 @@ const enemies = [
     last_words: "Goodbye, World!",
     quantity: 2,
     can_die: true,
-    evasion_chance: 10,                          hit_chance = weapon_accuracy * player_intelligence * enemy_evasion * randint(0.5,1.5)
+    evasion_chance: 10,                          
     armour: {
         physical: {durability: 100},
         fire: {durability: 100},
@@ -62,41 +64,239 @@ const enemies = [
         magical: {durability: 100}}
     }
     */
-    {
-        name: "Bodyguard",
-        health: 300,
-        damage_multiplier: 1.5,
-        attacks: [1,2,5],
-        quotes: ["I shall defend Henry with my life!", "Death to the enemies of Henry!", "I shall protect Henry!", "You shall not Pass!"],
-        last_words: null,
-        quantity: [1,3],
-        can_die: true,
-        evasion_chance: 1,
-        armour: {
-            physical: {durability: 100, resistance: 10},
-            fire: {durability: 100, resistance: 10},
-            energy: {durability: 100, resistance: 10},
-            magical: {durability: 100, resistance: 10}
-        }
-    },
-    {
-        name: "Bodyguard",
-        health: 300,
-        damage_multiplier: 1.5,
-        attacks: [1,2,5],
-        quotes: ["I shall defend Henry with my life!", "Death to the enemies of Henry!", "I shall protect Henry!", "You shall not Pass!"],
-        last_words: null,
-        quantity: [1,3],
-        can_die: true,
-        evasion_chance: 1,
-        armour: {
-            physical: {durability: 100, resistance: 10},
-            fire: {durability: 100, resistance: 10},
-            energy: {durability: 100, resistance: 10},
-            magical: {durability: 100, resistance: 10}
-        }
-    },
-    
+   {
+    default: [
+        {
+            name: "Bodyguard",
+            health: 300,
+            damage_multiplier: 1.5,
+            attacks: [],
+            quotes: ["I shall defend Henry with my life!", "Death to the enemies of Henry!", "I shall protect Henry!", "You shall not Pass!"],
+            last_words: null,
+            quantity: [1,3],
+            can_die: true,
+            evasion_chance: 1,
+            armour: {
+                physical: {durability: 100, resistance: 10},
+                fire: {durability: 50, resistance: 5},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            }
+        },
+        {
+            name: "Servant",
+            health: 100,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: ["I serve Henry!", 'for Henry!'],
+            last_words: null,
+            quantity: [1,2],
+            can_die: true,
+            evasion_chance: 1.5,
+            armour: {
+                physical: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            }
+        },
+    ],
+    religious: [
+        {
+            name: "Birdism Priest",
+            health: 50,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: ["Hail Henry Bird!", "For Henry Bird!", "I shall protect the lord!"],
+            last_words: ["You shall not defeat the Henry Bird"],
+            quantity: [5,10],
+            can_die: true,
+            evasion_chance: 0.9,
+            armour: {
+                physical: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 200, resistance: 50}
+            }
+        },
+        {
+            name: "Birdism Cultist",
+            health: 50,
+            damage_multiplier: 0.5,
+            attacks: [],
+            quotes: ["Hail Henry Bird!"],
+            last_words: ["You shall not defeat the Henry Bird"],
+            quantity: [10,30],
+            can_die: true,
+            evasion_chance: 100,
+            armour: {
+                physical: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            }
+        },
+        {
+            name: "Birdism Bishop",
+            health: 200,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: ["Hail Henry Bird!", "For Henry Bird!", "I shall protect the lord!", "die nonbeliever!"],
+            last_words: ["You shall not defeat the Henry Bird"],
+            quantity: [1,2],
+            can_die: true,
+            evasion_chance: 0.5,
+            armour: {
+                physical: {durability: 20, resistance: 10},
+                fire: {durability: 50, resistance: 10},
+                energy: {durability: 50, resistance: 10},
+                magical: {durability: 500, resistance: 75}
+            }
+        },
+    ],
+    innovations: [
+        {
+            name: "Choyuni Farmer",
+            health: 100,
+            damage_multiplier: 0.75,
+            attacks: [],
+            quotes: ["[Inaudible Muttering]", "[Grunt]"],
+            last_words: null,
+            quantity: [1,5],
+            can_die: true,
+            evasion_chance: 2,
+            armour: {
+                physical: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            }
+        },
+        {
+            name: "Choyuni Miner",
+            health: 150,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: ["[Inaudible Muttering]", "[Grunt]"],
+            last_words: null,
+            quantity: [1,3],
+            can_die: true,
+            evasion_chance: 5,
+            armour: {
+                physical: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            }
+        },
+        {
+            name: "Choyuni Soldier",
+            health: 300,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: ["[Inaudible Muttering]", "[Grunt]"],
+            last_words: null,
+            quantity: [1,2],
+            can_die: true,
+            evasion_chance: 1,
+            armour: {
+                physical: {durability: 50, resistance: 10},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            }
+        },
+        {
+            name: "Macelord",
+            health: 500,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: ["I am the all mighty Mace!", "die peasants!"],
+            last_words: null,
+            quantity: [1],
+            can_die: true,
+            evasion_chance: 1,
+            armour: {
+                physical: {durability: 500, resistance: 50},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            }
+        },
+    ],
+    spedlords: [
+        {
+            name: "Spedlord Mace", // Mace uses splash damage and dodges attacks
+            health: 5000,
+            damage_multiplier: 2,
+            attacks: [],
+            quotes: ["Mace superiority"],
+            last_words: null,
+            quantity: [1],
+            can_die: false,
+            evasion_chance: 0.5,
+            armour: {
+                physical: {durability: 1000, resistance: 10},
+                fire: {durability: 1000, resistance: 10},
+                energy: {durability: 1000, resistance: 10},
+                magical: {durability: 1000, resistance: 10}
+            }
+        },
+        {
+            name: "Spedlord Taj", // Taj is a tank with high health and damage
+            health: 10000,
+            damage_multiplier: 3,
+            attacks: [],
+            quotes: ["Taj superiority"],
+            last_words: null,
+            quantity: [1],
+            can_die: false,
+            evasion_chance: 5,
+            armour: {
+                physical: {durability: 10000, resistance: 500},
+                fire: {durability: 10000, resistance: 500},
+                energy: {durability: 10000, resistance: 500},
+                magical: {durability: 10000, resistance: 500}
+            }
+        },
+        {
+            name: "Spedlord Kento", // Kento is weak
+            health: 1000,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: ["Kento superiority"],
+            last_words: null,
+            quantity: [1],
+            can_die: false,
+            evasion_chance: 1,
+            armour: {
+                physical: {durability: 1000, resistance: 100},
+                fire: {durability: 1000, resistance: 100},
+                energy: {durability: 1000, resistance: 100},
+                magical: {durability: 1000, resistance: 100}
+            }
+        },
+        {
+            name: "Spedlord Henry", // Henry is strong
+            health: 50000,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: ["Henry superiority"],
+            last_words: null,
+            quantity: [1],
+            can_die: false,
+            evasion_chance: 1000,
+            armour: {
+                physical: {durability: 5000, resistance: 1000},
+                fire: {durability: 5000, resistance: 1000},
+                energy: {durability: 5000, resistance: 1000},
+                magical: {durability: 5000, resistance: 1000}
+            }
+        },
+    ],
+   }
+
+
 
 
 
