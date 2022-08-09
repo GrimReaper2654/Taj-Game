@@ -147,6 +147,7 @@ if (player_name == 'Taj') {
 
 //Functions
 function init() {
+    
     hideInventory()
     hideOptions()
     hideAttackOptions()
@@ -161,6 +162,13 @@ const admin = window.localStorage.getItem('admin')
 if (admin !== "true") {
     window.localStorage.setItem("playerName", "Tom")
     player_name = window.localStorage.getItem('playerName')
+} else {
+    player_name = window.localStorage.getItem('playerName')
+}
+
+function start() {
+    document.getElementById("start").style.display = "none"
+    game()
 }
 
 function hideInventory() {
@@ -242,6 +250,12 @@ function pickupWeapon(weapon, slot) {
 
 
 
+function intro() {
+    document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room`
+}
+
+
+
 
 
 function playerTurn() {
@@ -253,12 +267,24 @@ function enemyTurn() {
 }
 
 function game() {
-    while (1) {
+    intro()
+    while (0) {
         playerTurn();
         enemyTurn();
     };
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 function testing() {
