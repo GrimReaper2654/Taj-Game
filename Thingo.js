@@ -3,13 +3,11 @@ Run window.localStorage.Name = "Tom" in web console for personal testing.
 This is testing that will only run on your device.
 Put any testing in the tomTesting() function
 
-
-
+Map
 */
 
 
 // Damage Type
-const physical = 'physical';
 const fire = 'fire';
 const energy = 'energy';
 const magical = 'magical';
@@ -246,8 +244,8 @@ function intro() {
     document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room.<br>`
     document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`
     /*
-    
-
+    Intro text
+    An endless wall of white marble towers above you, radiating an aura of power. [more description] You stare hatefully at the residence of Henry Bird.
     */
     
 }
