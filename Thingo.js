@@ -244,7 +244,7 @@ function pickupWeapon(weapon, slot) {
     } else if (slot == "slot3") {
         player.inventory.weapons.slot3 = weapon
     } else {
-        console.log("pickupWeapon() error. Weapon:", weapon, "Slot:", slot)
+        console.log(`pickupWeapon() error. Weapon:, ${weapon}. Slot:, ${slot}`)
     }
 }
 
@@ -285,7 +285,7 @@ function intro() {
     As the stars that shall be bright when we are dust,<br>
     Moving in marches upon the heavenly plain;<br>
     As the stars that are starry in the time of our darkness,<br>
-    To the end, to the end, they remain.<br>`
+    To the end, to the end, they remain.<br><br><br>`
     document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} wakes up in a dark room.<br>`
     document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`
     /*
@@ -306,11 +306,11 @@ function enemyTurn() {
 
 function game() {
     intro()
-    while (player.health > 0 && level <= settings.max_levels) {
+    /*while (player.health > 0 && level <= settings.max_levels) {
         playerTurn();
         enemyTurn();
     };
-    return 0;
+    return 0;*/
 }
 
 
