@@ -147,7 +147,7 @@ if (player_name == 'Taj') {
 
 //Functions
 function init() {
-    
+    hideText()
     hideInventory()
     hideOptions()
     hideAttackOptions()
@@ -169,6 +169,10 @@ if (admin !== "true") {
 function start() {
     document.getElementById("start").style.display = "none"
     game()
+}
+
+function hideText() {
+    document.getElementById("text").style.display = "none"
 }
 
 function hideInventory() {
@@ -251,7 +255,8 @@ function pickupWeapon(weapon, slot) {
 
 
 function intro() {
-    document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room`
+    document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room.<br>`
+    document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`
 }
 
 
@@ -330,6 +335,6 @@ if (window.localStorage.getItem("Name") == "Taj") {
 
 
 
-document.onload = init()
+init()
 
 testing()
