@@ -132,6 +132,13 @@ var player = {
 
 }
 
+var level = 0
+
+
+
+
+
+
 
 if (player_name == 'Taj') {
     player.health = settings.stat_limit
@@ -170,7 +177,7 @@ function start() {
 }
 
 function hideText() {
-    document.getElementById("text").style.display = "none"
+    document.getElementById("text").innerHTML = ""
 }
 
 function hideInventory() {
@@ -261,7 +268,7 @@ function enemyTurn() {
 
 function game() {
     intro()
-    while (0) {
+    while (player.health > 0 && level <= max_levels) {
         playerTurn();
         enemyTurn();
     };
