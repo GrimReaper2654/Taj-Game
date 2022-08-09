@@ -172,7 +172,6 @@ if (player_name == 'Taj') {
 
 //Functions
 function init() {
-    hideText()
     hideInventory()
     hideOptions()
     hideAttackOptions()
@@ -269,43 +268,8 @@ function pickupWeapon(weapon, slot) {
 
 
 function intro() {
-    document.getElementById("text").innerHTML = `
-    With proud thanksgiving, a mother for her children,<br>
-    England mourns for her dead across the sea.<br>
-    Flesh of her flesh they were, spirit of her spirit,<br>
-    Fallen in the cause of the free.<br><br>
-    
-    Solemn the drums thrill; Death august and royal<br>
-    Sings sorrow up into immortal spheres,<br>
-    There is music in the midst of desolation<br>
-    And a glory that shines upon our tears.<br><br>
-    
-    They went with songs to the battle, they were young,<br>
-    Straight of limb, true of eye, steady and aglow.<br>
-    They were staunch to the end against odds uncounted;<br>
-    They fell with their faces to the foe.<br><br>
-    
-    They shall grow not old, as we that are left grow old:<br>
-    Age shall not weary them, nor the years condemn.<br>
-    At the going down of the sun and in the morning<br>
-    We will remember them.<br><br>
-    
-    
-    They mingle not with their laughing comrades again;<br>
-    They sit no more at familiar tables of home;<br>
-    They have no lot in our labour of the day-time;<br>
-    They sleep beyond England’s foam.<br><br>
-    
-    But where our desires are and our hopes profound,<br>
-    Felt as a well-spring that is hidden from sight,<br>
-    To the innermost heart of their own land they are known<br>
-    As the stars are known to the Night;<br><br>
-    
-    As the stars that shall be bright when we are dust,<br>
-    Moving in marches upon the heavenly plain;<br>
-    As the stars that are starry in the time of our darkness,<br>
-    To the end, to the end, they remain.<br><br><br>`
-    document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} wakes up in a dark room.<br>`
+   
+    document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room.<br>`
     document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`
     /*
     Intro text
