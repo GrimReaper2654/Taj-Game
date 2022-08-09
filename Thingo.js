@@ -236,17 +236,6 @@ function showItems() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 function pickupWeapon(weapon, slot) {
     if (slot == "slot1") {
         player.inventory.weapons.slot1 = weapon
@@ -260,14 +249,15 @@ function pickupWeapon(weapon, slot) {
 }
 
 
-
 function intro() {
     document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room.<br>`
     document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`
+    /*
+    
+
+    */
+    
 }
-
-
-
 
 
 function playerTurn() {
@@ -288,17 +278,6 @@ function game() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 function testing() {
     
 }
@@ -313,31 +292,12 @@ function tomTesting() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Read the info at the top of the document
 if (window.localStorage.getItem("Name") == "Taj") {
     tajTesting()
 } else if (window.localStorage.getItem("Name") == "Tom") {
     tomTesting()
 }
-
-
 
 
 
