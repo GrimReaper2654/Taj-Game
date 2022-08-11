@@ -21,7 +21,7 @@ const str = 'strength';
 const intel = 'intelligence';
 
 // Constants
-var player_name = 'Taj';
+var player_name = 'Widjaja';
 var settings = {
     stat_limit: 1000,
     enable_shield: true,
