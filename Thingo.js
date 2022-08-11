@@ -11,11 +11,21 @@ armour durability means how much damage an armour can take before breaking (dama
 armour resistance means how much damage can be blocked on EACH attack, NOT each round
 durability 0 means no armour, NOT infinite durability
 
+rapidfire works liek this:
+first number is % chance of attacking again if pervious attack hits enemy
+second number is the maximum number of attacks in 1 turn
+
 Developing:
 Somebody format the intro a bit better and make it sound better. Also somebody write a backstory.
 - Tom
 
 */
+
+// Functions
+function randint(min, max) { // Randint returns random interger between min and max (both included)
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
 
 
 // Damage Type
@@ -328,23 +338,92 @@ const enemies = [
 
 ]
 const weapons = {
-    none: {
-        name: 'none',
-
-        player_useable: false,
-        damage: 0,
-        type: physical,
-        multiplier: str,
-        
-    },
-    fist: {
-        name: 'fist',
-        player_useable: true,
-        damage: 10,
-        type: physical,
-        multiplier: str,
+    body: {
+        none: {
+            name: 'none',
+            player_useable: false,
+            damage: [0,0],
+            baseAccuracy: 0,
+            type: null,
+            multiplier: null,
+            rapidfire: [0,0],
+            attack_description: {'default':['If you see this, there is a problem']}
+        },
+        fist: {
+            name: 'fist',
+            player_useable: true,
+            damage: [15,25],
+            baseAccuracy: 80,
+            type: physical,
+            multiplier: str,
+            rapidfire: [30,5],
+            attack_description: {
+                'KO': [
+                    '[attacker] sent [defender] flying with [strong] blow!', 
+                    '[defender] collapses after taking [strong] punch from [attacker]!', 
+                    '[defender] flees after taking [strong] hit from [attacker]!',
+                    '[attacker] kills [defender] with [strong] punch!',
+                ],
+                'single': [
+                    '[attacker] landed [description] punch on [defender]!', 
+                    '[attacker] punched [defender] in the [body]!',
+                    '[attacker] karate chops [defender]!',
+                    '[attacker] slaps [defender] in the face!'
+                ],
+                'multi': [
+                    '[attacker] landed [description] series of punches on [defender]!',
+                    '[attacker] unleashes a powerful martial arts technique on [defender]!',
+                ],
+                'miss': [
+                    '[attacker]\'s punch misses [defender]!',
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings wildly at [defender] and misses!',
+                ],
+                'block': [
+                    '[defender] deflects [attacker]\'s punch with a martial arts parry!',
+                    '[defender] blocks [attacker]\'s strike with a martial arts parry!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s punch with ease!',
+                ]
+            }
+        },
+        kick: {
+            name: 'kick',
+            player_useable: true,
+            damage: 50,
+            baseAccuracy: 60,
+            type: physical,
+            multiplier: str,
+            rapidfire: [20,4],
+            attack_description: {
+                'KO': [
+                    '[attacker] sent [defender] flying with [strong] kick!', 
+                    '[defender] collapses after taking [strong] roundhouse kick from [attacker]!', 
+                    '[defender] flees after taking [strong] kick from [attacker]!',
+                    '[attacker] kills [defender] with [strong] kick!',
+                ],
+                'single': [
+                    '[attacker] landed [description] kick on [defender]!', 
+                    '[attacker] kicks [defender] in the [body]!',
+                ],
+                'multi': [
+                    '[attacker] landed [description] series of kicks on [defender]!',
+                    '[attacker] unleashes a powerful martial arts technique on [defender]!',
+                ],
+                'miss': [
+                    '[attacker]\'s kick misses [defender]!',
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker]\' kick is blocked by [naturalHazard]!',
+                    '[attacker] kicks at [defender] and loses ballence, missing [defender] by a wide margin!',
+                ],
+                'block': [
+                    '[defender] deflects [attacker]\'s kick with a martial arts parry!',
+                    '[defender] blocks [attacker]\'s kick with a martial arts parry!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s kick with ease!',
+                ]
+            }
+        },
+    }
     
-    },
 };
 
 var player = {
@@ -502,11 +581,10 @@ function choice(description,choices) { // TODO: make inputs
 
 
 function intro() {
-   
-    document.getElementById("text").innerHTML = `You painfully open your bruised eyes. Pain shoots through your nerves like lightning as feel the rough stone ground with your bandaged hands. Slowly turning your head, you stare into the endless void around you. A dull throbbing pain fills your mind as you attempt to remember your past. Blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades your tired mind but his name is engraved into your mind. "Henry Bird" You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`;
+    document.getElementById("text").innerHTML = `You painfully open your bruised eyes. Pain shoots through your nerves like lightning as you feel the rough stone ground with your bandaged hands. Silence envelops you as you stare into the endless dark void around you. A dull throbbing pain fills your mind as decades old memories resurface. Blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades your tired mind but his name is engraved into your mind. "Henry Bird" You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`;
     //pause
     if (player.isTerrorist) {
-        document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`;
+        document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `In reality, ${player_name} is a wanted terrorist, responsible for thousands of deaths. You are in prison for murder. Lmao imagine. Ur trash! L+Bozo <br>`;
     }
     
     /*
@@ -521,10 +599,25 @@ function level1() {
         'check your posessions': 'show inventory',
         'think': 'get backstory part',
         'look for an exit': 'next level',
-        'cry yourself to sleep': 'sleep'
+        'talk': 'nothing'
         }
     while (1) {
-        choice('',possibleActions)
+        switch (choice(`As the pain in your limbs slowly fades into the background, you contemplate your choices. What do you do, ${player_name}?`, possibleActions)) {
+            case 'find stuff':
+                if (randint(0, 5)) { // 80% chance to get stuff
+                    if (randint(0, 1)) { // 50% change to get items 50% change to get weapons
+                        //give the player a random teir 1 weapon
+                    } else {
+
+                    }
+                } else {
+
+                }
+                
+                break;
+            default:
+                return 1;
+        }
     }
 }
 
