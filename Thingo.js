@@ -3,9 +3,16 @@ Run window.localStorage.Name = "Tom" in web console for personal testing.
 This is testing that will only run on your device.
 Put any testing in the tomTesting() function
 
-Info
+Info:
 hit_chance = weapon_accuracy * player_intelligence/(statlimit/2) * enemy_evasion * randint(0.5,1.5)
 enemy evasion lower means more likely to dodge
+
+armour durability means how much damage an armour can take before breaking (damage of attack not damage blocked)
+armour resistance means how much damage can be blocked on EACH attack, NOT each round
+durability 0 means no armour, NOT infinite durability
+
+Developing:
+
 */
 
 
@@ -483,9 +490,14 @@ function pickupWeapon(weapon, slot) {
     }
 }
 
-function choice() {
-    
+function choice(description,choices) { // TODO: make inputs
+    let numChoices = choices.length;
+    // Display Description
+    // Display choices on buttons
+    // Detect when button is pressed
+    return buttonPressed;
 }
+
 
 function intro() {
    
@@ -494,8 +506,6 @@ function intro() {
     if (player.isTerrorist) {
         document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`;
     }
-    //pause
-    document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name}, What do you do?<br>`;
     
     /*
     Intro text */
@@ -503,6 +513,12 @@ function intro() {
     
 }
 
+function level1() {
+    let 
+    while (1) {
+        choice(description,choices)
+    }
+}
 
 function playerTurn() {
     // Show player controlls
@@ -518,6 +534,9 @@ function enemyTurn(enemies) {
 
 function game() {
     intro()
+    // Level 1 (Leave the starting room)
+    
+
     /*while (player.health > 0 && level <= settings.max_levels) {
         playerTurn();
         enemyTurn();
