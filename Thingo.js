@@ -11,7 +11,7 @@ armour durability means how much damage an armour can take before breaking (dama
 armour resistance means how much damage can be blocked on EACH attack, NOT each round
 durability 0 means no armour, NOT infinite durability
 
-rapidfire works liek this:
+rapidfire works like this:
 first number is % chance of attacking again if pervious attack hits enemy
 second number is the maximum number of attacks in 1 turn
 
