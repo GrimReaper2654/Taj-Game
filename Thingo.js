@@ -4,7 +4,7 @@ This is testing that will only run on your device.
 Put any testing in the tomTesting() function
 
 Info
-hit_chance = weapon_accuracy * player_intelligence * enemy_evasion * randint(0.5,1.5)
+hit_chance = weapon_accuracy * player_intelligence/(statlimit/2) * enemy_evasion * randint(0.5,1.5)
 enemy evasion lower means more likely to dodge
 */
 
@@ -208,7 +208,7 @@ const enemies = [
         },
         {
             name: "Macelord",
-            health: 500,
+            health: 2000,
             damage_multiplier: 1,
             attacks: [],
             quotes: ["I am the all mighty Mace!", "die peasants!"],
@@ -221,6 +221,23 @@ const enemies = [
                 fire: {durability: 0, resistance: 0},
                 energy: {durability: 0, resistance: 0},
                 magical: {durability: 0, resistance: 0}
+            }
+        },
+        {
+            name: "Witch doctor",
+            health: 700,
+            damage_multiplier: 1,
+            attacks: [],
+            quotes: [null],
+            last_words: null,
+            quantity: [1],
+            can_die: true,
+            evasion_chance: 1,
+            armour: {
+                physical: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 100, resistance: 10},
+                magical: {durability: 1000, resistance: 100}
             }
         },
     ],
@@ -243,11 +260,11 @@ const enemies = [
             }
         },
         {
-            name: "Spedlord ---", // --- is a tank with high health and damage
+            name: "Spedlord Ethan", // Ethan is a tank with high health and damage
             health: 10000,
             damage_multiplier: 3,
             attacks: [],
-            quotes: ["--- superiority"],
+            quotes: ["Ethan superiority"],
             last_words: null,
             quantity: [1],
             can_die: false,
@@ -325,8 +342,8 @@ var player = {
     health: (settings.stat_limit/5),
     hunger: settings.stat_limit,
     mental_health: settings.stat_limit,
-    intellignece: 1,
-    strength: 1,
+    intellignece: settings.stat_limit/2,
+    strength: settings.stat_limit/2,
 
 
 
@@ -384,7 +401,7 @@ function init() {
 
 const admin = window.localStorage.getItem('admin')
 if (admin !== "true") {
-    window.localStorage.setItem("playerName", "Tom")
+    window.localStorage.setItem("playerName", "Taj")
     player_name = window.localStorage.getItem('playerName')
 } else {
     player_name = window.localStorage.getItem('playerName')
@@ -466,15 +483,23 @@ function pickupWeapon(weapon, slot) {
     }
 }
 
+function choice() {
+    
+}
 
 function intro() {
    
-    document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room.<br>`
-    document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`
+    document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room.<br>`;
+    //pause
+    if (player.isTerrorist) {
+        document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`;
+    }
+    //pause
+    document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name}, What do you do?<br>`;
+    
     /*
     Intro text */
-    document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `An endless wall of white marble towers above you, radiating an aura of power. [more description] You stare hatefully at the residence of Henry Bird.`
-    // a
+    
     
 }
 
