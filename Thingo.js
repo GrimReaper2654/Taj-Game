@@ -243,11 +243,11 @@ const enemies = [
             }
         },
         {
-            name: "Spedlord Taj", // Taj is a tank with high health and damage
+            name: "Spedlord ---", // --- is a tank with high health and damage
             health: 10000,
             damage_multiplier: 3,
             attacks: [],
-            quotes: ["Taj superiority"],
+            quotes: ["--- superiority"],
             last_words: null,
             quantity: [1],
             can_die: false,
@@ -260,11 +260,11 @@ const enemies = [
             }
         },
         {
-            name: "Spedlord Kento", // Kento is weak
+            name: "Spedlord Bento", // Bento is weak
             health: 1000,
             damage_multiplier: 1,
             attacks: [],
-            quotes: ["Kento superiority"],
+            quotes: ["Bento superiority"],
             last_words: null,
             quantity: [1],
             can_die: false,
@@ -472,9 +472,9 @@ function intro() {
     document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room.<br>`
     document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`
     /*
-    Intro text
-    An endless wall of white marble towers above you, radiating an aura of power. [more description] You stare hatefully at the residence of Henry Bird.
-    */
+    Intro text */
+    document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `An endless wall of white marble towers above you, radiating an aura of power. [more description] You stare hatefully at the residence of Henry Bird.`
+    // a
     
 }
 
