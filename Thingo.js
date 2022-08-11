@@ -12,6 +12,8 @@ armour resistance means how much damage can be blocked on EACH attack, NOT each 
 durability 0 means no armour, NOT infinite durability
 
 Developing:
+Somebody format the intro a bit better and make it sound better. Also somebody write a backstory.
+- Tom
 
 */
 
@@ -501,7 +503,7 @@ function choice(description,choices) { // TODO: make inputs
 
 function intro() {
    
-    document.getElementById("text").innerHTML = `${player_name} wakes up in a dark room.<br>`;
+    document.getElementById("text").innerHTML = `You painfully open your bruised eyes. Pain shoots through your nerves like lightning as feel the rough stone ground with your bandaged hands. Slowly turning your head, you stare into the endless void around you. A dull throbbing pain fills your mind as you attempt to remember your past. Blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades your tired mind but his name is engraved into your mind. "Henry Bird" You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`;
     //pause
     if (player.isTerrorist) {
         document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `${player_name} is a wanted terrorist, responsible for thousands of deaths.<br>`;
@@ -514,9 +516,15 @@ function intro() {
 }
 
 function level1() {
-    let 
+    let possibleActions = {
+        'search the room': 'find stuff',
+        'check your posessions': 'show inventory',
+        'think': 'get backstory part',
+        'look for an exit': 'next level',
+        'cry yourself to sleep': 'sleep'
+        }
     while (1) {
-        choice(description,choices)
+        choice('',possibleActions)
     }
 }
 
@@ -537,11 +545,7 @@ function game() {
     // Level 1 (Leave the starting room)
     
 
-    /*while (player.health > 0 && level <= settings.max_levels) {
-        playerTurn();
-        enemyTurn();
-    };
-    return 0;*/
+    
 }
 
 
