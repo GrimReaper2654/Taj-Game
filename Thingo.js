@@ -26,8 +26,14 @@ function randint(min, max) { // Randint returns random interger between min and 
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
-function randchoice(list) { // chose 1 from a list
-    return Math.floor(Math.random() * (max - min + 1) ) + min;
+function randchoice(list, remove=false) { // chose 1 from a list and update list
+    let length = list.length;
+    let choice = randint(0, length-1);
+    if (remove) {
+        newList = list.splice(choice, choice)
+        return list[choice], newList;
+    }
+    return list[choice];
 }
 
 // Damage Type
@@ -835,20 +841,31 @@ function intro() {
     
 }
 
-function level1() {
+function level1() { // First level (get some starting items and escape the starting room, you alos get some backstory)
     const searchFails = [
         `Your grope around on the darknes but you can only feel the course stone floor and the occasional patch of moss rubbing against the palms of your hands.`,
         `You slowly crawl across the cold stone floor, searching for anything that could help you. However, your efforts were proven to be futile as you did not locate anything of use.`,
         `You crawn through the room and bump your head on a wall. You give up searching for now and lie down on the ground to recover.`,
-        `You explore the room until you are exhausted but your search yields no results.`,
-    ]
+        `You explore the room until you are exhausted but your search yields no results.`
+    ];
+    const nextLevel = [
+        'You find entrance to next room', // somebody reword this and add more options!!!!!!
+    ];
+    const talk = [
+        `"Hello!" you shout into the darkness, "Is there anybody there?" However, there is no response.`, 
+    ];
     let possibleActions = {
         'search the room': 'find stuff',
         'check your posessions': 'show inventory',
         'think': 'get backstory part',
         'look for an exit': 'next level',
-        'talk': 'nothing'
-        }
+        'talk': 'talk'
+    };
+    let backstoryFragments = [ // somebody make up backstory
+        'backstory 1',
+        'backstory 2',
+        'backstory 3',
+    ];
     while (1) {
         switch (choice(`As the pain in your limbs slowly fades into the background, you contemplate your choices. What do you do, ${player_name}?`, possibleActions)) {
             case 'find stuff':
@@ -859,9 +876,22 @@ function level1() {
                         // give the player some items
                     }
                 } else {
-                    showText();
+                    showText(randchoice(searchFails));
                 }
-                
+                break;
+            case 'show inventory':
+                showInventory();
+                break;
+            case 'get backstory part':
+                let backstory = '';
+                backstory, backstoryFragments = randchoice(backstoryFragments, true);
+                showText(backstory);
+                break;
+            case 'next level':
+                showText(randchoice(nextLevel));
+                break;
+            case 'talk':
+                showText(randchoice(talk));
                 break;
             default:
                 return 1;
