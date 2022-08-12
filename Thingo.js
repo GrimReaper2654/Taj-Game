@@ -26,7 +26,9 @@ function randint(min, max) { // Randint returns random interger between min and 
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
-
+function randchoice(list) { // chose 1 from a list
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
 
 // Damage Type
 const physical = 'physical';
@@ -40,7 +42,7 @@ const str = 'strength';
 const intel = 'intelligence';
 
 // Constants
-var player_name = 'Widjaja';
+var player_name = 'Tom the Terrorist';
 var settings = {
     stat_limit: 1000,
     enable_shield: true,
@@ -349,8 +351,8 @@ const weapons = {
             rapidfire: [0,0],
             attack_description: {'default':['If you see this, there is a problem']}
         },
-        fist: {
-            name: 'fist',
+        punch: {
+            name: 'punch',
             player_useable: true,
             damage: [15,25],
             baseAccuracy: 80,
@@ -378,8 +380,6 @@ const weapons = {
                     '[attacker]\'s punch misses [defender]!',
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings wildly at [defender] and misses!',
-                ],
-                'block': [
                     '[defender] deflects [attacker]\'s punch with a martial arts parry!',
                     '[defender] blocks [attacker]\'s strike with a martial arts parry!',
                     '[defender] dodges to the side, avoiding [attacker]\'s punch with ease!',
@@ -414,11 +414,168 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker]\' kick is blocked by [naturalHazard]!',
                     '[attacker] kicks at [defender] and loses ballence, missing [defender] by a wide margin!',
-                ],
-                'block': [
                     '[defender] deflects [attacker]\'s kick with a martial arts parry!',
                     '[defender] blocks [attacker]\'s kick with a martial arts parry!',
                     '[defender] dodges to the side, avoiding [attacker]\'s kick with ease!',
+                ]
+            }
+        },
+    },
+    tier1: {
+        twig: {
+            name: 'twig',
+            player_useable: true,
+            damage: [15,30],
+            baseAccuracy: 90,
+            type: physical,
+            multiplier: str,
+            rapidfire: [80,6],
+            attack_description: {
+                'KO': [
+                    '[attacker] piered [defender]\' heart with a twig!', 
+                    '[attacker] stabbed [defender]\' eyes with a twig!', 
+                    '[defender] collapses after being whacked by a twig!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                'single': [
+                    '[attacker] whacked [defender]\' [body] with a twig!', 
+                    '[attacker] stabbed [defender]\' [body] with a twig!', 
+                ],
+                'multi': [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly hits [defender] with a twig!',
+                ],
+                'miss': [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his twig wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a twig and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s twig with ease!',
+                ]
+            }
+        },
+        stick: {
+            name: 'stick',
+            player_useable: true,
+            damage: [20,35],
+            baseAccuracy: 85,
+            type: physical,
+            multiplier: str,
+            rapidfire: [80,7],
+            attack_description: {
+                'KO': [
+                    '[attacker] piered [defender]\' heart with a stick!', 
+                    '[attacker] stabbed [defender]\' eyes with a stick!', 
+                    '[defender] collapses after being whacked by a stick!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                'single': [
+                    '[attacker] whacked [defender]\' [body] with a stick!', 
+                    '[attacker] stabbed [defender]\' [body] with a stick!', 
+                    '[attacker] whipped [defender]\' [body] with a stick!', 
+                ],
+                'multi': [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly hits [defender] with a stick!',
+                ],
+                'miss': [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] thrusts his stick at [defender] and misses!',
+                    '[attacker] swings his stick wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a stick and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s stick with ease!',
+                ]
+            }
+        },
+        treeBranch: {
+            name: 'treeBranch',
+            player_useable: true,
+            damage: [50,100],
+            baseAccuracy: 75,
+            type: physical,
+            multiplier: str,
+            rapidfire: [10,3],
+            attack_description: {
+                'KO': [
+                    '[attacker] crushes [defender] with a tree branch!', 
+                    '[attacker] sends [defender] flying with [strong] hit!', 
+                    '[defender] collapses after being whacked by a tree branch!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                'single': [
+                    '[attacker] whacked [defender]\' [body] with a tree branch!', 
+                    '[attacker] stabbed [defender]\' [body] with a tree branch!', 
+                    '[attacker] whipped [defender]\' [body] with a tree branch!', 
+                ],
+                'multi': [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly hits [defender] with a tree branch!',
+                ],
+                'miss': [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] thrusts his tree branch at [defender] and misses!',
+                    '[attacker] swings his tree branch wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a tree branch and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s tree branch with ease!',
+                ]
+            }
+        },
+        log: {
+            name: 'log',
+            player_useable: true,
+            damage: [100,300],
+            baseAccuracy: 50,
+            type: physical,
+            multiplier: str,
+            rapidfire: [0,0],
+            attack_description: {
+                'KO': [
+                    '[attacker] crushes [defender] with a log!', 
+                    '[attacker] sends [defender] flying with [strong] hit!', 
+                    '[defender] collapses after being whacked by a log!', 
+                    '[defender] is crushed under [attacker]\'s log!',
+                ],
+                'single': [
+                    '[attacker] bashed [defender]\' [body] with a log!', 
+                ],
+                'miss': [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] collapses under the weight of his log!',
+                    '[attacker] thrusts his log at [defender] and misses!',
+                    '[attacker] swings his log wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a log and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s log with ease!',
+                ]
+            }
+        },
+        sharpRock: {
+            name: 'sharpRock',
+            player_useable: true,
+            damage: [75,90],
+            baseAccuracy: 80,
+            type: physical,
+            multiplier: str,
+            rapidfire: [40,4],
+            attack_description: {
+                'KO': [
+                    '[attacker] pierces [defender]\'s heart with a sharp rock!', 
+                    '[defender] flees after being stabbled by [attacker]\'s sharp rock!',
+                ],
+                'single': [
+                    '[attacker] slashed [defender]\' [body] with a sharp rock!', 
+                    '[attacker] stabbed [defender]\' [body] with a sharp rock!', 
+                ],
+                'multi': [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly cuts [defender] with a sharp rock!',
+                    '[attacker] rapidly slashes at [defender] with a sharp rock!',
+                ],
+                'miss': [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] fumbles and almost drops his sharp rock!',
+                    '[attacker] thrusts his sharp rock at [defender] and misses!',
+                    '[attacker] swings his sharp rock wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a sharp rock and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s sharp rock with ease!',
                 ]
             }
         },
@@ -427,37 +584,116 @@ const weapons = {
 };
 
 var player = {
+    playerName: player_name,
     health: (settings.stat_limit/5),
     hunger: settings.stat_limit,
     mental_health: settings.stat_limit,
     intellignece: settings.stat_limit/2,
     strength: settings.stat_limit/2,
-
-
-
-
-
-
-
-
-
+    isTerrorist: false,
 
     inventory: {
         weapons: {
-            slot1: "None",
-            slot2: "None",
-            slot3: "None"
+            hands: weapons.body.punch,
+            feet: weapons.body.kick,
+            main1: weapons.body.none,
+            main2: weapons.body.none,
+            secondary: weapons.body.none
         },
-        items: {
-            medicine: 10,
-            food: 30,
-            water: 50
-        }
+        items: [
+            // Limit of (strength/strengthLimit)*40 inventory slots, if inventory is too full items are ejected from the inventory
+            /* Format items like this:
+            {
+                name: 'Maceline™ Ice Tea',
+                type: 'consumables',
+                healthRegen: [20, 50],
+                hungerRegen: [100, 250],
+                mentalRegen: [300, 500],
+                quickConsume: false,
+                quantity: 1,
+                stackSize: 10
+            },
+            */
+            {
+                name: 'Maceline™ Painkillers',
+                type: 'consumable',
+                healthRegen: [0, 0],
+                hungerRegen: [0, 0],
+                mentalRegen: [500, 500],
+                quickConsume: true,
+                quantity: 3,
+                stackSize: 10
+            },
+            {
+                name: '9mm bullets',
+                type: 'ammunition',
+                quantity: 10,
+                stackSize: 10
+            },
+            {
+                name: '.50cal bullets',
+                type: 'ammunition',
+                quantity: 3,
+                stackSize: 3
+            },
+            {
+                name: 'frag grenade',
+                type: 'throwable',
+                healthRegen: [0, 0],
+                hungerRegen: [0, 0],
+                mentalRegen: [0, 0],
+                damage: [700, 1200],
+                quickConsume: false,
+                damageType: physical,
+                quantity: 1,
+                stackSize: 1
+            },
+            {
+                name: 'small rock',
+                type: 'throwable',
+                healthRegen: [0, 0],
+                hungerRegen: [0, 0],
+                mentalRegen: [0, 0],
+                damage: [50, 100],
+                quickConsume: true,
+                damageType: physical,
+                quantity: 3,
+                stackSize: 5
+            },
+            {
+                name: 'medium rock',
+                type: 'throwable',
+                healthRegen: [0, 0],
+                hungerRegen: [0, 0],
+                mentalRegen: [0, 0],
+                damage: [75, 150],
+                quickConsume: false,
+                damageType: physical,
+                quantity: 1,
+                stackSize: 3
+            },
+            {
+                name: 'big rock',
+                type: 'throwable',
+                healthRegen: [0, 0],
+                hungerRegen: [0, 0],
+                mentalRegen: [0, 0],
+                damage: [150, 300],
+                quickConsume: false,
+                damageType: physical,
+                quantity: 1,
+                stackSize: 1
+            },
+        ]
     }
 
 }
-
-var level = 0
+const string = player_name;
+const substring = 'Terrorist';
+const index = string.indexOf(substring);
+if (string.indexOf(substring) !== -1) {
+  player.isTerrorist=true;
+}
 
 
 
@@ -579,12 +815,18 @@ function choice(description,choices) { // TODO: make inputs
     return buttonPressed;
 }
 
+function showText(text) {
+    document.getElementById("text").innerHTML = text;
+}
+function addText(text) {
+    document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + text;
+}
 
 function intro() {
-    document.getElementById("text").innerHTML = `You painfully open your bruised eyes. Pain shoots through your nerves like lightning as you feel the rough stone ground with your bandaged hands. Silence envelops you as you stare into the endless dark void around you. A dull throbbing pain fills your mind as decades old memories resurface. Blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades your tired mind but his name is engraved into your mind. "Henry Bird" You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`;
+    showText(`You painfully open your bruised eyes. Pain shoots through your nerves like lightning as you feel the rough stone ground with your bandaged hands. Silence envelops you as you stare into the endless dark void around you. A dull throbbing pain fills your mind as decades old memories resurface. Blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades your tired mind but his name is engraved into your mind. "Henry Bird" You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`);
     //pause
     if (player.isTerrorist) {
-        document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + `In reality, ${player_name} is a wanted terrorist, responsible for thousands of deaths. You are in prison for murder. Lmao imagine. Ur trash! L+Bozo <br>`;
+       addText(`In reality, ${player_name} is a wanted terrorist, responsible for thousands of deaths. You are in prison for murder. Lmao imagine. Ur trash! L+Bozo <br>`);
     }
     
     /*
@@ -594,6 +836,12 @@ function intro() {
 }
 
 function level1() {
+    const searchFails = [
+        `Your grope around on the darknes but you can only feel the course stone floor and the occasional patch of moss rubbing against the palms of your hands.`,
+        `You slowly crawl across the cold stone floor, searching for anything that could help you. However, your efforts were proven to be futile as you did not locate anything of use.`,
+        `You crawn through the room and bump your head on a wall. You give up searching for now and lie down on the ground to recover.`,
+        `You explore the room until you are exhausted but your search yields no results.`,
+    ]
     let possibleActions = {
         'search the room': 'find stuff',
         'check your posessions': 'show inventory',
@@ -606,12 +854,12 @@ function level1() {
             case 'find stuff':
                 if (randint(0, 5)) { // 80% chance to get stuff
                     if (randint(0, 1)) { // 50% change to get items 50% change to get weapons
-                        //give the player a random teir 1 weapon
+                        // give the player a random tier 1 weapon
                     } else {
-
+                        // give the player some items
                     }
                 } else {
-
+                    showText();
                 }
                 
                 break;
@@ -620,6 +868,8 @@ function level1() {
         }
     }
 }
+
+function level2() {}
 
 function playerTurn() {
     // Show player controlls
