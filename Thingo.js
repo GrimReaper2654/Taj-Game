@@ -15,6 +15,10 @@ rapidfire works like this:
 first number is % chance of attacking again if pervious attack hits enemy
 second number is the maximum number of attacks in 1 turn
 
+inventory system:
+Limit of (strength/strengthLimit)*30+2 inventory slots, if inventory is too full items are ejected from the inventory
+
+
 Developing:
 Somebody format the intro a bit better and make it sound better. Also somebody write a backstory.
 - Tom
@@ -591,11 +595,11 @@ const weapons = {
 
 var player = {
     playerName: player_name,
-    health: (settings.stat_limit/5),
-    hunger: settings.stat_limit,
-    mental_health: settings.stat_limit,
-    intellignece: settings.stat_limit/2,
-    strength: settings.stat_limit/2,
+    health: 50,
+    hunger: 100,
+    mental_health: 25,
+    intellignece: 100,
+    strength: 10,
     isTerrorist: false,
 
     inventory: {
@@ -701,21 +705,10 @@ if (string.indexOf(substring) !== -1) {
   player.isTerrorist=true;
 }
 
-
-
-
-
-
-
 if (player_name == 'Taj') {
     player.health = settings.stat_limit
-}
-
-if (player_name == 'Taj') {
     player.intelligence = settings.stat_limit/5;
 }
-    
-
 
 //Functions
 function init() {
@@ -745,7 +738,6 @@ function start() {
 function hideText() {
     document.getElementById("text").innerHTML = ""
 }
-
 
 function hideInventory() {
     document.getElementById("inventory").style.display = "none"
@@ -828,8 +820,20 @@ function addText(text) {
     document.getElementById("text").innerHTML = document.getElementById("text").innerHTML + text;
 }
 
+function give(player, item) {
+    if (player.inventory.items.length < (player.strength/stat_limit)*30+2) { // player can hold more items
+        let newPlayer = player;
+        newPlayer.inventory.items.append(item);
+        const pickup = ['You pick up [quantity] [item].'];
+        let textToDisplay = randchoice(pickup);
+        // TODO: replace placeholders with info
+        showText(textToDisplay);
+        return newPlayer;
+    }
+}
+
 function intro() {
-    showText(`You painfully open your bruised eyes. Pain shoots through your nerves like lightning as you feel the rough stone ground with your bandaged hands. Silence envelops you as you stare into the endless dark void around you. A dull throbbing pain fills your mind as decades old memories resurface. Blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades your tired mind but his name is engraved into your mind. "Henry Bird" You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`);
+    showText(`You painfully open your bruised eyes as pain shoots through your nerves like lightning. Silence envelops you as you stare into the endless dark void around you. Your battered body collapses beneath you as a dull throbbing pain fills your mind. Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades you but his name is engraved into your mind in jagged red letters. "Henry Bird" You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`);
     //pause
     if (player.isTerrorist) {
        addText(`In reality, ${player_name} is a wanted terrorist, responsible for thousands of deaths. You are in prison for murder. Lmao imagine. Ur trash! L+Bozo <br>`);
@@ -949,3 +953,4 @@ if (window.localStorage.getItem("Name") == "Taj") {
 init()
 
 testing()
+
