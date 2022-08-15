@@ -51,6 +51,9 @@ const mental = 'mental';
 const str = 'strength';
 const intel = 'intelligence';
 
+const bodyParts = ["head", "shoulder", "knee", "toe", "arm", "hand", "chest", "foot", "hip", "wrist", "shin", "leg", "neck"]
+const naturalHazard = ["stick", "crack", "Tom", "body", "blood", "magical forces", ""]
+
 // Constants
 var player_name = 'Tom the Terrorist';
 var settings = {
@@ -592,6 +595,9 @@ const weapons = {
     }
     
 };
+
+
+
 
 var player = {
     playerName: player_name,
