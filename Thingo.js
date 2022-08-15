@@ -51,6 +51,9 @@ const mental = 'mental';
 const str = 'strength';
 const intel = 'intelligence';
 
+const bodyParts = ["head", "shoulder", "knee", "toe", "arm", "hand", "chest", "foot", "hip", "wrist", "shin", "leg", "neck"]
+const naturalHazard = ["stick", "crack", "Tom", "body", "blood", "magical forces", ""]
+
 // Constants
 var player_name = 'Tom the Terrorist';
 var settings = {
@@ -422,7 +425,7 @@ const weapons = {
                 'miss': [
                     '[attacker]\'s kick misses [defender]!',
                     '[attacker] trips on [naturalHazard] and misses!',
-                    '[attacker]\' kick is blocked by [naturalHazard]!',
+                    '[attacker]\'s kick is blocked by [naturalHazard]!',
                     '[attacker] kicks at [defender] and loses ballence, missing [defender] by a wide margin!',
                     '[defender] deflects [attacker]\'s kick with a martial arts parry!',
                     '[defender] blocks [attacker]\'s kick with a martial arts parry!',
@@ -442,14 +445,14 @@ const weapons = {
             rapidfire: [80,6],
             attack_description: {
                 'KO': [
-                    '[attacker] piered [defender]\' heart with a twig!', 
-                    '[attacker] stabbed [defender]\' eyes with a twig!', 
+                    '[attacker] piered [defender]\'s heart with a twig!', 
+                    '[attacker] stabbed [defender]\'s eyes with a twig!', 
                     '[defender] collapses after being whacked by a twig!', 
                     '[defender] flees after taking [strong] attack from [attacker]!',
                 ],
                 'single': [
-                    '[attacker] whacked [defender]\' [body] with a twig!', 
-                    '[attacker] stabbed [defender]\' [body] with a twig!', 
+                    '[attacker] whacked [defender]\'s [body] with a twig!', 
+                    '[attacker] stabbed [defender]\'s [body] with a twig!', 
                 ],
                 'multi': [
                     '[attacker] landed [description] series of hits on [defender]!',
@@ -473,15 +476,15 @@ const weapons = {
             rapidfire: [80,7],
             attack_description: {
                 'KO': [
-                    '[attacker] piered [defender]\' heart with a stick!', 
-                    '[attacker] stabbed [defender]\' eyes with a stick!', 
+                    '[attacker] piered [defender]\'s heart with a stick!', 
+                    '[attacker] stabbed [defender]\'s eyes with a stick!', 
                     '[defender] collapses after being whacked by a stick!', 
                     '[defender] flees after taking [strong] attack from [attacker]!',
                 ],
                 'single': [
-                    '[attacker] whacked [defender]\' [body] with a stick!', 
-                    '[attacker] stabbed [defender]\' [body] with a stick!', 
-                    '[attacker] whipped [defender]\' [body] with a stick!', 
+                    '[attacker] whacked [defender]\'s [body] with a stick!', 
+                    '[attacker] stabbed [defender]\'s [body] with a stick!', 
+                    '[attacker] whipped [defender]\'s [body] with a stick!', 
                 ],
                 'multi': [
                     '[attacker] landed [description] series of hits on [defender]!',
@@ -512,9 +515,9 @@ const weapons = {
                     '[defender] flees after taking [strong] attack from [attacker]!',
                 ],
                 'single': [
-                    '[attacker] whacked [defender]\' [body] with a tree branch!', 
-                    '[attacker] stabbed [defender]\' [body] with a tree branch!', 
-                    '[attacker] whipped [defender]\' [body] with a tree branch!', 
+                    '[attacker] whacked [defender]\'s [body] with a tree branch!', 
+                    '[attacker] stabbed [defender]\'s [body] with a tree branch!', 
+                    '[attacker] whipped [defender]\'s [body] with a tree branch!', 
                 ],
                 'multi': [
                     '[attacker] landed [description] series of hits on [defender]!',
@@ -545,7 +548,7 @@ const weapons = {
                     '[defender] is crushed under [attacker]\'s log!',
                 ],
                 'single': [
-                    '[attacker] bashed [defender]\' [body] with a log!', 
+                    '[attacker] bashed [defender]\'s [body] with a log!', 
                 ],
                 'miss': [
                     '[attacker] trips on [naturalHazard] and misses!',
@@ -571,8 +574,8 @@ const weapons = {
                     '[defender] flees after being stabbled by [attacker]\'s sharp rock!',
                 ],
                 'single': [
-                    '[attacker] slashed [defender]\' [body] with a sharp rock!', 
-                    '[attacker] stabbed [defender]\' [body] with a sharp rock!', 
+                    '[attacker] slashed [defender]\'s [body] with a sharp rock!', 
+                    '[attacker] stabbed [defender]\'s [body] with a sharp rock!', 
                 ],
                 'multi': [
                     '[attacker] landed [description] series of hits on [defender]!',
@@ -592,6 +595,9 @@ const weapons = {
     }
     
 };
+
+
+
 
 var player = {
     playerName: player_name,
@@ -805,8 +811,29 @@ function pickupWeapon(weapon, slot) {
     }
 }
 
+function choicePressed(num) {
+    console.log(num)
+    buttonPressed = globalChoices[num]
+}
+
 function choice(description,choices) { // TODO: make inputs
+    var globalChoices = choices
     let numChoices = choices.length;
+    addText(description)
+    for (let i = 0; i < numChoices; i++){
+        addText(`<button id="choice${i}" onclick="choicePressed(${i})">${choices[i]}</button>`)
+        console.log(i)
+    }
+    var buttonPressed = false
+
+    while (buttonPressed == false) {
+        let a = 0
+    }
+    
+    
+
+
+
     // Display Description
     // Display choices on buttons
     // Detect when button is pressed
@@ -885,10 +912,10 @@ function fight(player, enemy) {
 }
 
 function intro() {
-    showText(`You painfully open your bruised eyes as pain shoots through your nerves like lightning. Silence envelops you as you stare into the endless dark void around you. Your battered body collapses beneath you as a dull throbbing pain fills your mind. Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades you but his name is engraved into your mind in jagged red letters. "Henry Bird" You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`);
+    showText(`You painfully open your bruised eyes as pain shoots through your nerves like lightning. Silence envelops you as you stare into the endless dark void around you. Your battered body collapses beneath you as a dull throbbing pain fills your mind. Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades you but his name is engraved into your mind in jagged red letters. "Henry Bird." You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`);
     //pause
     if (player.isTerrorist) {
-       addText(`In reality, ${player_name} is a wanted terrorist, responsible for thousands of deaths. You are in prison for murder. Lmao imagine. Ur trash! L+Bozo <br>`);
+       addText(`In reality, ${player_name} is a wanted terrorist, responsible for thousands of deaths. You are in prison for murder.<br>`);
     }
     
     /*
