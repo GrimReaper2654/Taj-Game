@@ -728,7 +728,7 @@ function init() {
     return "Done"
 }
 
-const admin = window.localStorage.getItem('admin')
+const admin =window.localStorage.getItem('admin')
 if (admin !== "true") {
     window.localStorage.setItem("playerName", "Taj")
     player_name = window.localStorage.getItem('playerName')
@@ -859,6 +859,58 @@ function give(player, item) {
     }
 }
 
+function playerTurn(player, enemies) { // TODO: make player do stuff
+    // Show player controlls
+
+    return player, enemies;
+}
+
+function enemyTurn(player, enemies) {
+    for (enemy in enemies) {
+        let enemyMove = randchoice(attacks);
+    }
+    return player, enemies;
+}
+
+function checkAlive(player, enemy) {
+    return player, enemies;
+}
+
+function fight(player, enemy) {
+    /*
+    {
+        name: "Bodyguard",
+        health: 300,
+        damage_multiplier: 1.5,
+        attacks: [],
+        quotes: ["I shall defend Henry with my life!", "Death to the enemies of Henry!", "I shall protect Henry!", "You shall not Pass!"],
+        last_words: null,
+        quantity: [1,3],
+        can_die: true,
+        evasion_chance: 1,
+        armour: {
+            physical: {durability: 100, resistance: 10},
+            fire: {durability: 50, resistance: 5},
+            energy: {durability: 0, resistance: 0},
+            magical: {durability: 0, resistance: 0}
+        }
+    },
+    */
+
+    // Create list with enemies to fight
+    let enemies = [];
+    for (let i = 0; i < randint(enemy.quantity[0],enemy.quantity[1]); i++) {
+        enemies.append(enemy);
+    }
+
+    playerTurn(player, enemies);
+    checkAlive(player, enemy);
+    enemyTurn(player, enemies);
+    checkAlive(player, enemy);
+
+
+}
+
 function intro() {
     showText(`You painfully open your bruised eyes as pain shoots through your nerves like lightning. Silence envelops you as you stare into the endless dark void around you. Your battered body collapses beneath you as a dull throbbing pain fills your mind. Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades you but his name is engraved into your mind in jagged red letters. "Henry Bird." You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`);
     //pause
@@ -934,24 +986,27 @@ function level2() {
 
 }
 
-function playerTurn() {
-    // Show player controlls
-    return 0;
+function level5() {
+
 }
 
-function enemyTurn(enemies) {
-    for (enemy in enemies) {
+function bossBattle() {
 
-    }
-    return 0;
 }
 
 function game() {
-    intro()
+    intro();
     // Level 1 (Leave the starting room)
-    
-
-    
+    level1();
+    // Level 2 (Battle the Henry soldiers)
+    level2();
+    // Level 3 (Defeat the spedlord Henry)
+    bossBattle(spedlordHenry);
+    // Level 4 (Defeat the Henry Bird)
+    bossBattle(henryBird);
+    // Level 5 (escape and win the game)
+    level5();
+    outro();
 }
 
 
