@@ -877,7 +877,7 @@ function level1() { // First level (get some starting items and escape the start
         'You find entrance to next room', // somebody reword this and add more options!!!!!!
     ];
     const talk = [
-        `"Hello!" you shout into the darkness, "Is there anybody there?" However, there is no response.`, 
+        `"Hello!" you shout into the darkness, "Is there anybody there?" However, there is no response.`, // somebody add more!!!!!!!!!!!
     ];
     let possibleActions = {
         'search the room': 'find stuff',
@@ -914,7 +914,7 @@ function level1() { // First level (get some starting items and escape the start
                 break;
             case 'next level':
                 showText(randchoice(nextLevel));
-                break;
+                return 0;
             case 'talk':
                 showText(randchoice(talk));
                 break;
@@ -924,7 +924,9 @@ function level1() { // First level (get some starting items and escape the start
     }
 }
 
-function level2() {}
+function level2() {
+
+}
 
 function playerTurn() {
     // Show player controlls
