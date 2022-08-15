@@ -21,7 +21,7 @@ Limit of (strength/strengthLimit)*30+2 inventory slots, if inventory is too full
 
 Developing:
 Somebody format the intro a bit better and make it sound better. Also somebody write a backstory.
-- Tom
+- Tom-a-hawk
 
 */
 
