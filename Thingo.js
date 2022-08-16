@@ -819,16 +819,12 @@ function choicePressed(num) {
 function choice(description,choices) { // TODO: make inputs
     var globalChoices = choices
     let numChoices = choices.length;
-    addText(description)
+    addText(description+`<br>`)
     for (let i = 0; i < numChoices; i++){
         addText(`<button id="choice${i}" onclick="choicePressed(${i})">${choices[i]}</button>`)
         console.log(i)
     }
-    var buttonPressed = false
-
-    while (buttonPressed == false) {
-        let a = 0
-    }
+    
     
     
 
@@ -949,8 +945,8 @@ function level1() { // First level (get some starting items and escape the start
         'backstory 2',
         'backstory 3',
     ];
-    while (1) {
-        switch (choice(`As the pain in your limbs slowly fades into the background, you contemplate your choices. What do you do, ${player_name}?`, possibleActions)) {
+    while (1) { // The possibleActions doesn't seem to work
+        switch (choice(`As the pain in your limbs slowly fades into the background, you contemplate your choices.<br>What do you do, ${player_name}?<br>`, possibleActions)) {
             case 'find stuff':
                 if (randint(0, 5)) { // 80% chance to get stuff
                     if (randint(0, 1)) { // 50% change to get items 50% change to get weapons
