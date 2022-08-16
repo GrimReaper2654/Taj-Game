@@ -46,7 +46,8 @@ const fire = 'fire';
 const energy = 'energy';
 const magical = 'magical';
 const poison = 'poison';
-const mental = 'mental';
+const mental = 'mental';     // damages mental health
+const piercing = 'piercing'; // Extra damage to armour
 // Stats
 const str = 'strength';
 const intel = 'intelligence';
@@ -569,20 +570,20 @@ const weapons = {
             multiplier: str,
             rapidfire: [40,4],
             attack_description: {
-                'KO': [
+                KO: [
                     '[attacker] pierces [defender]\'s heart with a sharp rock!', 
                     '[defender] flees after being stabbled by [attacker]\'s sharp rock!',
                 ],
-                'single': [
+                single: [
                     '[attacker] slashed [defender]\'s [body] with a sharp rock!', 
                     '[attacker] stabbed [defender]\'s [body] with a sharp rock!', 
                 ],
-                'multi': [
+                multi: [
                     '[attacker] landed [description] series of hits on [defender]!',
                     '[attacker] rapidly cuts [defender] with a sharp rock!',
                     '[attacker] rapidly slashes at [defender] with a sharp rock!',
                 ],
-                'miss': [
+                miss: [
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] fumbles and almost drops his sharp rock!',
                     '[attacker] thrusts his sharp rock at [defender] and misses!',
@@ -601,13 +602,19 @@ const weapons = {
 
 var player = {
     playerName: player_name,
-    health: 50,
+    health: 100,  // Max 1000
     hunger: 100,
     mental_health: 25,
     intellignece: 100,
     strength: 10,
     isTerrorist: false,
-
+    armour: {
+        physical: {durability: 0, resistance: 0},
+        fire: {durability: 0, resistance: 0},
+        energy: {durability: 0, resistance: 0},
+        magic: {durability: 0, resistance: 0},
+        poison: {durability: 0, resistance: 0},
+    },
     inventory: {
         weapons: {
             hands: weapons.body.punch,
@@ -855,15 +862,82 @@ function give(player, item) {
     }
 }
 
+function updatePlayer(player, healthChange=0, hungerChange=0, mentalChange=0, intelligenceChange=0) {
+    if (healthChange) {
+        player.health += healthChange;
+        player.mental_health += healthChange/10;
+    }
+    if (hungerChange) {
+        player.hunger += hungerChange;
+        if (hungerChange > 0) {
+            player.mental_health += 10;
+        }
+    }
+    if (mentalChange) {
+        player.mental_health += mentalChange;
+        if (mentalChange < 250) {
+            player.intelligence -= 10;
+        }
+    }
+    if (intelligenceChange) {
+        player.intelligence += intelligenceChange;
+        player.mental_health += intelligenceChange/4;
+    }
+    return player
+
+}
+
 function playerTurn(player, enemies) { // TODO: make player do stuff
     // Show player controlls
 
     return player, enemies;
 }
 
-function enemyTurn(player, enemies) {
+function enemyTurn(player, enemies) { // Enemy attacks Player (TODO: This is not finished)
     for (enemy in enemies) {
-        let enemyMove = randchoice(attacks);
+        if (settings.taunting && !(randint(0,5))) {
+            showText(randchoice(enemy.taunt)); // TODO: Enemy needs lines to say
+        } else {
+            // Enemy Attacks
+            let armourDestroyed = false;
+            let playerDied = false;
+            let enemyMove = randchoice(enemy.attacks);
+            //               Weapon base accuracy    player evasion (if intelligence is maxed, enemy can not hit player)       random variation
+            let hitChance = enemyMove.baseAccuracy * (1-((settings.stat_limit/2-player.intelligence)/settings.stat_limit)) * (randint(1,3)+8/10);
+            if (randint(1,100) <= hitChance*100) { // Enemy hits player
+                let damage = randint(enemyMove.damage[0],enemyMove.damage[1]);
+                if (enemyMove.type != physical) {
+                    player = updatePlayer(player, mentalChange = -damage);
+                } else {
+                    if (player.armour[enemyMove.type].durability > 0) {
+                        player.armour[enemyMove.type].durability -= damage;
+                        damage -= player.armour[enemyMove.type].resistance;
+                        if (damage < 0) {
+                            damage = 0;
+                        }
+                    }
+                    player = updatePlayer(player, healthChange = -damage);
+                }
+                // Talk
+                if (playerDied) {
+                    let msg = randchoice(enemyMove.attack_description.KO);
+                    // edit msg
+                    showText(msg);
+                } else {
+                    let msg = randchoice(enemyMove.attack_description.single);
+                    // edit msg
+                    showText(msg);
+                }
+                if (armourDestroyed) {
+                    showText('Your armour was destroyed by the attack.')
+                }
+            } else {
+                //enemy missed
+                let msg = randchoice(enemyMove.attack_description.miss);
+                // edit msg
+                showText(msg);
+            }
+        }
     }
     return player, enemies;
 }
