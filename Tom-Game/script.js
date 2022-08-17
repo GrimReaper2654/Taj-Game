@@ -10,15 +10,21 @@ const player = {
     
 }
 
+var playerStats = {
+    health: 100,
+}
+
+
 
 
 
 
 // Functions
-
 function init() {
 
 }
+
+
 
 function showText(id, text) {
     document.getElementById(id).innerHTML = text;
@@ -37,9 +43,32 @@ function unhideText(id) {
 
 
 
+// Game functions
+function playerTurn() {
+
+}
+
+function enemyTurn() {
+
+}
+
+
+
+
+function game() {
+    
+}
+
+
+
+
+
+
 
 // Main code
-
+window.onload() = function() {
+    init()
+}
 
 
 
