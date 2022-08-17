@@ -10,6 +10,10 @@ const player = {
     
 }
 
+const settings = {
+    maxLevels: 50,
+}
+
 var playerStats = {
     health: 100,
 }
@@ -24,7 +28,7 @@ var playerInventory = {
 
 }
 
-
+var currentLevel = 0
 
 
 
@@ -62,6 +66,10 @@ function showOptions() {
 
 }
 
+function playerDeath(enemy){ // Need to finish death message and add an option to restart the game
+    showText(`You were killed by ${enemy}`)
+}
+
 
 
 
@@ -73,13 +81,23 @@ function playerTurn() {
 
 function enemyTurn() {
 
+    
+    game()
 }
 
 
 
 
+
 function game() {
-    
+    if (playerStats.health > 0) {
+        playerTurn()
+        enemyTurn()
+    } else if (currentLevel > player.maxLevels) { // Need to finish and also improve victory message
+        console.log("You have finished the game!")
+    } else {
+        playerDeath()
+    }
 }
 
 
