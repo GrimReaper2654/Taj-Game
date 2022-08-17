@@ -887,7 +887,7 @@ function updatePlayer(player, healthChange=0, hungerChange=0, mentalChange=0, in
 
 }
 
-function playerTurn(player, enemies) { // TODO: make player do stuff
+function playerTurn(player, enemies) { // TODO: make player do stuff Taj
     // Show player controlls
 
     return player, enemies;
