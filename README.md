@@ -1,6 +1,6 @@
 <title>Henry Game</title>
 
-# Taj-Game
+# Henry-Game
 A game involving our lord and savoiur, TOM THE TERRORIST!
 
 ## Game Link
