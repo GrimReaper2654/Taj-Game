@@ -14,14 +14,22 @@ var playerStats = {
     health: 100,
 }
 
+var playerInventory = {
+    weapons: {
+        slot1: "empty",
+        slot2: "empty",
+        slot3: "empty",
+        slot4: "empty",
+    }
 
+}
 
 
 
 
 // Functions
 function init() {
-
+    
 }
 
 
@@ -66,12 +74,6 @@ function game() {
 
 
 // Main code
-window.onload() = function() {
-    init()
-}
-
-
-
 
 
 
