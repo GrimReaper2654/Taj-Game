@@ -27,10 +27,21 @@ var playerInventory = {
 
 
 
+
+
+const intro = `You wake up in a dark room. All you can remember is your name: ${player.name}.<br><br>`
+
+
 // Functions
+
+// Initialization of the game
 function init() {
-    
+    showText("text", intro)
 }
+
+
+
+
 
 
 
@@ -45,6 +56,10 @@ function hideText(id) {
 }
 function unhideText(id) {
     document.getElementById(id).style.display = "block"
+}
+
+function showOptions() {
+
 }
 
 
