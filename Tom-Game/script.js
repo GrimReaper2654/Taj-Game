@@ -5,7 +5,10 @@ INFO
 
 
 // Variables
-
+const player = {
+    name: "Terrorist Tom",
+    
+}
 
 
 
