@@ -4,10 +4,10 @@
 A game involving our lord and savoiur, TOM THE TERRORIST!
 
 ## Game Link
-Henry Game:
-<a>https://grimreaper2654.github.io/Taj-Game/main.html</a>
-Tom Game:
-<a>https://grimreaper2654.github.io/Taj-Game/Tom-Game/main.html</a>
+Henry Game:<br>
+<a>https://grimreaper2654.github.io/Taj-Game/main.html</a><br>
+Tom Game:<br>
+<a>https://grimreaper2654.github.io/Taj-Game/Tom-Game/main.html</a><br>
 
 
 ## Plot:
