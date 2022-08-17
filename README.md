@@ -1,5 +1,3 @@
-<title>Henry Game</title>
-
 # Henry-Game
 A game involving our lord and savoiur, TOM THE TERRORIST!
 
