@@ -2,9 +2,13 @@ h1 {
     text-align: center;
 }
 
+#game {
+    display: none;
+}
 
-
-
+#start {
+    text-align: center;
+}
 
 
 
