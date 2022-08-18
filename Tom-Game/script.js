@@ -351,7 +351,6 @@ function init() {
 
 
     console.log("Game Initalization Finished.")
-    game()
 }
 
 
@@ -378,8 +377,6 @@ function showOptions() {
 }
 
 
-
-
 function playerDeath() { // Need to finish death message and add an option to restart the game
     showText("text", `You died.`)
 }
@@ -388,7 +385,6 @@ function victory() {
     hideText("choices")
     showText("text", `<h2>You won!</h2>`)
 }
-
 
 function checkPlayer() {
     if (player.health <= 0) {
@@ -400,7 +396,12 @@ function checkPlayer() {
 
 
 
-// Game functions
+
+
+
+
+
+// Levels individually coded version
 
 
 
@@ -415,7 +416,45 @@ function checkPlayer() {
 
 
 
-// Main code
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Loop verion
+
+
 
 
 
