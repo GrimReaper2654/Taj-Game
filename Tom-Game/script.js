@@ -9,7 +9,7 @@ Local Storage for Tom Game is under window.localStorage.tomGame
 
 // Variables
 var player = {
-    name: "Terrorist Tom",
+    name: window.localStorage.tomGame.playerName,
     health: 100,
     
 }
@@ -34,6 +34,10 @@ var settings = {
 };
 
 var turn = "player"
+
+window.localStorage.tomGame = {
+    playerName: "Terrorist Tom",
+}
 
 const enemies = [
     // Python:
