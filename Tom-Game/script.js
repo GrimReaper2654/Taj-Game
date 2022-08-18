@@ -1,5 +1,8 @@
 /*
 INFO
+Local Storage for Tom Game is under window.localStorage.tomGame
+
+
 
 */
 
