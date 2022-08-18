@@ -8,8 +8,9 @@ Local Storage for Tom Game is under window.localStorage.tomGame
 
 
 // Variables
-const player = {
+var player = {
     name: "Terrorist Tom",
+    health: 100,
     
 }
 
@@ -28,9 +29,11 @@ var settings = {
     shield_protection_multiplier: 1,
     shield_durability_multiplier: 1, 
     enemy_intelligence_multiplier: 1,
-    maxLevel: 50,
+    maxLevel: 10,
     
 };
+
+var turn = "player"
 
 const enemies = [
     // Python:
@@ -63,7 +66,7 @@ const enemies = [
             health: 300,
             damage_multiplier: 1.5,
             attacks: [],
-            quotes: ["I shall defend Henry with my life!", "Death to the enemies of Henry!", "I shall protect Henry!", "You shall not Pass!"],
+            quotes: ["I shall defend Tom with my life!", "Death to the enemies of Tom!", "I shall protect Tom!", "You shall not Pass!"],
             last_words: null,
             quantity: [1,3],
             can_die: true,
@@ -80,7 +83,7 @@ const enemies = [
             health: 100,
             damage_multiplier: 1,
             attacks: [],
-            quotes: ["I serve Henry!", 'for Henry!'],
+            quotes: ["I serve Tom!", 'for Tom!'],
             last_words: null,
             quantity: [1,2],
             can_die: true,
@@ -99,8 +102,8 @@ const enemies = [
             health: 50,
             damage_multiplier: 1,
             attacks: [],
-            quotes: ["Hail Henry Bird!", "For Henry Bird!", "I shall protect the lord!"],
-            last_words: ["You shall not defeat the Henry Bird"],
+            quotes: ["Hail Tom Bird!", "For Tom Bird!", "I shall protect the lord!"],
+            last_words: ["You shall not defeat the Tom Bird"],
             quantity: [5,10],
             can_die: true,
             evasion_chance: 0.9,
@@ -116,8 +119,8 @@ const enemies = [
             health: 50,
             damage_multiplier: 0.5,
             attacks: [],
-            quotes: ["Hail Henry Bird!"],
-            last_words: ["You shall not defeat the Henry Bird"],
+            quotes: ["Hail Tom Bird!"],
+            last_words: ["You shall not defeat the Tom Bird"],
             quantity: [10,30],
             can_die: true,
             evasion_chance: 100,
@@ -133,8 +136,8 @@ const enemies = [
             health: 200,
             damage_multiplier: 1,
             attacks: [],
-            quotes: ["Hail Henry Bird!", "For Henry Bird!", "I shall protect the lord!", "die nonbeliever!"],
-            last_words: ["You shall not defeat the Henry Bird"],
+            quotes: ["Hail Tom Bird!", "For Tom Bird!", "I shall protect the lord!", "die nonbeliever!"],
+            last_words: ["You shall not defeat the Tom Bird"],
             quantity: [1,2],
             can_die: true,
             evasion_chance: 0.5,
@@ -286,11 +289,11 @@ const enemies = [
             }
         },
         {
-            name: "Spedlord Henry", // Henry is strong
+            name: "Spedlord Tom", // Tom is strong
             health: 50000,
             damage_multiplier: 1,
             attacks: [],
-            quotes: ["Henry superiority"],
+            quotes: ["Tom superiority"],
             last_words: null,
             quantity: [1],
             can_die: false,
@@ -313,9 +316,7 @@ const enemies = [
 
 
 
-var playerStats = {
-    health: 100,
-}
+
 
 var playerInventory = {
     weapons: {
@@ -346,6 +347,7 @@ function init() {
 
 
     console.log("Game Initalization Finished.")
+    game()
 }
 
 
@@ -371,39 +373,37 @@ function showOptions() {
 
 }
 
-function playerDeath(enemy){ // Need to finish death message and add an option to restart the game
-    showText(`You were killed by ${enemy}`)
+
+
+
+function playerDeath() { // Need to finish death message and add an option to restart the game
+    showText("text", `You died.`)
+}
+
+function victory() {
+    hideText("choices")
+    showText("text", `<h2>You won!</h2>`)
 }
 
 
+function checkPlayer() {
+    if (player.health <= 0) {
+        playerDeath()
+    } else if (currentLevel > settings.maxLevel) {
+        victory()
+    }
+}
 
 
 
 // Game functions
-function playerTurn() {
-
-}
-
-function enemyTurn() {
-
-    
-    game()
-}
 
 
 
 
 
-function game() {
-    if (playerStats.health > 0) {
-        playerTurn()
-        enemyTurn()
-    } else if (currentLevel > player.maxLevels) { // Need to finish and also improve victory message
-        console.log("You have finished the game!")
-    } else {
-        playerDeath()
-    }
-}
+
+
 
 
 
@@ -412,6 +412,9 @@ function game() {
 
 
 // Main code
+
+
+
 
 
 
