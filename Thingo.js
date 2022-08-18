@@ -943,6 +943,9 @@ function enemyTurn(player, enemies) { // Enemy attacks Player (TODO: This is not
 }
 
 function checkAlive(player, enemy) {
+    if (health <= 0) {
+        
+    }
     return player, enemies;
 }
 
