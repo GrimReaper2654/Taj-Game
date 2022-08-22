@@ -942,46 +942,36 @@ function enemyTurn(player, enemies) { // Enemy attacks Player (TODO: This is not
     return player, enemies;
 }
 
-function checkAlive(player, enemy) {
-    if (health <= 0) {
-        
+function isDead(character) {
+    if (character.health <= 0) {
+        return 1;
     }
-    return player, enemies;
+    return 0;
+}
+
+function LBozo() {
+    while (1) {
+        showText("LMAO U DIED!! TRASH!!!"); // TODO: Add more insults
+    }
 }
 
 function fight(player, enemy) {
-    /*
-    {
-        name: "Bodyguard",
-        health: 300,
-        damage_multiplier: 1.5,
-        attacks: [],
-        quotes: ["I shall defend Henry with my life!", "Death to the enemies of Henry!", "I shall protect Henry!", "You shall not Pass!"],
-        last_words: null,
-        quantity: [1,3],
-        can_die: true,
-        evasion_chance: 1,
-        armour: {
-            physical: {durability: 100, resistance: 10},
-            fire: {durability: 50, resistance: 5},
-            energy: {durability: 0, resistance: 0},
-            magical: {durability: 0, resistance: 0}
-        }
-    },
-    */
-
     // Create list with enemies to fight
     let enemies = [];
     for (let i = 0; i < randint(enemy.quantity[0],enemy.quantity[1]); i++) {
         enemies.append(enemy);
     }
-
-    playerTurn(player, enemies);
-    checkAlive(player, enemy);
-    enemyTurn(player, enemies);
-    checkAlive(player, enemy);
-
-
+    // F i g h t
+    while (1) {
+        player, enemies = playrTurn(player, enemies);
+        if (isDead(enemy)) {
+            return player, enemy
+        }
+        player, enemies = enemyTurn(player, enemies);
+        if (isDead(player)) {
+            LBozo();
+        }
+    }
 }
 
 function intro() {
