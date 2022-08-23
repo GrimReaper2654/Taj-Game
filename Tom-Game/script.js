@@ -705,7 +705,7 @@ function WeaponPickUp(weapon) {
 function introduction() {
     let randweapon = randchoice(Object.keys(weapons.tier1))
     let randweaponName = eval(`weapons.tier1.${randweapon}.name`)
-    addText("text", `You see a ${randweaponName} on a table in front of you.<br>`)
+    addText("text", `You see a <b>${randweaponName}</b> on a table in front of you.<br>`)
     addText("text", `Do you want to pick it up?<br><br>`)
 
     addText("text", `<button id="introWeaponPickUp" onclick="WeaponPickUp('${randweapon}')">Yes</button><button id="introWeaponPickUp" onclick="introduction2()">No</button>`)
