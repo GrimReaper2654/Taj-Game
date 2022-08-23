@@ -995,7 +995,7 @@ function level1() { // First level (get some starting items and escape the start
         `You explore the room until you are exhausted but your search yields no results.`
     ];
     const nextLevel = [
-        'You find entrance to next room', // somebody reword this and add more options!!!!!!
+        'You find the entrance to next room', // somebody reword this and add more options!!!!!!
     ];
     const talk = [
         `"Hello!" you shout into the darkness, "Is there anybody there?" However, there is no response.`, // somebody add more!!!!!!!!!!!
