@@ -480,7 +480,7 @@ const weapons = {
             }
         },
         treeBranch: {
-            name: 'treeBranch',
+            name: 'tree branch',
             player_useable: true,
             damage: [50,100],
             baseAccuracy: 75,
@@ -541,7 +541,7 @@ const weapons = {
             }
         },
         sharpRock: {
-            name: 'sharpRock',
+            name: 'sharp rock',
             player_useable: true,
             damage: [75,90],
             baseAccuracy: 80,
@@ -673,22 +673,15 @@ function checkPlayer() {
 
 
 function introduction() {
-    let introweapon = randchoice(weapons.tier1)
-    addText(`<br>You see`)
+    let randweapon = randchoice(Object.keys(weapons.tier1))
+    console.log(randweapon)
+    console.log(randweapon)
 }
 
 
 function level1() {
     randint()
 }
-
-
-
-
-
-
-
-
 
 
 
