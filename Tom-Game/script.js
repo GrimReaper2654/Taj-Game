@@ -585,6 +585,7 @@ var playerInventory = {
         slot2: "empty",
         slot3: "empty",
         slot4: "empty",
+        slot5: "empty",
     }
 
 }
@@ -622,7 +623,7 @@ function init() {
     hideText("start")
     unhideText("game")
     showText("text", intro)
-
+    hideText("choices")
 
     console.log("Game Initalization Finished.")
     introduction()
@@ -647,6 +648,17 @@ function unhideText(id) {
     document.getElementById(id).style.display = "block"
 }
 
+function hideInventory() {
+    document.getElementById("inventory").style.display = "none"
+    return "Done"
+}
+
+function showInventory() {
+    document.getElementById("inventory").style.display = "block"
+    return "Done"
+}
+
+
 function showOptions() {
 
 }
@@ -669,14 +681,42 @@ function checkPlayer() {
     }
 }
 
+// Introduction related functions
+function WeaponPickUp(weapon) {
+    for (const i in playerInventory.weapons) {
+        console.log(i)
+        console.log(eval(`playerInventory.weapons.${i}`))
+        let i2 = i
+        if (eval(`playerInventory.weapons.${i}`) == "empty") {
+            console.log(eval(`playerInventory.weapons.i2 = weapon`))
+            console.log(weapon)
+            console.log(playerInventory)
+            console.log(playerInventory.weapons)
+            break
+        }
+    }
+}
+
+
+
 
 
 
 function introduction() {
     let randweapon = randchoice(Object.keys(weapons.tier1))
-    console.log(randweapon)
-    console.log(randweapon)
+    let randweaponName = eval(`weapons.tier1.${randweapon}.name`)
+    addText("text", `You see a ${randweaponName} on a table in front of you.<br>`)
+    addText("text", `Do you want to pick it up?<br><br>`)
+
+    addText("text", `<button id="introWeaponPickUp" onclick="WeaponPickUp('${randweapon}')">Yes</button><button id="introWeaponPickUp" onclick="introduction2()">No</button>`)
 }
+
+function introduction2() {
+
+}
+
+
+
 
 
 function level1() {
