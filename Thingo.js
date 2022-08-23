@@ -711,6 +711,8 @@ var player = {
     }
 
 }
+
+
 const string = player_name;
 const substring = 'Terrorist';
 const index = string.indexOf(substring);
