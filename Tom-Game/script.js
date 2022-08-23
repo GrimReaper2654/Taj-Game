@@ -625,6 +625,7 @@ function init() {
 
 
     console.log("Game Initalization Finished.")
+    introduction()
 }
 
 
@@ -672,7 +673,8 @@ function checkPlayer() {
 
 
 function introduction() {
-
+    let introweapon = randchoice(weapons.tier1)
+    addText(`<br>You see`)
 }
 
 
