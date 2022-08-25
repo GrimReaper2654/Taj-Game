@@ -691,7 +691,7 @@ function WeaponPickUp(weapon, id) {
         if (eval(`playerInventory.weapons.${i}`) == "empty") {
             console.log(eval(`playerInventory.weapons.${i} = weapon`))
             console.log(playerInventory.weapons)
-            deleteText(id)
+            introduction2()
             break
         }
     }

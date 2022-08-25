@@ -4,7 +4,7 @@
 <title>Tom Game</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/png" href="ga-favicon.png">
+<link rel="icon" type="image/png" href="images/ga-favicon.png">
 <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -12,26 +12,32 @@
 
 <body>
     <nav><h2><span></span>      </h2></nav>
+
+
+    
+    <div id="game" class="overlay">
     <h1>The Tom Game</h1>
     
     <div id="start"><br><br><br><br><br><br><br><br><button onclick="init()"><h3>Start Game</h3></button></div>
 
-    <div id="game">
 
 
-    <p id="text"></p>
 
-    <div id="intro1"></div>    
+    <p id="text">
+
+    <!-- <div id="intro1"></div> -->
 
     <div id="choices">
         <h3>What do you do?</h3>
         <div id="options"></div>
     
-    <div id="input">
+    <!-- <div id="input">  Remove at later stage
         <label>Input:</label>
-        <input type="number" id="level1" min="1" max="9"><button id="submit">Enter</button> <!-- Change max value at later stage to actual possible max -->
+        <input type="number" id="level1" min="1" max="9"><button id="submit">Enter</button> Change max value at later stage to actual possible max
+    </div> -->
     </div>
-    </div>
+
+    </p>
 
 
     
