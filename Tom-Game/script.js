@@ -636,16 +636,20 @@ function init() {
 
 
 function showText(id, text) {
-    document.getElementById(id).innerHTML = text;
+    document.getElementById(id).innerHTML = text
 }
 function addText(id, text) {
-    document.getElementById(id).innerHTML = document.getElementById("text").innerHTML + text;
+    document.getElementById(id).innerHTML = document.getElementById("text").innerHTML + text
 }
 function hideText(id) {
     document.getElementById(id).style.display = "none"
 }
 function unhideText(id) {
     document.getElementById(id).style.display = "block"
+}
+
+function deleteText(id) {
+    document.getElementById(id).innerHTML = ''
 }
 
 function hideInventory() {
@@ -682,16 +686,12 @@ function checkPlayer() {
 }
 
 // Introduction related functions
-function WeaponPickUp(weapon) {
+function WeaponPickUp(weapon, id) {
     for (const i in playerInventory.weapons) {
-        console.log(i)
-        console.log(eval(`playerInventory.weapons.${i}`))
-        let i2 = i
         if (eval(`playerInventory.weapons.${i}`) == "empty") {
-            console.log(eval(`playerInventory.weapons.i2 = weapon`))
-            console.log(weapon)
-            console.log(playerInventory)
+            console.log(eval(`playerInventory.weapons.${i} = weapon`))
             console.log(playerInventory.weapons)
+            deleteText(id)
             break
         }
     }
@@ -705,13 +705,14 @@ function WeaponPickUp(weapon) {
 function introduction() {
     let randweapon = randchoice(Object.keys(weapons.tier1))
     let randweaponName = eval(`weapons.tier1.${randweapon}.name`)
-    addText("text", `You see a <b>${randweaponName}</b> on a table in front of you.<br>`)
-    addText("text", `Do you want to pick it up?<br><br>`)
+    addText("intro1", `You see a <b>${randweaponName}</b> on a table in front of you.<br>`)
+    addText("intro1", `Do you want to pick it up?<br><br>`)
 
-    addText("text", `<button id="introWeaponPickUp" onclick="WeaponPickUp('${randweapon}')">Yes</button><button id="introWeaponPickUp" onclick="introduction2()">No</button>`)
+    addText("intro1", `<button id="introWeaponPickUp" onclick="WeaponPickUp('${randweapon}', 'introWeaponPickUp')">Yes</button><button id="introWeaponPickUp" onclick="introduction2()">No</button>`)
 }
 
 function introduction2() {
+    deleteText("introWeaponPickUp")
 
 }
 
