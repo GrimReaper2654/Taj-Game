@@ -12,7 +12,7 @@ h2 {
     text-align: center;
 }
 
-.overlay{
+.overlay {
     opacity:0.8;
     background-color:#ccc;
     position:fixed;
@@ -44,7 +44,9 @@ h2 {
     text-align: center;
 }
 
-
+#reload {
+    font-size: 20px;
+}
 
 
 
@@ -57,5 +59,7 @@ footer {
     bottom: 0;
     right: 0;
     padding: 10px 20px 0px 5px;
+    display: block;
+    opacity: 100;
 }
 

@@ -26,7 +26,7 @@ const naturalHazard = ["stick", "crack", "Tom", "body", "blood", "magical forces
 // Variables
 
 var player = {
-    name: "Terrorist Tom",
+    name: "General Widjaja",
     health: 100,
     
 }
@@ -78,6 +78,8 @@ const enemies = [
         magical: {durability: 100}}
     }
     */
+
+    // IMPORTANT! EXAMPLE: currentEnemies = [enemies[0].default[0]] to get the bodyguard
    {
     default: [
         {
@@ -592,6 +594,7 @@ var playerInventory = {
 
 var currentLevel = 0
 
+var currentEnemies = []
 
 
 
@@ -685,17 +688,27 @@ function checkPlayer() {
     }
 }
 
+function reload() {
+    location.reload()
+}
+
+
 // Introduction related functions
-function WeaponPickUp(weapon, id) {
+function WeaponPickUp(weapon) {
     for (const i in playerInventory.weapons) {
         if (eval(`playerInventory.weapons.${i}`) == "empty") {
-            console.log(eval(`playerInventory.weapons.${i} = weapon`))
-            console.log(playerInventory.weapons)
-            introduction2()
+            introduction2(weapon)
             break
         }
     }
 }
+
+// Level 1 related functions
+function level1Talk() {
+    
+}
+
+
 
 
 
@@ -711,9 +724,23 @@ function introduction() {
     addText("text", `<button id="introWeaponPickUp" onclick="WeaponPickUp('${randweapon}', 'introWeaponPickUp')">Yes</button><button id="introWeaponPickUp" onclick="introduction2()">No</button>`)
 }
 
-function introduction2() {
-    deleteText("introWeaponPickUp")
-
+function introduction2(weapon=false) {
+    deleteText("text")
+    if (weapon) {
+        if (weapon == "sharpRock") {
+            addText("text", `You pick up the sharp rock.`)
+        } else if (weapon == "treeBranch") {
+            addText("text", `You pick up the tree branch.`)
+        } else {
+            addText("text", `You pick up the ${weapon}.`)
+        }
+        addText("text", "<br><br>")
+    } else {
+        addText("text", "You stupidly choose not to take the weapon. Classic Tom.<br><br>")
+    }
+    addText("text", `You enter the first room (level 1)<br>`)
+    
+    level1()    
 }
 
 
@@ -721,14 +748,10 @@ function introduction2() {
 
 
 function level1() {
-    randint()
+    currentEnemies = [enemies[0].default[0], enemies[0].default[0], enemies[0].default[0]]
+    addText("text", `You see three bodyguards loyal to Tom the Terrorist.<br><br>`)
+    addText("text", "<h2><b>What do you do?</b></h2>")
 }
-
-
-
-
-
-
 
 
 
