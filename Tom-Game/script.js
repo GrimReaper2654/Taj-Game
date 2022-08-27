@@ -19,8 +19,8 @@ const str = 'strength';
 const intel = 'intelligence';
 
 const bodyParts = ["head", "shoulder", "knee", "toe", "arm", "hand", "chest", "foot", "hip", "wrist", "shin", "leg", "neck"]
-const naturalHazard = ["stick", "crack", "Tom", "body", "blood", "magical forces", ""]
-
+const naturalHazard = ["stick", "crack", "Tom", "body", "blood", "magical forces"]
+const insults = ['You smell bad.', 'You are stupid.', 'TOM - A!', 'You are a cruise missile.', 'TOM-A-HAWK!']
 
 
 // Variables
@@ -705,11 +705,21 @@ function WeaponPickUp(weapon) {
 
 // Level 1 related functions
 function level1Talk() {
-    
+    deleteText("text")
+    addText("text", `You say: ${randchoice(insults)}<br>The bodyguards aren't impressed`)
 }
 
+function level1Use() {
+    deleteText("text")
+}
 
+function level1Attack() {
+    deleteText("text")
+}
 
+function level1EnemyTurn() {
+
+}
 
 
 
@@ -750,7 +760,10 @@ function introduction2(weapon=false) {
 function level1() {
     currentEnemies = [enemies[0].default[0], enemies[0].default[0], enemies[0].default[0]]
     addText("text", `You see three bodyguards loyal to Tom the Terrorist.<br><br>`)
-    addText("text", "<h2><b>What do you do?</b></h2>")
+    addText("text", "<h2><b>What do you do?</b></h2><br>")
+    addText("text", `<button onclick='level1Talk()'>Talk</button>  `) // Talk button
+    addText("text", `<button onclick='level1Use()'>Use Item</button>  `)  // Use item button
+    addText("text", `<button onclick='level1Attack()'>Attack</button>`) // Attack button
 }
 
 
