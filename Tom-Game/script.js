@@ -706,7 +706,8 @@ function WeaponPickUp(weapon) {
 // Level 1 related functions
 function level1Talk() {
     deleteText("text")
-    addText("text", `You say: ${randchoice(insults)}<br>The bodyguards aren't impressed`)
+    addText("text", `You say: "${randchoice(insults)}"<br>The bodyguards aren't impressed.`)
+    level1EnemyTurn()
 }
 
 function level1Use() {
