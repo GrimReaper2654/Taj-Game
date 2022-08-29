@@ -27,7 +27,8 @@ const insults = ['You smell bad.', 'You are stupid.', 'TOM - A!', 'You are a cru
 
 var player = {
     name: "General Widjaja",
-    health: 100,
+    health: 1000,
+    evasion_chance: 2,
     
 }
 
@@ -55,13 +56,14 @@ var turn = "player"
 
 
 const enemies = [
+    /*
     // Python:
     // ['Name [0]', 'Health [1]', 'Damage Multiplier [2]', ['Attacks [3]'], ['Quotes [4]'], 'Last Words [5]', 'Quantity [6]',
     // 'Can Die [7]', 'evasion [8]', ['Block description [9]'], [['physical armour [10][0][0]', 'durability [10][0][1]'],
     // ['heat armour [10][1][0]', 'durability [10][1][1]'], ['mental armour [10][2][0]', 'durability [10][2][1]']]],
 
     // JS Example
-    /*
+    
     {name: "Tom",
     health: 100,
     damage_multiplier: 1.5,
@@ -710,6 +712,26 @@ function checkPlayer() {
     }
 }
 
+function checkEnemies() {
+    // Need to finish
+    // Use .shift() to remove first item in array
+    let enemy = currentEnemies[0].name
+    let health = currentEnemies[0].health
+
+    if (health <= 0) {
+        addText("text", `${enemy} died.`)
+        currentEnemies.shift()
+    }
+    
+}
+
+// Checks whether the level is finished
+function checkLevel() { // Need to finish
+    if (currentEnemies == []) {
+        console.log("Finished")
+    }
+}
+
 function hacker() {
     deleteText("text")
     addText("text", `STOP HACKING`)
@@ -720,9 +742,44 @@ function reload() {
     location.reload()
 }
 
+// Evasion calculation
+function evasionCalc(accuracy, evasionChance) {
+    if ((randint(1,3)+1) * accuracy > (randint(1,3)+1) * evasionChance) {
+        return "hit"
+    } else {
+        return "evade"
+    }
+}
+
+
+// Damage calculation
+function damageCalc(damage) {
+    damage = randint(damage[0], damage[1])
+    return damage
+}
+
+
+
+
 // Attack functions
 function playerAttack(weapon) {
+    deleteText("text")
+    if (weapon == "punch") {
+        if (evasionCalc(weapons.body.punch.baseAccuracy, player.evasion_chance) == "hit") {
+            damage = damageCalc(weapons.body.punch.damage)
+            currentEnemies[0].health -= damage
+            addText("text", `You attack the ${currentEnemies[0].name} `)
+            checkEnemies()
+        }
+    } else if (weapon == "kick") {
+        if (evasionCalc(weapons.body.kick.baseAccuracy, player.evasion_chance) == "hit") {
+            damage = damageCalc(weapons.body.kick.damage)
+            currentEnemies[0].health -= damage
+            checkEnemies()
+        }
+    }
 
+    checkEnemies()
 }
 
 
@@ -749,6 +806,8 @@ function level1Use() {
     if (playerInventory.items.slot1.name == "") {
         addText("text", `You have no available items.<br>`)
         addText("text", `<button onclick="level1(false)">back</button>`)
+    } else {
+        hacker()
     }
 }
 
@@ -758,8 +817,21 @@ function level1Attack() {
     if (playerInventory.weapons.slot1 != "empty") {
         addText("text", `<button onclick="playerAttack(${playerInventory.weapons.slot1})">${playerInventory.weapons.slot1}</button>`)
     }
-    addText("text", `<button onclick="playerAttack(punch)">punch</button>`)
-    addText("text", `<button onclick="playerAttack(kick)">kick</button>`)
+    if (playerInventory.weapons.slot2 != "empty") {
+        hacker()
+    }
+    if (playerInventory.weapons.slot3 != "empty") {
+        hacker()
+    }
+    if (playerInventory.weapons.slot4 != "empty") {
+        hacker()
+    }
+    if (playerInventory.weapons.slot5 != "empty") {
+        hacker()
+    }
+
+    addText("text", `<button onclick="playerAttack('punch')">punch</button>`)
+    addText("text", `<button onclick="playerAttack('kick')">kick</button>`)
 }
 
 
@@ -812,8 +884,11 @@ function introduction2(weapon=false) {
 
 function level1(firstTime=true) {
     if (firstTime == true) {
-    currentEnemies = [enemies[0].default[0], enemies[0].default[0], enemies[0].default[0]]
-    addText("text", `You see three bodyguards loyal to Tom the Terrorist.<br><br>`)
+        let tempEnemy1 = {...enemies[0].default[0]} // Need to clone the object
+        let tempEnemy2 = {...enemies[0].default[0]}
+        let tempEnemy3 = {...enemies[0].default[0]}
+        currentEnemies = [tempEnemy1, tempEnemy2, tempEnemy3]
+        addText("text", `You see three bodyguards loyal to Tom the Terrorist.<br><br>`)
     } else {
         deleteText("text")
     }
