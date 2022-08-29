@@ -21,7 +21,7 @@ const intel = 'intelligence';
 const bodyParts = ["head", "shoulder", "knee", "toe", "arm", "hand", "chest", "foot", "hip", "wrist", "shin", "leg", "neck"]
 const naturalHazard = ["stick", "crack", "Tom", "body", "blood", "magical forces"]
 const insults = ['You smell bad.', 'You are stupid.', 'TOM - A!', 'You are a cruise missile.', 'TOM-A-HAWK!']
-
+const missMessages = ['You missed.', 'Your attack missed.', 'Your attack was dodged', 'Your attack was evaded', `You tripped on ${randchoice(naturalHazard)}.`, `You stumbled on ${randchoice(naturalHazard)}.`]
 
 // Variables
 
@@ -386,7 +386,7 @@ const weapons = {
         kick: {
             name: 'kick',
             player_useable: true,
-            damage: 50,
+            damage: [20,50],
             baseAccuracy: 60,
             type: physical,
             multiplier: str,
@@ -719,7 +719,7 @@ function checkEnemies() {
     let health = currentEnemies[0].health
 
     if (health <= 0) {
-        addText("text", `${enemy} died.`)
+        addText("text", `<br>${enemy} died.`)
         currentEnemies.shift()
     }
     
@@ -768,13 +768,17 @@ function playerAttack(weapon) {
         if (evasionCalc(weapons.body.punch.baseAccuracy, player.evasion_chance) == "hit") {
             damage = damageCalc(weapons.body.punch.damage)
             currentEnemies[0].health -= damage
-            addText("text", `You attack the ${currentEnemies[0].name} `)
+            addText("text", `You attack the ${currentEnemies[0].name} doing ${damage} damage.<br>`)
             checkEnemies()
+        } else {
+            addText("text", randchoice(missMessages))
         }
     } else if (weapon == "kick") {
         if (evasionCalc(weapons.body.kick.baseAccuracy, player.evasion_chance) == "hit") {
             damage = damageCalc(weapons.body.kick.damage)
+            console.log(damage)
             currentEnemies[0].health -= damage
+            addText("text", `You attack the ${currentEnemies[0].name} doing ${damage} damage.<br>`)
             checkEnemies()
         }
     }
@@ -837,7 +841,8 @@ function level1Attack() {
 
 
 function level1EnemyTurn() {
-
+    
+    
 }
 
 
