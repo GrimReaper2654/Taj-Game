@@ -710,6 +710,12 @@ function checkPlayer() {
     }
 }
 
+function hacker() {
+    deleteText("text")
+    addText("text", `STOP HACKING`)
+    localStorage.setItem("player", true)
+}
+
 function reload() {
     location.reload()
 }
@@ -727,9 +733,7 @@ function introWeaponPickUp(weapon) {
         playerInventory.weapons.slot1 = weapon
         introduction2(weapon)
     } else if (playerInventory.weapons.slot1 != "empty") {
-        deleteText("text")
-        addText("text", `STOP HACKING`)
-        localStorage.setItem("player", true)
+        hacker()
     }
 }
 
@@ -752,15 +756,13 @@ function level1Attack() {
     deleteText("text")
     addText("text", `<h2>What weapon do you use?</h2><br>`)
     if (playerInventory.weapons.slot1 != "empty") {
-        addText("text", `<button onclick="level1Attack2()">${playerInventory.weapons.slot1}</button>`)
+        addText("text", `<button onclick="playerAttack(${playerInventory.weapons.slot1})">${playerInventory.weapons.slot1}</button>`)
     }
-    addText("text", `<button onclick="level1Attack2(punch)">punch</button>`)
-    addText("text", `<button onclick="level1Attack2(kick)">kick</button>`)
+    addText("text", `<button onclick="playerAttack(punch)">punch</button>`)
+    addText("text", `<button onclick="playerAttack(kick)">kick</button>`)
 }
 
-function level1Attack2(weapon) {
 
-}
 
 function level1EnemyTurn() {
 
