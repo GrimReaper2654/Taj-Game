@@ -588,8 +588,29 @@ var playerInventory = {
         slot3: "empty",
         slot4: "empty",
         slot5: "empty",
-    }
-
+    },
+    items: {
+        slot1: {
+            name: "",
+            num: 0,
+        },
+        slot2: {
+            name: "",
+            num: 0,
+        },
+        slot3: {
+            name: "",
+            num: 0,
+        },
+        slot4: {
+            name: "",
+            num: 0,
+        },
+        slot5: {
+            name: "",
+            num: 0,
+        },
+    },
 }
 
 var currentLevel = 0
@@ -672,7 +693,8 @@ function showOptions() {
 
 
 function playerDeath() { // Need to finish death message and add an option to restart the game
-    showText("text", `You died.`)
+    showText("text", `You died.<br>`)
+    addText("text", `<button onclick="introduction()">Try again?</button>`)
 }
 
 function victory() {
@@ -692,14 +714,22 @@ function reload() {
     location.reload()
 }
 
+// Attack functions
+function playerAttack(weapon) {
+
+}
+
+
 
 // Introduction related functions
-function WeaponPickUp(weapon) {
-    for (const i in playerInventory.weapons) {
-        if (eval(`playerInventory.weapons.${i}`) == "empty") {
-            introduction2(weapon)
-            break
-        }
+function introWeaponPickUp(weapon) {
+    if (playerInventory.weapons.slot1 == "empty") {
+        playerInventory.weapons.slot1 = weapon
+        introduction2(weapon)
+    } else if (playerInventory.weapons.slot1 != "empty") {
+        deleteText("text")
+        addText("text", `STOP HACKING`)
+        localStorage.setItem("player", true)
     }
 }
 
@@ -712,10 +742,24 @@ function level1Talk() {
 
 function level1Use() {
     deleteText("text")
+    if (playerInventory.items.slot1.name == "") {
+        addText("text", `You have no available items.<br>`)
+        addText("text", `<button onclick="level1(false)">back</button>`)
+    }
 }
 
 function level1Attack() {
     deleteText("text")
+    addText("text", `<h2>What weapon do you use?</h2><br>`)
+    if (playerInventory.weapons.slot1 != "empty") {
+        addText("text", `<button onclick="level1Attack2()">${playerInventory.weapons.slot1}</button>`)
+    }
+    addText("text", `<button onclick="level1Attack2(punch)">punch</button>`)
+    addText("text", `<button onclick="level1Attack2(kick)">kick</button>`)
+}
+
+function level1Attack2(weapon) {
+
 }
 
 function level1EnemyTurn() {
@@ -727,12 +771,18 @@ function level1EnemyTurn() {
 
 
 function introduction() {
-    let randweapon = randchoice(Object.keys(weapons.tier1))
-    let randweaponName = eval(`weapons.tier1.${randweapon}.name`)
-    addText("text", `You see a <b>${randweaponName}</b> on a table in front of you.<br>`)
-    addText("text", `Do you want to pick it up?<br><br>`)
+    if (localStorage.player != "true") {
+        let randweapon = randchoice(Object.keys(weapons.tier1))
+        let randweaponName = eval(`weapons.tier1.${randweapon}.name`)
+        deleteText("text")
+        addText("text", `You see a <b>${randweaponName}</b> on a table in front of you.<br>`)
+        addText("text", `Do you want to pick it up?<br><br>`)
+        addText("text", `<button id="introWeaponPickUp" onclick="introWeaponPickUp('${randweapon}', 'introWeaponPickUp')">Yes</button><button id="introWeaponPickUp" onclick="introduction2()">No</button>`)
 
-    addText("text", `<button id="introWeaponPickUp" onclick="WeaponPickUp('${randweapon}', 'introWeaponPickUp')">Yes</button><button id="introWeaponPickUp" onclick="introduction2()">No</button>`)
+    } else {
+        deleteText("text")
+        addText("text", `YOU ARE BANNED. STOP TRYING TO HACK THIS GAME.`)
+    }
 }
 
 function introduction2(weapon=false) {
@@ -758,9 +808,13 @@ function introduction2(weapon=false) {
 
 
 
-function level1() {
+function level1(firstTime=true) {
+    if (firstTime == true) {
     currentEnemies = [enemies[0].default[0], enemies[0].default[0], enemies[0].default[0]]
     addText("text", `You see three bodyguards loyal to Tom the Terrorist.<br><br>`)
+    } else {
+        deleteText("text")
+    }
     addText("text", "<h2><b>What do you do?</b></h2><br>")
     addText("text", `<button onclick='level1Talk()'>Talk</button>  `) // Talk button
     addText("text", `<button onclick='level1Use()'>Use Item</button>  `)  // Use item button
