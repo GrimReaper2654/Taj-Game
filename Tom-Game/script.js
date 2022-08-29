@@ -34,12 +34,12 @@ var player = {
 
 var settings = {
     stat_limit: 1000,
-    enable_shield: true,
-    enable_hunger: true,
-    rapid_regeneration: false,
-    weapon_durability: false,
-    secondary_ammo: true,
-    taunting: true,
+    enable_shield: true, // Not implemented yet
+    enable_hunger: true, // Not implemented yet
+    rapid_regeneration: false, // Not implemented yet
+    weapon_durability: false, // Not implemented yet
+    secondary_ammo: true, // Not implemented yet
+    taunting: true, // Not implemented yet
     intelligence: true,
     evasion: true,
     dmg_multilier: 1,
@@ -53,7 +53,7 @@ var settings = {
 
 var turn = "player"
 
-
+const bannedIPs = []
 
 const enemies = [
     /*
@@ -67,7 +67,7 @@ const enemies = [
     {name: "Tom",
     health: 100,
     damage_multiplier: 1.5,
-    attacks: [1,2,5],
+    damage: [1,2,5],
     quotes: ["Hi BIRD-A", "TOMAHAWK"],
     last_words: "Goodbye, World!",
     quantity: 2,
@@ -88,7 +88,7 @@ const enemies = [
             name: "Bodyguard",
             health: 300,
             damage_multiplier: 1.5,
-            attacks: [],
+            damage: [10,30],
             quotes: ["I shall defend Tom with my life!", "Death to the enemies of Tom!", "I shall protect Tom!", "You shall not Pass!"],
             last_words: null,
             quantity: [1,3],
@@ -105,7 +105,7 @@ const enemies = [
             name: "Servant",
             health: 100,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [10, 50],
             quotes: ["I serve Tom!", 'for Tom!'],
             last_words: null,
             quantity: [1,2],
@@ -121,10 +121,10 @@ const enemies = [
     ],
     religious: [
         {
-            name: "Birdism Priest",
+            name: "Tomism Priest",
             health: 50,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [15,30],
             quotes: ["Hail Tom Bird!", "For Tom Bird!", "I shall protect the lord!"],
             last_words: ["You shall not defeat the Tom Bird"],
             quantity: [5,10],
@@ -138,10 +138,10 @@ const enemies = [
             }
         },
         {
-            name: "Birdism Cultist",
+            name: "Tomism Cultist",
             health: 50,
             damage_multiplier: 0.5,
-            attacks: [],
+            damage: [20,100],
             quotes: ["Hail Tom Bird!"],
             last_words: ["You shall not defeat the Tom Bird"],
             quantity: [10,30],
@@ -155,10 +155,10 @@ const enemies = [
             }
         },
         {
-            name: "Birdism Bishop",
+            name: "Tomism Bishop",
             health: 200,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [30,150],
             quotes: ["Hail Tom Bird!", "For Tom Bird!", "I shall protect the lord!", "die nonbeliever!"],
             last_words: ["You shall not defeat the Tom Bird"],
             quantity: [1,2],
@@ -177,7 +177,7 @@ const enemies = [
             name: "Choyuni Farmer",
             health: 100,
             damage_multiplier: 0.75,
-            attacks: [],
+            damage: [10, 30],
             quotes: ["[Inaudible Muttering]", "[Grunt]"],
             last_words: null,
             quantity: [1,5],
@@ -194,7 +194,7 @@ const enemies = [
             name: "Choyuni Miner",
             health: 150,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [20,100],
             quotes: ["[Inaudible Muttering]", "[Grunt]"],
             last_words: null,
             quantity: [1,3],
@@ -211,7 +211,7 @@ const enemies = [
             name: "Choyuni Soldier",
             health: 300,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [50,150],
             quotes: ["[Inaudible Muttering]", "[Grunt]"],
             last_words: null,
             quantity: [1,2],
@@ -228,7 +228,7 @@ const enemies = [
             name: "Macelord",
             health: 2000,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [100,300],
             quotes: ["I am the all mighty Mace!", "die peasants!"],
             last_words: null,
             quantity: [1],
@@ -245,7 +245,7 @@ const enemies = [
             name: "Witch doctor",
             health: 700,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [30,70],
             quotes: [null],
             last_words: null,
             quantity: [1],
@@ -264,7 +264,7 @@ const enemies = [
             name: "Spedlord Mace", // Mace uses splash damage and dodges attacks
             health: 5000,
             damage_multiplier: 2,
-            attacks: [],
+            damage: [100,150],
             quotes: ["Mace superiority"],
             last_words: null,
             quantity: [1],
@@ -281,7 +281,7 @@ const enemies = [
             name: "Spedlord Ethan", // Ethan is a tank with high health and damage
             health: 10000,
             damage_multiplier: 3,
-            attacks: [],
+            damage: [100,500],
             quotes: ["Ethan superiority"],
             last_words: null,
             quantity: [1],
@@ -298,7 +298,7 @@ const enemies = [
             name: "Spedlord Bento", // Bento is weak
             health: 1000,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [10,20],
             quotes: ["Bento superiority"],
             last_words: null,
             quantity: [1],
@@ -312,10 +312,10 @@ const enemies = [
             }
         },
         {
-            name: "Spedlord Tom", // Tom is strong
+            name: "Terrorist Tom", // Tom is strong
             health: 50000,
             damage_multiplier: 1,
-            attacks: [],
+            damage: [150,500],
             quotes: ["Tom superiority"],
             last_words: null,
             quantity: [1],
@@ -519,7 +519,7 @@ const weapons = {
         log: {
             name: 'log',
             player_useable: true,
-            damage: [100,300],
+            damage: [50,100],
             baseAccuracy: 50,
             type: physical,
             multiplier: str,
@@ -625,6 +625,14 @@ const intro = `You wake up in a dark room. All you can remember is your name: ${
 
 
 // Functions
+window.onload = function() {
+    for (let i in bannedIPs) {
+        console.log(i)
+        if (localStorage.ip == bannedIPs[i]) {
+            hacker()
+        }
+    }
+  }
 
 function randint(min, max) { // Randint returns random interger between min and max (both included)
     return Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -704,6 +712,8 @@ function victory() {
     showText("text", `<h2>You won!</h2>`)
 }
 
+
+
 function checkPlayer() {
     if (player.health <= 0) {
         playerDeath()
@@ -711,6 +721,8 @@ function checkPlayer() {
         victory()
     }
 }
+
+
 
 function checkEnemies() {
     // Need to finish
@@ -724,6 +736,7 @@ function checkEnemies() {
     }
     
 }
+
 
 // Checks whether the level is finished
 function checkLevel() { // Need to finish
@@ -742,12 +755,20 @@ function reload() {
     location.reload()
 }
 
+
+
+
+
+
+
 // Evasion calculation
 function evasionCalc(accuracy, evasionChance) {
-    if ((randint(1,3)+1) * accuracy > (randint(1,3)+1) * evasionChance) {
-        return "hit"
-    } else {
-        return "evade"
+        if (settings.evasion == true){
+        if ((randint(1,3)+1) * accuracy > (randint(1,3)+1) * evasionChance) {
+            return "hit"
+        } else {
+            return "evade"
+        }
     }
 }
 
@@ -781,9 +802,18 @@ function playerAttack(weapon) {
             addText("text", `You attack the ${currentEnemies[0].name} doing ${damage} damage.<br>`)
             checkEnemies()
         }
+    } else {
+        if (evasionCalc(weapons.tier1[weapon].baseAccuracy, player.evasion_chance) == "hit") {
+            damage = damageCalc(weapons.tier1[weapon].damage)
+            console.log(damage)
+            currentEnemies[0].health -= damage
+            addText("text", `You attack the ${currentEnemies[0].name} doing ${damage} damage.<br>`)
+            checkEnemies()
+        }
     }
 
     checkEnemies()
+    level1EnemyTurn()
 }
 
 
@@ -819,7 +849,7 @@ function level1Attack() {
     deleteText("text")
     addText("text", `<h2>What weapon do you use?</h2><br>`)
     if (playerInventory.weapons.slot1 != "empty") {
-        addText("text", `<button onclick="playerAttack(${playerInventory.weapons.slot1})">${playerInventory.weapons.slot1}</button>`)
+        addText("text", `<button onclick="playerAttack('${playerInventory.weapons.slot1}')">${playerInventory.weapons.slot1}</button>`)
     }
     if (playerInventory.weapons.slot2 != "empty") {
         hacker()
@@ -840,8 +870,11 @@ function level1Attack() {
 
 
 
+// Enemy Turn
 function level1EnemyTurn() {
-    
+    for (let i in currentEnemies) {
+        console.log(currentEnemies[i])
+    }
     
 }
 

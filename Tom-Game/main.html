@@ -11,6 +11,7 @@
 
 
 <body>
+    <p id="gfg">a</p>
     <nav><h2><span></span>      </h2></nav>
 
 
@@ -50,6 +51,27 @@
 
 </body>
 <script src="script.js"></script>
+<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"> // Below section of code is from GFG tutorial on getting client's IP address.
+    </script>
+     
+      <script>
+     
+    /* Add "https://api.ipify.org?format=json" statement
+               this will communicate with the ipify servers in
+               order to retrieve the IP address $.getJSON will
+               load JSON-encoded data from the server using a
+               GET HTTP request */
+                
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+         
+        // Setting text of element P with id gfg
+        if (localStorage.ip == null){
+            localStorage.setItem("ip", data.ip)
+        } else {
+            localStorage.ip = data.ip
+        }
+    })
+    </script>
 
 </html>
-    
