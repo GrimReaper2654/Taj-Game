@@ -704,7 +704,7 @@ function showOptions() {
 
 function playerDeath() { // Need to finish death message and add an option to restart the game
     showText("text", `You died.<br>`)
-    addText("text", `<button onclick="introduction()">Try again?</button>`)
+    addText("text", `<button onclick="reload()">Try again?</button>`)
 }
 
 function victory() {
@@ -727,13 +727,21 @@ function checkPlayer() {
 function checkEnemies() {
     // Need to finish
     // Use .shift() to remove first item in array
-    let enemy = currentEnemies[0].name
-    let health = currentEnemies[0].health
-
-    if (health <= 0) {
-        addText("text", `<br>${enemy} died.`)
-        currentEnemies.shift()
+    
+    try {
+        let enemy = currentEnemies[0].name
+        let health = currentEnemies[0].health
+    
+        if (health <= 0) {
+            addText("text", `<br>${enemy} died.<br>`)
+            currentEnemies.shift()
+        }
+    } catch {
+        console.log("___")
+        checkLevel()
     }
+    
+    checkLevel()
     
 }
 
@@ -799,7 +807,7 @@ function playerAttack(weapon) {
             damage = damageCalc(weapons.body.kick.damage)
             console.log(damage)
             currentEnemies[0].health -= damage
-            addText("text", `You attack the ${currentEnemies[0].name} doing ${damage} damage.<br>`)
+            addText("text", `You attacked the ${currentEnemies[0].name} doing ${damage} damage.<br><br>`)
             checkEnemies()
         }
     } else {
@@ -807,14 +815,36 @@ function playerAttack(weapon) {
             damage = damageCalc(weapons.tier1[weapon].damage)
             console.log(damage)
             currentEnemies[0].health -= damage
-            addText("text", `You attack the ${currentEnemies[0].name} doing ${damage} damage.<br>`)
+            addText("text", `You attacked the ${currentEnemies[0].name} doing ${damage} damage.<br><br>`)
             checkEnemies()
         }
     }
 
     checkEnemies()
-    level1EnemyTurn()
+    if (currentLevel == 1){
+        level1EnemyTurn()
+    } else if (currentLevel == 2) {
+        level2EnemyTurn()
+    }
 }
+
+// Enemy Turn
+function level1EnemyTurn() {
+    for (let i in currentEnemies) {
+        console.log(currentEnemies[i])
+        tempDamage = damageCalc(currentEnemies[i].damage)
+        player.health -= tempDamage
+        addText("text", `${currentEnemies[i].name} attacked you doing ${tempDamage} damage.<br>`)
+    }
+    checkPlayer()
+    if (player.health > 0) {
+        addText("text", `<br>You are on ${player.health} health.<br>`)
+        addText("text", `<button onclick="level1(false)">Next Round</button>`)
+    }
+    
+}
+
+
 
 
 
@@ -831,7 +861,7 @@ function introWeaponPickUp(weapon) {
 // Level 1 related functions
 function level1Talk() {
     deleteText("text")
-    addText("text", `You say: "${randchoice(insults)}"<br>The bodyguards aren't impressed.`)
+    addText("text", `You say: "${randchoice(insults)}"<br>The bodyguards aren't impressed.<br>`)
     level1EnemyTurn()
 }
 
@@ -870,13 +900,7 @@ function level1Attack() {
 
 
 
-// Enemy Turn
-function level1EnemyTurn() {
-    for (let i in currentEnemies) {
-        console.log(currentEnemies[i])
-    }
-    
-}
+
 
 
 
@@ -922,6 +946,7 @@ function introduction2(weapon=false) {
 
 function level1(firstTime=true) {
     if (firstTime == true) {
+        currentLevel = 1
         let tempEnemy1 = {...enemies[0].default[0]} // Need to clone the object
         let tempEnemy2 = {...enemies[0].default[0]}
         let tempEnemy3 = {...enemies[0].default[0]}
