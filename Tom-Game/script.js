@@ -1,7 +1,7 @@
 /*
 INFO
-Local Storage for Tom Game is under window.localStorage.tomGame
-
+Please note that lots of variables have not been implemented yet as this is part of a larger project.
+Things like armour, rapid fire and damage types have not been added as of 3/9/22.
 
 
 */
@@ -21,7 +21,7 @@ const intel = 'intelligence';
 const bodyParts = ["head", "shoulder", "knee", "toe", "arm", "hand", "chest", "foot", "hip", "wrist", "shin", "leg", "neck"]
 const naturalHazard = ["stick", "crack", "Tom", "body", "blood", "magical forces"]
 const insults = ['You smell bad.', 'You are stupid.', 'TOM - A!', 'You are a cruise missile.', 'TOM-A-HAWK!']
-const missMessages = ['You missed.', 'Your attack missed.', 'Your attack was dodged', 'Your attack was evaded', `You tripped on ${randchoice(naturalHazard)}.`, `You stumbled on ${randchoice(naturalHazard)}.`]
+const missMessages = ['You missed.', 'Your attack missed.', 'Your attack was dodged', 'Your attack was evaded', `You tripped on ${randchoice(naturalHazard)}.`, `You stumbled on ${randchoice(naturalHazard)}.`] // Yes I do know this would keep the naturalHazards the same for the whole run. This is intentional as I can't be bothered doing it a different way.
 
 // Variables
 
@@ -956,7 +956,7 @@ function introduction2(weapon=false) {
 function level1(firstTime=false) {
     if (firstTime == true) {
         currentLevel = 1
-        let tempEnemy1 = {...enemies[0].default[0]}
+        let tempEnemy1 = {...enemies[0].default[0]} // All are bodyguards
         let tempEnemy2 = {...enemies[0].default[0]}
         let tempEnemy3 = {...enemies[0].default[0]}
         currentEnemies = [tempEnemy1, tempEnemy2, tempEnemy3]
@@ -979,9 +979,9 @@ function level2(firstTime=false) {
     console.log("Level 2")
     if (firstTime == true) {
         currentLevel = 2
-        let tempEnemy1 = {...enemies[0].religious[0]}
-        let tempEnemy2 = {...enemies[0].religious[1]}
-        let tempEnemy3 = {...enemies[0].religious[2]}
+        let tempEnemy1 = {...enemies[0].religious[0]} // Priest
+        let tempEnemy2 = {...enemies[0].religious[1]} // Cultist
+        let tempEnemy3 = {...enemies[0].religious[2]} // Bishop
         currentEnemies = [tempEnemy1, tempEnemy2, tempEnemy3]
         deleteText("text")
         addText("text", `You see a priest, cultist and bishop from the Tomism Church™<br><br>`)
