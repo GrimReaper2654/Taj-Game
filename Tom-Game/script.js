@@ -26,8 +26,8 @@ const missMessages = ['You missed.', 'Your attack missed.', 'Your attack was dod
 // Variables
 
 var player = {
-    name: "General Widjaja",
-    health: 1000,
+    name: "Benry Hird",
+    health: 10000,
     evasion_chance: 2,
     
 }
@@ -88,7 +88,7 @@ const enemies = [
             name: "Bodyguard",
             health: 300,
             damage_multiplier: 1.5,
-            damage: [10,30],
+            damage: [10,20],
             quotes: ["I shall defend Tom with my life!", "Death to the enemies of Tom!", "I shall protect Tom!", "You shall not Pass!"],
             last_words: null,
             quantity: [1,3],
@@ -105,7 +105,7 @@ const enemies = [
             name: "Servant",
             health: 100,
             damage_multiplier: 1,
-            damage: [10, 50],
+            damage: [10, 30],
             quotes: ["I serve Tom!", 'for Tom!'],
             last_words: null,
             quantity: [1,2],
@@ -141,7 +141,7 @@ const enemies = [
             name: "Tomism Cultist",
             health: 50,
             damage_multiplier: 0.5,
-            damage: [20,100],
+            damage: [20,50],
             quotes: ["Hail Tom Bird!"],
             last_words: ["You shall not defeat the Tom Bird"],
             quantity: [10,30],
@@ -158,7 +158,7 @@ const enemies = [
             name: "Tomism Bishop",
             health: 200,
             damage_multiplier: 1,
-            damage: [30,150],
+            damage: [30,100],
             quotes: ["Hail Tom Bird!", "For Tom Bird!", "I shall protect the lord!", "die nonbeliever!"],
             last_words: ["You shall not defeat the Tom Bird"],
             quantity: [1,2],
@@ -194,7 +194,7 @@ const enemies = [
             name: "Choyuni Miner",
             health: 150,
             damage_multiplier: 1,
-            damage: [20,100],
+            damage: [20,50],
             quotes: ["[Inaudible Muttering]", "[Grunt]"],
             last_words: null,
             quantity: [1,3],
@@ -211,7 +211,7 @@ const enemies = [
             name: "Choyuni Soldier",
             health: 300,
             damage_multiplier: 1,
-            damage: [50,150],
+            damage: [50,100],
             quotes: ["[Inaudible Muttering]", "[Grunt]"],
             last_words: null,
             quantity: [1,2],
@@ -737,19 +737,22 @@ function checkEnemies() {
             currentEnemies.shift()
         }
     } catch {
-        console.log("___")
         checkLevel()
     }
     
-    checkLevel()
+
     
 }
 
-
 // Checks whether the level is finished
 function checkLevel() { // Need to finish
-    if (currentEnemies == []) {
-        console.log("Finished")
+    console.log("checkLevel()")
+    console.log(currentEnemies.length)
+    if (currentEnemies.length == 0) {
+        console.log(`Level ${currentLevel} finished.`)
+        if (currentLevel == 1) {
+            level1End()
+        }
     }
 }
 
@@ -790,6 +793,9 @@ function damageCalc(damage) {
 
 
 
+
+
+
 // Attack functions
 function playerAttack(weapon) {
     deleteText("text")
@@ -798,48 +804,48 @@ function playerAttack(weapon) {
             damage = damageCalc(weapons.body.punch.damage)
             currentEnemies[0].health -= damage
             addText("text", `You attack the ${currentEnemies[0].name} doing ${damage} damage.<br>`)
-            checkEnemies()
         } else {
             addText("text", randchoice(missMessages))
         }
     } else if (weapon == "kick") {
         if (evasionCalc(weapons.body.kick.baseAccuracy, player.evasion_chance) == "hit") {
             damage = damageCalc(weapons.body.kick.damage)
-            console.log(damage)
             currentEnemies[0].health -= damage
             addText("text", `You attacked the ${currentEnemies[0].name} doing ${damage} damage.<br><br>`)
-            checkEnemies()
         }
     } else {
         if (evasionCalc(weapons.tier1[weapon].baseAccuracy, player.evasion_chance) == "hit") {
             damage = damageCalc(weapons.tier1[weapon].damage)
-            console.log(damage)
             currentEnemies[0].health -= damage
             addText("text", `You attacked the ${currentEnemies[0].name} doing ${damage} damage.<br><br>`)
-            checkEnemies()
         }
     }
 
     checkEnemies()
-    if (currentLevel == 1){
-        level1EnemyTurn()
-    } else if (currentLevel == 2) {
-        level2EnemyTurn()
-    }
+    enemyTurn()
 }
 
 // Enemy Turn
-function level1EnemyTurn() {
+function enemyTurn() {
     for (let i in currentEnemies) {
-        console.log(currentEnemies[i])
         tempDamage = damageCalc(currentEnemies[i].damage)
         player.health -= tempDamage
         addText("text", `${currentEnemies[i].name} attacked you doing ${tempDamage} damage.<br>`)
     }
     checkPlayer()
+    checkEnemies()
     if (player.health > 0) {
         addText("text", `<br>You are on ${player.health} health.<br>`)
-        addText("text", `<button onclick="level1(false)">Next Round</button>`)
+        addText("text", `<button onclick="level1()">Next Round</button>`)
+        // switch (currentLevel) {     // Need to move
+        //     case 1:
+        //         addText("text", `<button onclick="level1()">Next Round</button>`)
+        //         break
+        //     case 2:
+        //         addText("text", `<button onclick="level2(true)">Next Level</button>`)
+        //         break
+        
+        // }
     }
     
 }
@@ -862,14 +868,14 @@ function introWeaponPickUp(weapon) {
 function level1Talk() {
     deleteText("text")
     addText("text", `You say: "${randchoice(insults)}"<br>The bodyguards aren't impressed.<br>`)
-    level1EnemyTurn()
+    enemyTurn()
 }
 
 function level1Use() {
     deleteText("text")
     if (playerInventory.items.slot1.name == "") {
         addText("text", `You have no available items.<br>`)
-        addText("text", `<button onclick="level1(false)">back</button>`)
+        addText("text", `<button onclick="level1()">back</button>`)
     } else {
         hacker()
     }
@@ -898,7 +904,10 @@ function level1Attack() {
     addText("text", `<button onclick="playerAttack('kick')">kick</button>`)
 }
 
-
+function level1End() {
+    addText("text", `You have successfully finished the first level. You are so close to the end (not really).<br><br>Enjoy :)<br><br>`)
+    addText("text", `<button onclick="level2(true)">Next Level</button>`)
+}
 
 
 
@@ -933,21 +942,21 @@ function introduction2(weapon=false) {
         }
         addText("text", "<br><br>")
     } else {
-        addText("text", "You stupidly choose not to take the weapon. Classic Tom.<br><br>")
+        addText("text", `You stupidly choose not to take the weapon. Classic ${player.name}.<br><br>`)
     }
     addText("text", `You enter the first room (level 1)<br>`)
     
-    level1()    
+    level1(true)    
 }
 
 
 
+// Level functions
 
-
-function level1(firstTime=true) {
+function level1(firstTime=false) {
     if (firstTime == true) {
         currentLevel = 1
-        let tempEnemy1 = {...enemies[0].default[0]} // Need to clone the object
+        let tempEnemy1 = {...enemies[0].default[0]}
         let tempEnemy2 = {...enemies[0].default[0]}
         let tempEnemy3 = {...enemies[0].default[0]}
         currentEnemies = [tempEnemy1, tempEnemy2, tempEnemy3]
@@ -955,10 +964,35 @@ function level1(firstTime=true) {
     } else {
         deleteText("text")
     }
+
+    // if (checkEnemies) // WHAT WAS I DOING HERE? CANNOT REMEMBER - LOOK AT LATER
+
     addText("text", "<h2><b>What do you do?</b></h2><br>")
     addText("text", `<button onclick='level1Talk()'>Talk</button>  `) // Talk button
     addText("text", `<button onclick='level1Use()'>Use Item</button>  `)  // Use item button
     addText("text", `<button onclick='level1Attack()'>Attack</button>`) // Attack button
+}
+
+
+
+function level2(firstTime=false) {
+    console.log("Level 2")
+    if (firstTime == true) {
+        currentLevel = 2
+        let tempEnemy1 = {...enemies[0].religious[0]}
+        let tempEnemy2 = {...enemies[0].religious[1]}
+        let tempEnemy3 = {...enemies[0].religious[2]}
+        currentEnemies = [tempEnemy1, tempEnemy2, tempEnemy3]
+        deleteText("text")
+        addText("text", `You see a priest, cultist and bishop from the Tomism Church™<br><br>`)
+    }
+
+    addText("text", "<h2><b>What do you do?</b></h2><br>")
+    addText("text", `<button onclick='level1Talk()'>Talk</button>  `) // Talk button
+    addText("text", `<button onclick='level1Use()'>Use Item</button>  `)  // Use item button
+    addText("text", `<button onclick='level1Attack()'>Attack</button>`) // Attack button
+
+
 }
 
 
