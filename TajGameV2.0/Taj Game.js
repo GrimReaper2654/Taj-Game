@@ -1533,6 +1533,7 @@ const enemies = {
             },
             lost: 0
         },
+        /*
         {
             name: "Mace",
             //         "_______________"
@@ -1553,7 +1554,7 @@ const enemies = {
                 energy: {durability: 0, resistance: 0},
                 magical: {durability: 0, resistance: 0}
             }
-        },
+        },*/
         {
             name: "Witch doctor",
             //         "_______________"
