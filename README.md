@@ -1,5 +1,5 @@
 # Henry-Game
-A game involving our lord and savoiur, TOM THE TERRORIST!
+A game involving our lord and savoiur, TAJ THE TERRORIST!
 
 ## Game Link
 Henry Game:<br>
