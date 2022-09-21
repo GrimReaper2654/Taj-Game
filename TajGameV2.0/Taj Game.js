@@ -44,7 +44,8 @@ const descriptions = {
     enemyAppeared: ["appeared in front of you", "landed in front of you", "emerged from the shaddows"],
     find: ['locate', 'stumble upon', 'discover', 'see'],
     location: ['in a wooden crate', 'hidden in a corner', 'on a rock', 'on the ground'],
-    insults: ['Taj deez nuts', 'Ta-Ja', 'you spedlord', 'you sped']
+    insults: ['Taj deez nuts', 'Ta-Ja', 'you spedlord', 'you sped'],
+    rage: [`"I hate you!"`, `"DIE!`]
 };
 
 // Constants
@@ -64,13 +65,8 @@ var settings = { // most of these do nothing
     taunting: true,
     intelligence: true,
     evasion: true,
-    dmg_multilier: 1,
-    heal_multiplier: 1,
-    shield_protection_multiplier: 1,
-    shield_durability_multiplier: 1, 
-    enemy_intelligence_multiplier: 1,
-    max_levels: 50,
     min_hunger_to_regen: 0.4,
+    max_regen: 200,
     
 };
 
@@ -598,6 +594,61 @@ const weapons = {
                 miss: [
                     '[attacker] tries to suicide bomb [defender] but [defender] gets out of the blast radius in time!',
                 ]
+            }
+        },
+    },
+    taj: {
+        ultimateBlast: {
+            name: 'ultimate blast',
+            player_useable: false,
+            damage: [1300,1300],
+            baseAccuracy: 10000,
+            type: physical,
+            multiplier: str,
+            rapidfire: [0,0],
+            attack_description: {
+                KO: [
+                    '[attacker] obliterates [defender] with his ultimate energy blast!', 
+                ],
+                single: [
+                    '[defender] manages to survive [attacker]\'s massive energy blast!', 
+                ],
+            }
+        },
+        strPunch: {
+            name: 'punch',
+            player_useable: false,
+            damage: [100000,100000],
+            baseAccuracy: 10000,
+            type: physical,
+            multiplier: str,
+            rapidfire: [80,5],
+            attack_description: {
+                KO: [
+                    '[attacker] sends a godly punch into [defender]\'s [body]!', 
+                    '[attacker] sends a incredibly powerful punch into [defender]\'s [body]!', 
+                ],
+                single: [
+                    '[attacker] sends a [strong] punch into [defender]\'s [body]!', 
+                ],
+            }
+        },
+        punch: {
+            name: 'punch',
+            player_useable: false,
+            damage: [500,750],
+            baseAccuracy: 10000,
+            type: physical,
+            multiplier: str,
+            rapidfire: [80,5],
+            attack_description: {
+                KO: [
+                    '[attacker] sends a godly punch into [defender]\'s [body]!', 
+                    '[attacker] sends a incredibly powerful punch into [defender]\'s [body]!', 
+                ],
+                single: [
+                    '[attacker] sends a [strong] punch into [defender]\'s [body]!', 
+                ],
             }
         },
     },
@@ -1690,6 +1741,52 @@ const enemies = {
             lost: 0
         },
     ],
+    taj: [
+        {
+            name: "Terrorist Taj", 
+            //         "_______________"
+            shortName: "  Terrorist Taj",
+            maxHealth: 1000,
+            health: 1000,
+            strength: 1,
+            attacks: [],
+            quotes: [],
+            last_words: [],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 0,
+            romance: -1,
+            armour: {
+                physical: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            },
+            lost: 0
+        },
+        {
+            name: "Terrorist Taj", 
+            //         "_______________"
+            shortName: "  Terrorist Taj",
+            maxHealth: 1000,
+            health: 0,
+            strength: 1,
+            attacks: [],
+            quotes: [],
+            last_words: [],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 0,
+            romance: -1,
+            armour: {
+                physical: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            },
+            lost: 1000
+        },
+    ]
 };
 
 const armour = [
@@ -2413,6 +2510,8 @@ const t3Items = [
     },
 ];
 
+
+//Default player
 var player = {
     playerName: player_name,
     name: player_name+' the Terrorist',
@@ -2420,16 +2519,43 @@ var player = {
     hunger: settings.stat_limit,
     mental_health: settings.stat_limit/2,
     intelligence: 250,
-    /*
-    health:1000,
-    hunger: 1000,
-    mental_health:1000,
-    intelligence:1000,
-    */
     strength: 1,
     isTerrorist: false,
     armour: {
         physical: {durability: 500, resistance: 50},
+        fire: {durability: 0, resistance: 0},
+        energy: {durability: 0, resistance: 0},
+        magical: {durability: 0, resistance: 0},
+        poison: {durability: 0, resistance: 0}
+    },
+    inventory: {
+        weapons: {
+            hands: weapons.body.punch,
+            feet: weapons.body.kick,
+            main1: weapons.body.none,
+            main2: weapons.body.none,
+            secondary: weapons.body.none
+        },
+        items: [
+            // Limit of strength*5 inventory slots, if inventory is too full items are ejected from the inventory
+        ],
+    },
+    lost: [0,0,0,0]
+};
+
+
+// Boss fight Config
+var bossPlayer = {
+    playerName: player_name,
+    name: player_name+' the Terrorist',
+    health: settings.stat_limit,
+    hunger: settings.stat_limit,
+    mental_health: settings.stat_limit,
+    intelligence: settings.stat_limit,
+    strength: 10,
+    isTerrorist: false,
+    armour: {
+        physical: {durability: 400, resistance: 400},
         fire: {durability: 0, resistance: 0},
         energy: {durability: 0, resistance: 0},
         magical: {durability: 0, resistance: 0},
@@ -2547,10 +2673,12 @@ async function choice(description,choices,useNames=false,returnObject=false,canC
         console.log('waiting in choice function');
         await delay(250);
     }
-    console.log('qqqqqqq');
+    
     let output = finishedChoosing;
     finishedChoosing = false;
     if (returnObject) {
+        console.log('qqqqqqq');
+        console.log('choices');
         if (output != -1) {
             output = choices[output];
         }
@@ -2565,6 +2693,16 @@ function choose(output) {
 
 // The rest of the functions
 function bar(displayName, size, value, lost, limit=settings.stat_limit, showValue=true) {
+    /*
+    console.log(lost,value);
+    if (value < 0) {
+        lost += value;
+        value = 0;
+    }*/
+    if (lost > settings.stat_limit) {
+        lost = settings.stat_limit;
+    }
+    console.log(lost,value);
     let bar = '';
     let filled = Math.round((value/limit)*size);
     let halfFilled = Math.round((lost/limit)*size);
@@ -2597,12 +2735,23 @@ function bar(displayName, size, value, lost, limit=settings.stat_limit, showValu
     }
     let display = `${displayName} ▕${bar}▏`;
     if (showValue) {
+        let end = '';
+        if (value < 1000) {
+            end += ' ';
+        }
+        if (value < 100) {
+            end += ' ';
+        }
+        if (value < 10) {
+            end += ' ';
+        }
         let info = `(${Math.round(value)}/${limit})`;
+        
         let filler = 10-info.length;
         for (let i=0; i<filler; i++) {
             info += ' ';
         }
-        display+=info;
+        display+=info+=end;
     }
     //console.log(display);
     return display
@@ -2752,17 +2901,21 @@ function updatePlayer(player, healthChange=0, hungerChange=0, mentalChange=0, in
         player.mental_health += intelligenceChange/4;
     }
     if (regenerateion && settings.enable_hunger) {
-        let regenCapacity = (player.hunger-settings.stat_limit*settings.min_hunger_to_regen)/2;
+        console.log('regenerating player')
+        let regenCapacity = (player.hunger-(settings.stat_limit*settings.min_hunger_to_regen))/2;
+        regenCapacity *= 1-((settings.stat_limit-player.health)/settings.stat_limit); // more hp = less regen (slows down regeneration as your health increases)
+        if (regenCapacity > settings.max_regen) {
+            regenCapacity = settings.max_regen;
+        }
+        console.log('regen cap:',regenCapacity);
         let missingHp = settings.stat_limit-player.health;
-        let maxRegen = (settings.stat_limit-player.health)/settings.stat_limit*200;
-        if (missingHp > maxRegen) {
-            missingHp = maxRegen;
+        console.log('missing hp:',missingHp);
+        if (missingHp > regenCapacity) {
+            missingHp = regenCapacity;
         }
-        if (regenCapacity < missingHp) {
-            missingHp = maxRegen;
-        }
+        console.log('regenerated hp:',missingHp);
         player.health += missingHp;
-        player.hunger -= missingHp*2;
+        player.hunger -= missingHp/2;
     }
     console.log(player);
     // Fix Stats
@@ -3092,7 +3245,7 @@ function isDead(character) {
     return 0;
 };
 
-async function LBozo() {
+async function LBozo(player) {
     await cutscene(`LMAO U DIED!! TRASH!!! Now you have ${randint(10,99)} viruses on your computer. Lmao L Bozo. Imagine dying, can't relate. What a ${player_name} moment.`); // TODO: Add more insults
     await cutscene(`GG ${player_name}, you died to a lowly grunt and didn't even get to see Terrorist Taj (looks like I coded that boss fight for nothing). You got ending 1 out of 3 which is the noob ending. Reload the page to play again.`);
     await cutscene(`BTW: you don't actually have viruses on your computer, I was joking.`);
@@ -3108,16 +3261,21 @@ async function LBozo() {
     await cutscene(`STOP`);
     await cutscene(`S T O P !`);
     await cutscene(`STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
-    while (1) {
+    for (let i=0; i<=10; i++) {
         await cutscene(`Bet you wished you could skip cutscenes. Now you have to wait for this very long message to load. Surely you have better things to do with your life. THere is actually nothing more to see but if you don't believe me, you can keep clicking.`);
     }
     await cutscene(`How did you even see this! There was a forever loop infont of this. HACKS!!!!!!!!!!!`);
     await cutscene(`Enjoy another forever loop!`);
-    while (1) {
+    for (let i=0; i<=20; i++) {
         await cutscene(`Bet you wished you could skip cutscenes. Now you have to wait for this very long message to load. Surely you have better things to do with your life. THere is actually nothing more to see but if you don't believe me, you can keep clicking.`);
     }
     await cutscene(`How did you escape another forever loop! HAX!!!!!!!!!!!!`);
-    await cutscene(`I give up, you win! The game just breaks if you continue.`);
+    await cutscene(`FIne, you can keep playing`);
+    player.health = settings.stat_limit;
+    player.mental_health = settings.stat_limit;
+    player.hunger = settings.stat_limit;
+    player.intelligence = settings.stat_limit;
+    return player;
 };
 
 async function fight(player, enemy) {
@@ -3159,8 +3317,7 @@ async function fight(player, enemy) {
         updateStats(player);
         updateEnemy(enemy);
         if (isDead(player)) {
-            await LBozo();
-            return player;
+            player = await LBozo(player); // player can revive if they are dedicated
         }
         player = updatePlayer(player, 0, -10, 0, 0, 0, true);
         console.log('player:');
@@ -3168,19 +3325,79 @@ async function fight(player, enemy) {
     }
 };
 
+async function block(time, chance=1) {
+    let choices = [];
+    for(let i=0;i<20;i++) {
+        choices.push('');
+    }
+    for(let i=0;i<chance;i++) {
+        choices[randint(0,19)] = 'block';
+    }
+    let current = new Date();
+    let startTime = [current.getDate(),current.getHours(),current.getMinutes(),current.getSeconds()];
+    let decision = await choice(`<p id="strong">BLOCK!</p>`,choices,false,true,false,false);
+    console.log(decision);
+    current = new Date();
+    let endTime = [current.getDate(),current.getHours(),current.getMinutes(),current.getSeconds()];
+    for(let i=0;i<2;i++) {
+        if(endTime[i]!=startTime[i]) {
+            return 'too slow';
+        }
+    }
+    if (endTime[3]-startTime[3] > time) {
+        return 'too slow';
+    } else {
+        if (decision == 'block') {
+            return 'blocked';
+        } else {
+            return 'miss'
+        }
+    }
+
+
+}
+
+async function blockCalc(a,b) {
+    let result = await block(a, b);
+    let success = true;
+    switch (result) {
+        case 'too slow':
+            await cutscene(`You raise your arms to block but it is too late!`);
+            success = false;
+            break;
+        case 'miss':
+            await cutscene(`You try to block Taj's attack but you miss!`);
+            success = false;
+            break;
+        case 'blocked':
+            if (player.strength < 5) {
+                await cutscene(`Taj's fist connects with your block, shattering every bone in your arms!`);
+                success = false;
+            } else {
+                await cutscene(`You manage to stop one of Taj's punches!`);
+            }
+            break;
+        default:
+            console.log('bruh it broke again');
+    }
+    return success;
+}
+
 async function intro(player) {
-    await cutscene(`You painfully open your bruised eyes as pain shoots through your nerves like lightning. Fireworks exploded between your troubled neurons (are you proud of me Henry?) as your woefully indaequate brain struggled to comprehend your situation.`);
-    await cutscene(`"Where am I?" you whisper to yourself, staring into the endless void around you as you struggled to recall your final moments, "Did I die?"`);
-    await cutscene(`Your battered body collapses onto the jagged granite floor as incomprehensible agony tore at your mind.`);
-    await cutscene(`Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others.`);
-    await cutscene(`You bearly manage to recall a towering figure excluding an oppressive aura. The rest of their appearance evades your memory but his name is engraved into your mind in jagged red letters.`);
-    await cutscene(`<p id="strong">Taj the Terrorist</p>`,false);
-    await cutscene(`You do not recall why, but the thought of him fills you with determination and bloodlust.`);
-    await cutscene(`There is only one thing you desire...`);
-    await cutscene(`<p id="strong">REVENGE</p>`,false);
-    //await cutscene(`You painfully open your bruised eyes as pain shoots through your nerves like lightning. Silence envelops you as you stare into the endless dark void around you. Your battered body collapses beneath you as a dull throbbing pain fills your mind. Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades you but his name is engraved into your mind in jagged red letters. "Taj the Terrorist." You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`);
-    if (player.isTerrorist) {
-       await cutscene(`In reality, ${player.name} is a wanted terrorist, responsible for thousands of deaths. Even Taj the Terrorist, the most evil, cruel and psychopatic terrorist, despises you. Lmao Noob<br>`);
+    if (await choice(`skip intro?`, ['yes','no'], false, false, false)) {
+        await cutscene(`You painfully open your bruised eyes as pain shoots through your nerves like lightning. Fireworks exploded between your troubled neurons (are you proud of me Henry?) as your woefully indaequate brain struggled to comprehend your situation.`);
+        await cutscene(`"Where am I?" you whisper to yourself, staring into the endless void around you as you struggled to recall your final moments, "Did I die?"`);
+        await cutscene(`Your battered body collapses onto the jagged granite floor as incomprehensible agony tore at your mind.`);
+        await cutscene(`Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others.`);
+        await cutscene(`You bearly manage to recall a towering figure excluding an oppressive aura. The rest of their appearance evades your memory but his name is engraved into your mind in jagged red letters.`);
+        await cutscene(`<p id="strong">Taj the Terrorist</p>`,false);
+        await cutscene(`You do not recall why, but the thought of him fills you with determination and bloodlust.`);
+        await cutscene(`There is only one thing you desire...`);
+        await cutscene(`<p id="strong">REVENGE</p>`,false);
+        //await cutscene(`You painfully open your bruised eyes as pain shoots through your nerves like lightning. Silence envelops you as you stare into the endless dark void around you. Your battered body collapses beneath you as a dull throbbing pain fills your mind. Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others. You bearly manage to recall a towering figure excluding an aura of power. The rest of their appearance evades you but his name is engraved into your mind in jagged red letters. "Taj the Terrorist." You do not recall why, but the thought of him fills you with determination and bloodlust. There is only one thing you desire: REVENGE!<br>`);
+        if (player.isTerrorist) {
+        await cutscene(`In reality, ${player.name} is a wanted terrorist, responsible for thousands of deaths. Even Taj the Terrorist, the most evil, cruel and psychopatic terrorist, despises you. Lmao Noob<br>`);
+        }
     }
 };
 
@@ -3300,21 +3517,108 @@ async function level(character, fights, enemiesList, description, itemList, weap
 };
 
 async function bossBattle(player) {
-    cutscene(`You arrive in Taj the Terrorist's throne room.`);
-    cutscene(`"Hello there," says Taj as he looks up from his Conflict of Nations game, "I have been expecting you,"`);
-    cutscene(`"I hate you!" you scream vehemently as you charge towards Taj the Terrorist.`);
-    const actions = ['attack', 'item', 'talk'];
+    await cutscene(`You arrive in Taj the Terrorist's throne room.`);
+    console.log(player);
+    console.log(enemies.taj[0]);
+    updateStats(player);
+    updateEnemy([enemies.taj[0]]);
+    await cutscene(`"Hello there," says Taj as he looks up from his Conflict of Nations game, "I have been expecting you,"`);
+    await cutscene(`${randchoice(descriptions.rage)} you scream vehemently as you charge towards Taj the Terrorist.`);
+    const actions = ['attack', 'attack', 'attack', 'attack', 'attack'];
     await choice(`Your Turn: `, actions, false, false, false); // Lmao you think you stand a chance against Taj
-    cutscene(`Before you can react, Taj disappears from your vision as your puny mortal brain struggles to comprehend what happened. (what do you mean you're smarter than that, your a ${player_name}!)`);
-    cutscene(`A sharp pain erupts form your stomach as you spit out blood. A bloddy arm protrudes out of your chest as darkness obscures your vision.`);
-    cutscene(`You feel nothing as your broken body falls onto Taj's luxurious carpet, staining it with your blood. As your consciousness fades, you finally see the truth.`);
-    cutscene(`You were never strong enough, your mortal body was too fragile, your underdeveloped mind was too weak. Taj the terrorist is far stronger than you can comprehend.`);
-    cutscene(`"I was a fool to have chalenged him," you think to yourself as you close your eyes for the last time.`);
-    cutscene(`GG ${player_name}, you did well to make it this far.`);
-    cutscene(`Epilogue:`);
-    cutscene(`"Another one bites the dust..." Taj thinks to himself as he stares at your broken body with contempt before turning back to his game.`);
-    cutscene(`Taj's computer screen showed only two words: You Died! "NOOOOOOOOOOOOO" screams Taj as he throws another tantrum.`);
-    cutscene(`You reached ending 2 out of 3. Reload the page to play again.`);
+    if (player.intelligence < settings.stat_limit) {
+        await cutscene(`Before you can react, Taj disappears from your vision as your puny mortal brain struggles to comprehend what happened. (what do you mean you're smarter than that, your a ${player_name}!)`);
+    } else {
+        await cutscene(`Before you can attack, you see a fist headding straight for your chest!`);
+        switch (await block(2, 1)) {
+            case 'too slow':
+                await cutscene(`You raise your arms to block but it is too late!`);
+                console.log(weapons.taj.punch);
+                let r1 = await simulateAttack(enemies.taj[0], player, weapons.taj.strPunch);
+                player = r1[1];
+                break;
+            case 'miss':
+                await cutscene(`You try to block Taj's attack but you miss!`);
+                let r2 = await simulateAttack(enemies.taj[0], player, weapons.taj.strPunch);
+                player = r2[1];
+                break;
+            case 'blocked':
+                if (player.strength < 5) {
+                    await cutscene(`Taj's fist connects with your block, shattering every bone in your arms!`);
+                    let result = await simulateAttack(enemies.taj[0], player, weapons.taj.strPunch);
+                    player = result[1];
+                } else {
+                    await cutscene(`You manage to stop Taj's attack!`);
+                    await cutscene(`"Not bad," says Taj, "however, you shall die now!"`);
+                    await cutscene(`Taj launches a barrage of punches at you!`);
+                    let numAttacks = randint(5,12);
+                    let success = true;
+                    for (let i=0; i<numAttacks; i++) {
+                        success = await blockCalc(1,1);
+                        if (success != true) {
+                            let result = await simulateAttack(enemies.taj[0], player, weapons.taj.punch);
+                            player = result[1];
+                            if (isDead(player)) {
+                                break;
+                            }
+                        }
+                    }
+                    if (!isDead(player)) {
+                        await cutscene(`"DIE!" Taj roars in anger.`);
+                        await cutscene(`Taj stops his barrage of punches and charges up a massive energy blast!`);
+                        const actions = ['attack', 'run', 'stand still', 'block'];
+                        await choice(`What do you do: `, actions, false, false, false);
+                        let result = await simulateAttack(enemies.taj[0], player, weapons.taj.ultimateBlast);
+                        player = result[1];
+                        if (isDead(player)) {
+                            await cutscene(`You Died.`);
+                            await cutscene(`GG ${player_name}, you almost reached the end.`);
+                            await cutscene(`Epilogue:`);
+                            await cutscene(`"Another one bites the dust..." Taj thinks to himself as he stares at your remains with contempt before turning back to his game.`);
+                            await cutscene(`Taj's computer screen showed only two words: You Died! "NOOOOOOOOOOOOO" screams Taj as he throws another tantrum.`);
+                            await cutscene(`You reached ending 2 out of 3. Reload the page to play again.`);
+                            return;
+                        } else {
+                            await cutscene(`You survive Taj's ultimate attack!`);
+                            await cutscene(`Taj looks tired and collapses onto the ground, breahting heavilly!`);
+                            const actions = ['kill', 'spare'];
+                            let decision = await choice(`What do you do to Taj: `, actions, false, false, false); // Lmao you think you stand a chance against Taj
+                            if (decision) {
+                                await cutscene(`You spare Taj and choose not to kill him.`);
+                                await cutscene(`Taj stabs you in the back once you turn away!`);
+                                player.lost[0] +=player.health;
+                                player.health = 0;
+                                updateStats(player);
+                                await cutscene(`You Died.`);
+                                await cutscene(`GG ${player_name}, so close yet so far...`);
+                                await cutscene(`You reached ending 2 out of 3. Reload the page to play again.`);
+                                return;
+                            } else {
+                                await cutscene(`You choose to kill Taj.`);
+                                const killTaj = [`You stab Taj in the heart with a knife!`,`You decapitate Taj with a sword!`];
+                                await cutscene(randchoice(killTaj));
+                                updateEnemy([enemies.taj[1]]);
+                                await cutscene(`You watch Taj's dead body colapse onto the ground.`);
+                                await cutscene(`GG ${player_name}, you beat the Taj game! You have reached ending 3 out of 3, the only ending where you survive. You can reload the game to play again and try to find all the secret areas in the game.`);
+                                return;
+                            }
+                        }
+                    }
+                }
+        }
+        
+            
+        
+    }
+    await cutscene(`A sharp pain erupts form your stomach as you spit out blood. A bloddy arm protrudes out of your chest as darkness obscures your vision.`);
+    await cutscene(`You feel nothing as your broken body falls onto Taj's luxurious carpet, staining it with your blood. As your consciousness fades, you finally see the truth.`);
+    await cutscene(`You were never strong enough, your mortal body was too fragile, your underdeveloped mind was too weak. Taj the terrorist is far stronger than you can comprehend.`);
+    await cutscene(`"I was a fool to have chalenged him," you think to yourself as you close your eyes for the last time.`);
+    await cutscene(`GG ${player_name}, you did well to make it this far.`);
+    await cutscene(`Epilogue:`);
+    await cutscene(`"Another one bites the dust..." Taj thinks to himself as he stares at your broken body with contempt before turning back to his game.`);
+    await cutscene(`Taj's computer screen showed only two words: You Died! "NOOOOOOOOOOOOO" screams Taj as he throws another tantrum.`);
+    await cutscene(`You reached ending 2 out of 3. Reload the page to play again.`);
 };
 
 async function game(character) {
@@ -3334,21 +3638,24 @@ async function game(character) {
 };
 
 async function runGame() {
-    //game(player);
-    await cutscene('Testing!');
-    console.log('testing complete!');
     await game(player);
     console.log('game finished');
 };
 
-function init() {
+async function init() {
     console.log('initialising!');
     hideText("startScreen");
     hideText("console");
     hideText("controlPannel");
     showTitle(`<h1>The Taj Game</h1>`);
     console.log('starting game!');
-    runGame();
+
+    let boss = await choice('boss fight?', ['no', 'yes']);
+    if (boss) {
+        await bossBattle(bossPlayer);
+        await cutscene('bossfight done!');
+    }
+    await runGame();
     return 0;
 };
 
