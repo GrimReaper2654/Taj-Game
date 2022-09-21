@@ -2416,9 +2416,9 @@ const t3Items = [
 var player = {
     playerName: player_name,
     name: player_name+' the Terrorist',
-    health: settings.stat_limit/4,  // Max 1000
-    hunger: settings.stat_limit/2,
-    mental_health: settings.stat_limit/6,
+    health: (settings.stat_limit/4)*3,  // Max 1000
+    hunger: settings.stat_limit,
+    mental_health: settings.stat_limit/2,
     intelligence: 250,
     /*
     health:1000,
@@ -2429,7 +2429,7 @@ var player = {
     strength: 1,
     isTerrorist: false,
     armour: {
-        physical: {durability: 0, resistance: 0},
+        physical: {durability: 500, resistance: 50},
         fire: {durability: 0, resistance: 0},
         energy: {durability: 0, resistance: 0},
         magical: {durability: 0, resistance: 0},
