@@ -615,10 +615,29 @@ const weapons = {
                 ],
             }
         },
+        tomahawk: {
+            name: 'tomahawk cruise missile',
+            player_useable: false,
+            damage: [250,500],
+            baseAccuracy: 10000,
+            type: physical,
+            multiplier: str,
+            rapidfire: [0,0],
+            attack_description: {
+                KO: [
+                    '[defender] is engulfed in a massive explosion!', 
+                    '[defender] is annihilated by a Tomahawk cruise missile!', 
+                ],
+                single: [
+                    '[defender] bearly manages to survive a Tomahawk cruise missile!', 
+                    '[defender] tanks a Tomahawk cruise missile!', 
+                ],
+            }
+        },
         strPunch: {
             name: 'punch',
             player_useable: false,
-            damage: [100000,100000],
+            damage: [1000000,1000000],
             baseAccuracy: 10000,
             type: physical,
             multiplier: str,
@@ -1789,9 +1808,9 @@ const enemies = {
     ]
 };
 
-const armour = [
+const armours = [
     {
-        name: 'leather armour',
+        name: 'suit of leather armour',
         armour: {
             physical: {durability: 500, resistance: 50},
             fire: {durability: 200, resistance: 10},
@@ -1799,9 +1818,10 @@ const armour = [
             magical: {durability: 0, resistance: 0},
             poison: {durability: 0, resistance: 0}
         },
+        strengthIncease: 0
     },
     {
-        name: 'rusty iron armour',
+        name: 'suit of rusty iron armour',
         armour: {
             physical: {durability: 1500, resistance: 100},
             fire: {durability: 500, resistance: 25},
@@ -1809,9 +1829,10 @@ const armour = [
             magical: {durability: 0, resistance: 0},
             poison: {durability: 0, resistance: 0}
         },
+        strengthIncease: -0.2
     },
     {
-        name: 'bronze armour',
+        name: 'suit of bronze armour',
         armour: {
             physical: {durability: 1000, resistance: 150},
             fire: {durability: 200, resistance: 40},
@@ -1819,9 +1840,10 @@ const armour = [
             magical: {durability: 0, resistance: 0},
             poison: {durability: 0, resistance: 0}
         },
+        strengthIncease: -0.1
     },
     {
-        name: 'chainmail armour',
+        name: 'suit of chainmail armour',
         armour: {
             physical: {durability: 750, resistance: 125},
             fire: {durability: 0, resistance: 0},
@@ -1829,9 +1851,10 @@ const armour = [
             magical: {durability: 0, resistance: 0},
             poison: {durability: 0, resistance: 0}
         },
+        strengthIncease: 0
     },
     {
-        name: 'iron plate armour',
+        name: 'suit of iron plate armour',
         armour: {
             physical: {durability: 2000, resistance: 200},
             fire: {durability: 500, resistance: 50},
@@ -1839,19 +1862,21 @@ const armour = [
             magical: {durability: 0, resistance: 0},
             poison: {durability: 0, resistance: 0}
         },
+        strengthIncease: -0.1
     },
     {
         name: 'bulletproof vest',
         armour: {
-            physical: {durability: 1000, resistance: 500},
+            physical: {durability: 1000, resistance: 420},
             fire: {durability: 100, resistance: 20},
             energy: {durability: 50, resistance: 10},
             magical: {durability: 0, resistance: 0},
             poison: {durability: 0, resistance: 0}
         },
+        strengthIncease: 0
     },
     {
-        name: 'enchanted iron armour',
+        name: 'suit of enchanted iron armour',
         armour: {
             physical: {durability: 4000, resistance: 400},
             fire: {durability: 1000, resistance: 100},
@@ -1859,26 +1884,29 @@ const armour = [
             magical: {durability: 2000, resistance: 500},
             poison: {durability: 500, resistance: 10}
         },
+        strengthIncease: 1
     },
     {
         name: 'Power Armour',
         armour: {
-            physical: {durability: 10000, resistance: 750},
-            fire: {durability: 20000, resistance: 2000},
-            energy: {durability: 5000, resistance: 1000},
+            physical: {durability: 10000, resistance: 690},
+            fire: {durability: 20000, resistance: 720},
+            energy: {durability: 5000, resistance: 500},
             magical: {durability: 1000, resistance: 100},
             poison: {durability: 100000, resistance: 100000}
         },
+        strengthIncease: 3
     },
     {
-        name: 'mech suit',
+        name: 'exoskeleton',
         armour: {
-            physical: {durability: 100000, resistance: 7500},
-            fire: {durability: 200000, resistance: 20000},
-            energy: {durability: 50000, resistance: 10000},
-            magical: {durability: 10000, resistance: 1000},
-            poison: {durability: 1000000, resistance: 1000000}
+            physical: {durability: 10000, resistance: 720},
+            fire: {durability: 20000, resistance: 980},
+            energy: {durability: 5000, resistance: 980},
+            magical: {durability: 1000, resistance: 250},
+            poison: {durability: 100000, resistance: 100000}
         },
+        strengthIncease: 5
     },
 ];
 
@@ -2555,7 +2583,7 @@ var bossPlayer = {
     strength: 10,
     isTerrorist: false,
     armour: {
-        physical: {durability: 400, resistance: 400},
+        physical: {durability: 1000, resistance: 400},
         fire: {durability: 0, resistance: 0},
         energy: {durability: 0, resistance: 0},
         magical: {durability: 0, resistance: 0},
@@ -2699,10 +2727,12 @@ function bar(displayName, size, value, lost, limit=settings.stat_limit, showValu
         lost += value;
         value = 0;
     }*/
-    if (lost > settings.stat_limit) {
-        lost = settings.stat_limit;
+    let startingvalue = value + lost;
+    if (value < 0) {
+        value = 0;
     }
-    console.log(lost,value);
+    lost = startingvalue - value;
+    //console.log(lost,value);
     let bar = '';
     let filled = Math.round((value/limit)*size);
     let halfFilled = Math.round((lost/limit)*size);
@@ -2735,6 +2765,7 @@ function bar(displayName, size, value, lost, limit=settings.stat_limit, showValu
     }
     let display = `${displayName} ▕${bar}▏`;
     if (showValue) {
+        /*
         let end = '';
         if (value < 1000) {
             end += ' ';
@@ -2744,14 +2775,14 @@ function bar(displayName, size, value, lost, limit=settings.stat_limit, showValu
         }
         if (value < 10) {
             end += ' ';
-        }
+        }*/
         let info = `(${Math.round(value)}/${limit})`;
         
-        let filler = 10-info.length;
+        let filler = 12-info.length;
         for (let i=0; i<filler; i++) {
             info += ' ';
         }
-        display+=info+=end;
+        display+=info//+end;
     }
     //console.log(display);
     return display
@@ -2769,7 +2800,7 @@ async function updateStats(player) {
                 player.lost[i] = 0;
             }
         }
-        await delay(500);
+        await delay(200);
     }
 };
 
@@ -2873,6 +2904,23 @@ async function giveWeapon(player, weapon=null, weaponsList=null) {
     return player;
 };
 
+async function equipArmour(player, armour = null) {
+    if (armour == null) {
+        armour = randchoice(armours);
+    }
+    console.log(armour);
+    console.log(player);
+    let decision = await choice(`You ${randchoice(descriptions.find)} a ${armour.name}`, ['equip', 'leave'],false,false,false,false);
+    if (!decision) {
+        await cutscene(`You put on the ${armour.name}`);
+        player.armour = JSON.parse(JSON.stringify(armour.armour));
+        player.strength += armour.strengthIncease;
+    } else {
+        await cutscene(`You leave the ${armour.name}`);
+    }
+    return player;
+};
+
 function updatePlayer(player, healthChange=0, hungerChange=0, mentalChange=0, intelligenceChange=0, strengthChange = 0, regenerateion=false) {
     console.log('updating player');
     console.log(player);
@@ -2970,7 +3018,7 @@ function updatePlayer(player, healthChange=0, hungerChange=0, mentalChange=0, in
 
 };
 
-async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) {
+async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) { // TODO: Fix This
     console.log('simulating attack');
     console.log(attack);
     if (attack != null && attack.type == 'throwable') {
@@ -3142,7 +3190,7 @@ async function useItem(player, enemies, itemID) {
         await cutscene(`You consume the ${player.inventory.items[itemID].name}.`);
     } else if (player.inventory.items[itemID].type == 'throwable') {
         await cutscene(`You throw the ${player.inventory.items[itemID].name} towards your enemies.`);
-        let result = await simulateAttack(player, enemies, player.inventory.item[itemID], true);
+        let result = await simulateAttack(player, enemies, player.inventory.items[itemID], true);
         player = result[0];
         enemy = result[1];
     }
@@ -3325,17 +3373,59 @@ async function fight(player, enemy) {
     }
 };
 
-async function block(time, chance=1) {
+async function block(time, chance=1, type) {
+    console.log(type);
     let choices = [];
-    for(let i=0;i<20;i++) {
-        choices.push('');
+    if (type == 1) {
+        for(let i=0;i<20;i++) {
+            choices.push(randchoice(['blok', 'bloock', 'bl0ck', 'bock', 'b lock', 'b1ock', 'blokc']));
+        }
+        for(let i=0;i<chance;i++) {
+            choices[randint(0,19)] = 'block';
+        }
+    } else {
+        for(let i=0;i<20;i++) {
+            choices.push(' ');
+        }
+        /* Intensive planning
+        0 0 0 0 0
+        0 0 0 0 0
+        0 0 0 0 0
+        0 0 0 0 0
+
+        Assume blast radius 2
+        0 0 1 0 0
+        0 1 1 1 0
+        0 0 1 0 0
+        0 0 0 0 0
+
+        0 1 2 3 4
+        5 6 7 8 9
+        0 1 2 3 4
+        5 6 7 8 9
+        */
+        for(let i=0;i<chance;i++) { // drop chance number of bombs on the player
+            let coords = randint(0,19);
+            choices[coords] = 'x'
+            if (coords+1 % 5 != 0) { // left
+                choices[coords+1] = 'x'
+            }
+            if (coords % 5 != 0) { // right
+                choices[coords-1] = 'x'
+            }
+            if (coords > 4) { // top
+                choices[coords-5] = 'x'
+            }
+            if (coords < 15) { // bottom
+                choices[coords+5] = 'x'
+            }
+        }
     }
-    for(let i=0;i<chance;i++) {
-        choices[randint(0,19)] = 'block';
-    }
+    console.log(choices);
     let current = new Date();
     let startTime = [current.getDate(),current.getHours(),current.getMinutes(),current.getSeconds()];
-    let decision = await choice(`<p id="strong">BLOCK!</p>`,choices,false,true,false,false);
+    let msg = (type) ? 'BLOCK' : 'DODGE';
+    let decision = await choice(`<p id="strong">${msg}!</p>`,choices,false,true,false,false);
     console.log(decision);
     current = new Date();
     let endTime = [current.getDate(),current.getHours(),current.getMinutes(),current.getSeconds()];
@@ -3347,7 +3437,7 @@ async function block(time, chance=1) {
     if (endTime[3]-startTime[3] > time) {
         return 'too slow';
     } else {
-        if (decision == 'block') {
+        if (decision == 'block' || decision == ' ') {
             return 'blocked';
         } else {
             return 'miss'
@@ -3357,24 +3447,30 @@ async function block(time, chance=1) {
 
 }
 
-async function blockCalc(a,b) {
-    let result = await block(a, b);
+async function blockCalc(player,a,b,type=1) {
+    let result = await block(a, b,type);
     let success = true;
     switch (result) {
         case 'too slow':
-            await cutscene(`You raise your arms to block but it is too late!`);
+            let msg1 = (type) ? `You raise your arms to block but you are too slow!` : `You fail to escape the blast radius of the missiles!`;
+            await cutscene(msg1);
             success = false;
             break;
         case 'miss':
-            await cutscene(`You try to block Taj's attack but you miss!`);
+            let msg2 = (type) ? `You try to block Taj's attack but you miss!` : `You fail to escape the blast radius of the missiles!`;
+            await cutscene(msg2);
             success = false;
             break;
         case 'blocked':
-            if (player.strength < 5) {
-                await cutscene(`Taj's fist connects with your block, shattering every bone in your arms!`);
-                success = false;
+            if (type) {
+                if (player.strength < 5) {
+                    await cutscene(`Taj's fist connects with your block, shattering some of your bones!`);
+                    success = false;
+                } else {
+                    await cutscene(`You manage to stop one of Taj's punches!`);
+                }
             } else {
-                await cutscene(`You manage to stop one of Taj's punches!`);
+                await cutscene("You avoid some of Taj's tomahawk crusie missiles!");
             }
             break;
         default:
@@ -3476,6 +3572,7 @@ async function level1(player) { // First level (get some starting items and esca
 };
 
 async function level(character, fights, enemiesList, description, itemList, weaponList) {
+    console.log(weaponList)
     console.log('Starting Level');
     let player = character;
     console.log(player);
@@ -3495,13 +3592,18 @@ async function level(character, fights, enemiesList, description, itemList, weap
             console.log(enemyList);
             player = await fight(player, enemyList);
         } else {
-            let a = [`You find a deserted area with some useful items scattered about.`, `You find a deserted warehouse which still contains some items`];
-            cutscene(randchoice(a));
+            let a = [`You discover a deserted area with some useful items scattered about.`, `You find a deserted warehouse which still contains some items`, `you locate a store room containing some valuable items`];
+            await cutscene(randchoice(a));
             let numItems = randint(2,5);
             for (let i=0;i<numItems;i++) {
-                if (randint(0, 3)) { // 66% change to get items 33% change to get weapons
-                    player = await giveItem(player, null, itemList);
-                    console.log(player);
+                if (randint(0, 4)) { // 75% change to get items 25% change to get weapons
+                    if (randint(0, 3)) { // 66% item 33% armour
+                        player = await giveItem(player, null, itemList);
+                        console.log(player);
+                    } else {
+                        player = await equipArmour(player);
+                        console.log(player);
+                    }
                 } else {
                     console.log(weaponList);
                     player = await giveWeapon(player, null, weaponList);
@@ -3530,7 +3632,7 @@ async function bossBattle(player) {
         await cutscene(`Before you can react, Taj disappears from your vision as your puny mortal brain struggles to comprehend what happened. (what do you mean you're smarter than that, your a ${player_name}!)`);
     } else {
         await cutscene(`Before you can attack, you see a fist headding straight for your chest!`);
-        switch (await block(2, 1)) {
+        switch (await block(5, 5, 1)) {
             case 'too slow':
                 await cutscene(`You raise your arms to block but it is too late!`);
                 console.log(weapons.taj.punch);
@@ -3551,10 +3653,10 @@ async function bossBattle(player) {
                     await cutscene(`You manage to stop Taj's attack!`);
                     await cutscene(`"Not bad," says Taj, "however, you shall die now!"`);
                     await cutscene(`Taj launches a barrage of punches at you!`);
-                    let numAttacks = randint(5,12);
+                    let numAttacks = randint(3,6);
                     let success = true;
                     for (let i=0; i<numAttacks; i++) {
-                        success = await blockCalc(1,1);
+                        success = await blockCalc(player,3,2);
                         if (success != true) {
                             let result = await simulateAttack(enemies.taj[0], player, weapons.taj.punch);
                             player = result[1];
@@ -3579,28 +3681,56 @@ async function bossBattle(player) {
                             await cutscene(`You reached ending 2 out of 3. Reload the page to play again.`);
                             return;
                         } else {
-                            await cutscene(`You survive Taj's ultimate attack!`);
-                            await cutscene(`Taj looks tired and collapses onto the ground, breahting heavilly!`);
-                            const actions = ['kill', 'spare'];
-                            let decision = await choice(`What do you do to Taj: `, actions, false, false, false); // Lmao you think you stand a chance against Taj
-                            if (decision) {
-                                await cutscene(`You spare Taj and choose not to kill him.`);
-                                await cutscene(`Taj stabs you in the back once you turn away!`);
-                                player.lost[0] +=player.health;
-                                player.health = 0;
-                                updateStats(player);
+                            await cutscene(`You survive Taj's energy attack!`);
+                            await cutscene(`"You have survived for far too long!" roared Taj the Terrorist as he pulled out a remote controller.`);
+                            await cutscene(`"Feel the power of my Tomahawk missiles!" Taj screams as he slams hishand onto a big red button.`);
+                            let duration = randint(2,8);
+                            for (let i=0; i<duration; i++) {
+                                success = await blockCalc(player,1,randint(2,4),0);
+                                if (success != true) {
+                                    let result = await simulateAttack(enemies.taj[0], player, weapons.taj.tomahawk);
+                                    player = result[1];
+                                    if (isDead(player)) {
+                                        break;
+                                    }
+                                }
+                            }
+                            if (isDead(player)) {
                                 await cutscene(`You Died.`);
-                                await cutscene(`GG ${player_name}, so close yet so far...`);
+                                await cutscene(`GG ${player_name}, dying by cruise missiles isn't such a bad way to go.`);
+                                await cutscene(`Epilogue:`);
+                                await cutscene(`"Another one bites the dust..." Taj thinks to himself as he stares at the massive craters in his room before turning back to his game.`);
+                                await cutscene(`Taj's eyes widened in horror as he stared at the piece of metal sticking out of his computer. "NOOOOOOOO" Taj screams as he throws another tantrum.`);
                                 await cutscene(`You reached ending 2 out of 3. Reload the page to play again.`);
                                 return;
                             } else {
-                                await cutscene(`You choose to kill Taj.`);
-                                const killTaj = [`You stab Taj in the heart with a knife!`,`You decapitate Taj with a sword!`];
-                                await cutscene(randchoice(killTaj));
-                                updateEnemy([enemies.taj[1]]);
-                                await cutscene(`You watch Taj's dead body colapse onto the ground.`);
-                                await cutscene(`GG ${player_name}, you beat the Taj game! You have reached ending 3 out of 3, the only ending where you survive. You can reload the game to play again and try to find all the secret areas in the game.`);
-                                return;
+                                await cutscene(`Taj looks tired and collapses onto the ground, breahting heavilly!`);
+                                await cutscene(`You advance towards Taj, raising a sword you found on the ground.`);
+                                await cutscene(`"Think about what you are doing!" Taj cried out, "You don't have to do this! This isn't the only way!"`);
+                                const actions = ['kill Taj', 'spare Taj'];
+                                let decision = await choice(`What do you do to Taj: `, actions, false, false, false); // Lmao you think you stand a chance against Taj
+                                if (decision) {
+                                    await cutscene(`You spare Taj and choose not to kill him.`);
+                                    await cutscene(`Taj stabs you in the back once you turn away!`);
+                                    player.lost[0] +=player.health;
+                                    player.health = 0;
+                                    updateStats(player);
+                                    await cutscene(`You Died.`);
+                                    await cutscene(`GG ${player_name}, so close yet so far...`);
+                                    await cutscene(`You reached ending 2 out of 3. Reload the page to play again.`);
+                                    return;
+                                } else {
+                                    await cutscene(`You choose to kill Taj!`);
+                                    await cutscene(`"Please!" screamed Taj, "You will break the balance of the world by killing me!"`);
+                                    await cutscene(`"Think about the consequences!" shouted Taj as you swung your sword."`);
+                                    updateEnemy([enemies.taj[1]]);
+                                    await cutscene(`You watch Taj's dead body collapse on the ground as your mind starts to clear.`);
+                                    await cutscene(`No longer blinded by rage, doubt starts to creep into your mind.`);
+                                    await cutscene(`"What has he ever done to me?" you wonder, "Why do I hate him so much?"`);
+                                    await cutscene(`console.log(moreBackstory());`);
+                                    await cutscene(`GG ${player_name}, you have reached ending 3 out of 3, the only ending where you survive. You can reload the game to play again and try to find all the secret areas in the game.`);
+                                    return;
+                                }
                             }
                         }
                     }
@@ -3630,10 +3760,31 @@ async function game(character) {
     // Level 1 (Leave the starting room)
     player = await level1(player);
     console.log('starting room escaped!');
-    player = await level(player, 5, enemies.innovations, ['You find yourself on the innvoations Island of 2021','You see an entrance to the next level'], t1Items, weapons.teir1);
-    player = await level(player, 3, enemies.religious, ['You find yourself in the Tajism church','You see an entrance to the next level'], t2Items, weapons.teir2);
-    player = await level(player, 7, enemies.default, ["You find yourself within Taj's basement",'You see an entrance to the next level'], t3Items, weapons.teir3);
-    player = await level(player, 2, enemies.spedlords, ["You find yourself in the throne room of the Spedlords",'You see an entrance to the next level'], t4Items, weapons.teir4);
+    let stay = true;
+    while (stay) {
+        console.log(weapons.tier1)
+        player = await level(player, randint(4,6), enemies.innovations, ['You find yourself on the island of innovations','You see an entrance to the next area'], t1Items, weapons.tier1);
+        stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
+        console.log(stay);
+    }
+    stay = true;
+    while (stay) {
+        player = await level(player, randint(2,3), enemies.religious, ['You find yourself in the Tajism church','You see an entrance to the next area'], t2Items, weapons.tier2);
+        stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
+        console.log(stay);
+    }
+    stay = true;
+    while (stay) {
+        player = await level(player, randint(4,7), enemies.default, ["You find yourself within Taj's basement",'You see an entrance to the next area'], t3Items, weapons.tier3);
+        stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
+        console.log(stay);
+    }
+    stay = true;
+    while (stay) {
+        player = await level(player, randint(1,2), enemies.spedlords, ["You find yourself in the Taj's bastion",'You see an entrance to the next area'], t4Items, weapons.tier4);
+        stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
+        console.log(stay);
+    }
     bossBattle(player);
 };
 
