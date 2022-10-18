@@ -837,15 +837,6 @@ function enemyTurn() {
     if (player.health > 0) {
         addText("text", `<br>You are on ${player.health} health.<br>`)
         addText("text", `<button onclick="level1()">Next Round</button>`)
-        // switch (currentLevel) {     // Need to move
-        //     case 1:
-        //         addText("text", `<button onclick="level1()">Next Round</button>`)
-        //         break
-        //     case 2:
-        //         addText("text", `<button onclick="level2(true)">Next Level</button>`)
-        //         break
-        
-        // }
     }
     
 }
@@ -885,7 +876,7 @@ function level1Attack() {
     deleteText("text")
     addText("text", `<h2>What weapon do you use?</h2><br>`)
     if (playerInventory.weapons.slot1 != "empty") {
-        addText("text", `<button onclick="playerAttack('${playerInventory.weapons.slot1}')">${playerInventory.weapons.slot1}</button>`)
+        addText("text", `<button onclick="playerAttack('${playerInventory.weapons.slot1}')">${playerInventory.weapons.slot1}</button> `)
     }
     if (playerInventory.weapons.slot2 != "empty") {
         hacker()
@@ -900,7 +891,7 @@ function level1Attack() {
         hacker()
     }
 
-    addText("text", `<button onclick="playerAttack('punch')">punch</button>`)
+    addText("text", `<button onclick="playerAttack('punch')">punch</button> `)
     addText("text", `<button onclick="playerAttack('kick')">kick</button>`)
 }
 
@@ -965,7 +956,6 @@ function level1(firstTime=false) {
         deleteText("text")
     }
 
-    // if (checkEnemies) // WHAT WAS I DOING HERE? CANNOT REMEMBER - LOOK AT LATER
 
     addText("text", "<h2><b>What do you do?</b></h2><br>")
     addText("text", `<button onclick='level1Talk()'>Talk</button>  `) // Talk button
