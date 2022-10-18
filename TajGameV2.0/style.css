@@ -1,0 +1,152 @@
+@font-face {
+    font-family: "CustomFont";
+    src: url("Another Danger.ttf");
+}
+
+body {
+    background-color: #505050;
+    background: url('Bg1.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height:600px;
+}
+  
+h1 {
+    text-align: center;
+    font-size: 150px;
+    font-weight: 600;
+    background-image: linear-gradient(to bottom, #ff0000, #480000);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    margin: auto;
+    width: 90%;
+    padding: 0px;
+}
+
+p {
+    font-family: 'Courier New', monospace;
+    color: #00FF00;
+    font-size: 40px;
+}
+
+button {
+    background-color: #404040; /* Green */
+    border: 10px, solid, #606060;
+    color: white;
+    padding: 1%;
+    width: 20%;
+    height: 25%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+}
+
+#bar {
+    font-family: 'Courier New', monospace;
+    color: #00FF00;
+    font-size: 10px;
+    white-space: pre;
+}
+
+#strong {
+    font-family: "CustomFont";
+    color: #ff0000;
+    text-align: center;
+    font-size: 100px;
+}
+
+#Game {
+    background-color: #404040;
+    height: 150%;
+    min-height: 800px;
+    min-width: 75%;
+    width: 75%;
+    margin: 0 auto;
+    padding:0;
+}
+
+#animation {
+    background-color: #FFFFFF;
+    height: 0%;
+    max-height: 0%;
+    min-height: 0%;
+    min-width: 95%;
+    width: 95%;
+    border: 1px solid #606060;
+    margin: 0 auto;
+    padding:0;
+}
+
+#main {
+    background-color: #252525;
+    height: 70%;
+    max-height: 70%;
+    min-height: 70%;
+    min-width: 95%;
+    width: 95%;
+    border: 5px solid #606060;
+    margin: 0 auto;
+    padding:0;
+}
+
+#topLeft {
+    background-color: #252525;
+    height: 25%;
+    max-height: 25%;
+    min-height: 25%;
+    min-width: 50%;
+    width: 50%;
+    margin-left: auto; 
+    margin-right: 0;
+    padding:0;
+    float: left;
+}
+
+#topRight {
+    background-color: #252525;
+    height: 25%;
+    max-height: 25%;
+    min-height: 25%;
+    min-width: 50%;
+    width: 50%;
+    margin-left: 0; 
+    margin-right: auto;
+    padding:0;
+    float: left;
+}
+
+#divider {
+    background-color: #606060;
+    height: 26%;
+    max-height: 26%;
+    min-height: 26%;
+    min-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding:0;
+}
+
+#centre {
+    background-color: #252525;
+    height: 50%;
+    max-height: 50%;
+    min-height: 50%;
+    min-width: 98%;
+    width: 98%;
+    margin: 0 auto;
+    padding:1%;
+}
+
+#controlPannel {
+    background-color: #252525;
+    height: 25%;
+    min-height: 25%;
+    min-width: 95%;
+    width: 95%;
+    border: 5px solid #606060;
+    margin: 0 auto;
+    padding:0;
+}

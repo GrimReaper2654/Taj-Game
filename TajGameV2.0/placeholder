@@ -1,0 +1,6 @@
+n = 10**100
+
+for i in range(n):
+	print("TOM-A-HAWK!")
+
+
