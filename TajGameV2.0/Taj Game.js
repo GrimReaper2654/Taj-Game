@@ -3293,6 +3293,8 @@ function isDead(character) {
     return 0;
 };
 
+
+
 async function LBozo(player) {
     await cutscene(`LMAO U DIED!! TRASH!!! Now you have ${randint(10,99)} viruses on your computer. Lmao L Bozo. Imagine dying, can't relate. What a ${player_name} moment.`); // TODO: Add more insults
     await cutscene(`GG ${player_name}, you died to a lowly grunt and didn't even get to see Terrorist Taj (looks like I coded that boss fight for nothing). You got ending 1 out of 3 which is the noob ending. Reload the page to play again.`);

@@ -951,6 +951,8 @@ function isDead(character) {
     return 0;
 }
 
+
+
 function LBozo() {
     while (1) {
         showText("LMAO U DIED!! TRASH!!!"); // TODO: Add more insults
