@@ -13,6 +13,6 @@ let school = {
             routers: ['','',''],
             switches: ['','',''],
             computers: ['','','']
-        }
+        },
     }
 };
