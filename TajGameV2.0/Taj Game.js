@@ -2660,6 +2660,7 @@ function addButton(text) {
 const delay = ms => new Promise(res => setTimeout(res, ms));
 var cutsceneEnded = false;
 async function cutscene(text, sped = true) {
+    showButton('');
     await showText(text,sped);
     showButton(`<button id="continue" onclick="finishCutscene()">Continue</button>`);
     while (!cutsceneEnded) {
@@ -2678,6 +2679,7 @@ function finishCutscene() {
 
 var finishedChoosing = false;
 async function choice(description,choices,useNames=false,returnObject=false,canCancel=true,sped=true) {
+    showButton('');
     console.log(canCancel);
     console.log(choices);
     returnObj=returnObject;
@@ -2872,7 +2874,7 @@ async function giveItem(player, item=null, items=null) {
 
 async function giveWeapon(player, weapon=null, weaponsList=null) {
     let chosenItem = null;
-    if (weaponsList) {
+    if (weaponsList != null) {
         console.log('list');
         console.log(weaponsList);
         chosenItem = randomWeapon(weaponsList);
@@ -3293,8 +3295,6 @@ function isDead(character) {
     return 0;
 };
 
-
-
 async function LBozo(player) {
     await cutscene(`LMAO U DIED!! TRASH!!! Now you have ${randint(10,99)} viruses on your computer. Lmao L Bozo. Imagine dying, can't relate. What a ${player_name} moment.`); // TODO: Add more insults
     await cutscene(`GG ${player_name}, you died to a lowly grunt and didn't even get to see Terrorist Taj (looks like I coded that boss fight for nothing). You got ending 1 out of 3 which is the noob ending. Reload the page to play again.`);
@@ -3581,7 +3581,7 @@ async function level(character, fights, enemiesList, description, itemList, weap
     await cutscene(description[0]);
     updateStats(player);
     for (let i=0; i<fights; i++) {
-        if (randint(0,3)) {
+        if (randint(0,3) && false) { // † Debug
             let enemyType = randchoice(enemiesList);
             console.log("chosen enemy:");
             console.log(enemyType);
