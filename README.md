@@ -5,11 +5,11 @@ This is probably not going to be updated in the near future so yeah...
 
 ## Game Link
 Henry Game:<br>
-<a>https://grimreaper2654.github.io/Taj-Game/main.html</a><br>
+<a>https://grimreaper2654.github.io/Taj-Game/main.html</a><br> (Buggy and bad)
 Tom Game:<br>
-<a>https://grimreaper2654.github.io/Taj-Game/Tom-Game/main.html</a><br>
+<a>https://grimreaper2654.github.io/Taj-Game/Tom-Game/main.html</a><br> (less Buggy and bad and made by Taj)
 Taj Game:<br>
-<a>https://grimreaper2654.github.io/Taj-Game/TajGameV2.0/main.html</a><br>
+<a>https://grimreaper2654.github.io/Taj-Game/TajGameV2.0/main.html</a><br> (more Buggy but less bad)
 
 
 ## Plot:
