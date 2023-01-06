@@ -1,5 +1,7 @@
-# Henry-Game
-A game involving our lord and savoiur, TOM THE TERRORIST!
+# Taj-Game
+A game involving our lord and savoiur, TAJ THE TERRORIST!
+
+This is probably not going to be updated in the near future so yeah...
 
 ## Game Link
 Henry Game:<br>
@@ -16,3 +18,4 @@ A person (TOM THE TERRORIST) wakes up in the depth of Henry Bird's dungeon and s
 ## Disclaimer:
 All the characters are entirely fictional and any resemlblances to people in real life are purely ~~intentional~~ coincidental.
 <br>~~.~~ ~~.~~
+
