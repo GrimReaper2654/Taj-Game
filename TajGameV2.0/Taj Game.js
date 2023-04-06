@@ -3581,7 +3581,7 @@ async function level(character, fights, enemiesList, description, itemList, weap
     await cutscene(description[0]);
     updateStats(player);
     for (let i=0; i<fights; i++) {
-        if (randint(0,3) && false) { // † Debug
+        if (randint(0,5)) { // † Debug
             let enemyType = randchoice(enemiesList);
             console.log("chosen enemy:");
             console.log(enemyType);
