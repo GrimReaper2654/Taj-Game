@@ -2538,6 +2538,315 @@ const t3Items = [
     },
 ];
 
+const t4Items = [
+    {
+        name: '9mm bullets',
+        type: 'ammunition',
+        quantity: 10,
+        stackSize: 10
+    },
+    {
+        name: 'arrow',
+        type: 'ammunition',
+        quantity: 12,
+        stackSize: 16
+    },
+    {
+        name: 'assault rifle magazine',
+        type: 'ammunition',
+        quantity: 30,
+        stackSize: 30
+    },
+    {
+        name: '.50cal bullets',
+        type: 'ammunition',
+        quantity: 1,
+        stackSize: 1
+    },
+    {
+        name: '30mm depleted uranium rounds',
+        type: 'ammunition',
+        quantity: 500,
+        stackSize: 1100
+    },
+    {
+        name: 'Maceline™ Painkillers',
+        type: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [500, 500],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 3,
+        stackSize: 10
+    },
+    {
+        name: 'Maceline™ Steroids',
+        type: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [5, 10],
+        quickConsume: true,
+        quantity: 3,
+        stackSize: 69
+    },
+    {
+        name: 'Maceline™ Instant Noodles',
+        type: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [150, 250],
+        mentalRegen: [25, 50],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 2,
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Ice Tea',
+        type: 'consumable',
+        healthRegen: [200, 250],
+        hungerRegen: [100, 200],
+        mentalRegen: [225, 250],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 1,
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Health Potion',
+        type: 'consumable',
+        healthRegen: [100,250],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 2,
+        stackSize: 5,
+    },
+    {
+        name: 'Maceline™ Large Health Potion',
+        type: 'consumable',
+        healthRegen: [150,350],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 1,
+        stackSize: 1,
+    },
+    {
+        name: 'frag grenade',
+        type: 'throwable',
+        damage: [75, 150],
+        damageType: splash,
+        quickConsume: true,
+        damageType: physical,
+        quantity: 1,
+        stackSize: 3
+    },
+    {
+        name: 'high explosive grenade',
+        type: 'throwable',
+        damage: [125, 200],
+        damageType: single,
+        quickConsume: true,
+        damageType: physical,
+        quantity: 2,
+        stackSize: 3
+    },
+    {
+        name: 'throwing knife',
+        type: 'throwable',
+        damage: [50, 100],
+        damageType: single,
+        quickConsume: true,
+        damageType: physical,
+        quantity: 2,
+        stackSize: 5
+    },
+    {
+        name: 'medium rock',
+        type: 'throwable',
+        damage: [75, 150],
+        damageType: single,
+        quickConsume: false,
+        damageType: physical,
+        quantity: 1,
+        stackSize: 3
+    },
+    {
+        name: 'big rock',
+        type: 'throwable',
+        damage: [150, 300],
+        damageType: single,
+        quickConsume: false,
+        damageType: physical,
+        quantity: 1,
+        stackSize: 1
+    },
+];
+
+const t5Items = [
+    {
+        name: '9mm bullets',
+        type: 'ammunition',
+        quantity: 10,
+        stackSize: 10
+    },
+    {
+        name: 'arrow',
+        type: 'ammunition',
+        quantity: 12,
+        stackSize: 16
+    },
+    {
+        name: 'assault rifle magazine',
+        type: 'ammunition',
+        quantity: 30,
+        stackSize: 30
+    },
+    {
+        name: '.50cal bullets',
+        type: 'ammunition',
+        quantity: 1,
+        stackSize: 1
+    },
+    {
+        name: '30mm depleted uranium rounds',
+        type: 'ammunition',
+        quantity: 500,
+        stackSize: 1100
+    },
+    {
+        name: 'Maceline™ Painkillers',
+        type: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [500, 500],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 3,
+        stackSize: 10
+    },
+    {
+        name: 'Maceline™ Steroids',
+        type: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [5, 10],
+        quickConsume: true,
+        quantity: 3,
+        stackSize: 69
+    },
+    {
+        name: 'Maceline™ Instant Noodles',
+        type: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [150, 250],
+        mentalRegen: [25, 50],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 2,
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Ice Tea',
+        type: 'consumable',
+        healthRegen: [200, 250],
+        hungerRegen: [100, 200],
+        mentalRegen: [225, 250],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 1,
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Health Potion',
+        type: 'consumable',
+        healthRegen: [100,250],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 2,
+        stackSize: 5,
+    },
+    {
+        name: 'Maceline™ Large Health Potion',
+        type: 'consumable',
+        healthRegen: [150,350],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 1,
+        stackSize: 1,
+    },
+    {
+        name: 'frag grenade',
+        type: 'throwable',
+        damage: [75, 150],
+        damageType: splash,
+        quickConsume: true,
+        damageType: physical,
+        quantity: 1,
+        stackSize: 3
+    },
+    {
+        name: 'high explosive grenade',
+        type: 'throwable',
+        damage: [125, 200],
+        damageType: single,
+        quickConsume: true,
+        damageType: physical,
+        quantity: 2,
+        stackSize: 3
+    },
+    {
+        name: 'throwing knife',
+        type: 'throwable',
+        damage: [50, 100],
+        damageType: single,
+        quickConsume: true,
+        damageType: physical,
+        quantity: 2,
+        stackSize: 5
+    },
+    {
+        name: 'medium rock',
+        type: 'throwable',
+        damage: [75, 150],
+        damageType: single,
+        quickConsume: false,
+        damageType: physical,
+        quantity: 1,
+        stackSize: 3
+    },
+    {
+        name: 'big rock',
+        type: 'throwable',
+        damage: [150, 300],
+        damageType: single,
+        quickConsume: false,
+        damageType: physical,
+        quantity: 1,
+        stackSize: 1
+    },
+];
 
 //Default player
 var player = {
