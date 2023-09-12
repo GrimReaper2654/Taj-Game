@@ -3620,12 +3620,12 @@ async function LBozo(player) {
     await cutscene(`STOP`);
     await cutscene(`S T O P !`);
     await cutscene(`STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
-    for (let i=0; i<=10; i++) {
+    for (let i=0; i<=5; i++) {
         await cutscene(`Bet you wished you could skip cutscenes. Now you have to wait for this very long message to load. Surely you have better things to do with your life. THere is actually nothing more to see but if you don't believe me, you can keep clicking.`);
     }
     await cutscene(`How did you even see this! There was a forever loop infont of this. HACKS!!!!!!!!!!!`);
     await cutscene(`Enjoy another forever loop!`);
-    for (let i=0; i<=20; i++) {
+    for (let i=0; i<=5; i++) {
         await cutscene(`Bet you wished you could skip cutscenes. Now you have to wait for this very long message to load. Surely you have better things to do with your life. THere is actually nothing more to see but if you don't believe me, you can keep clicking.`);
     }
     await cutscene(`How did you escape another forever loop! HAX!!!!!!!!!!!!`);
