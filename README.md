@@ -1,7 +1,7 @@
 # Taj-Game
 A game involving our lord and savoiur, TAJ THE TERRORIST!
 
-This is probably not going to be updated in the near future so yeah...
+Time to update the Taj game again...
 
 ## Game Link
 Henry Game:<br>
