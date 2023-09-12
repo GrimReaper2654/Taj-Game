@@ -7,7 +7,7 @@ Time to update the Taj game again...
 Henry Game:<br>
 <a>https://grimreaper2654.github.io/Taj-Game/main.html</a> (Buggy and bad)<br>
 Tom Game:<br>
-<a>https://grimreaper2654.github.io/Taj-Game/Tom-Game/main.html</a> (less Buggy and bad and made by Taj)<br>
+<a>https://grimreaper2654.github.io/Taj-Game/Tom-Game/main.html</a> (less Buggy and bad)<br>
 Taj Game:<br>
 <a>https://grimreaper2654.github.io/Taj-Game/TajGameV2.0/main.html</a> (more Buggy but less bad)<br>
 
