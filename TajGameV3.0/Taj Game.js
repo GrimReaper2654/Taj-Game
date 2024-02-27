@@ -16,24 +16,40 @@ function randchoice(list, remove=false) { // chose 1 from a list and update list
     return list[choice];
 }
 
+function randomWeapon (obj) {
+    var keys = Object.keys(obj);
+    return obj[keys[ keys.length * Math.random() << 0]];
+};
+
+// Damage Type
+const normal = 'normal';
+const mental = 'mental';     // damages mental health
+const shatter = 'shatter';   // Extra damage to armour
+const piercing = 'piercing'; // ignore armour
+const splash = 'splash';     // hit all enemies with normal type
+// Stats
+const str = 'strength';
+const intel = 'intelligence';
+const none = 'none';
+
 const descriptions = {
     bodyParts: ["head", "shoulder", "knee", "toe", "arm", "hand", "chest", "foot", "hip", "wrist", "shin", "leg", "neck"],
     naturalHazard: ["stick", "leaf", "Taj clone", "wall", "rock"],
     strong: ["powerful", "deadly", "incredible", "amazing", "flawless"],
     general: ["mediocre", "average", "strong", "weak", "lackluster"],
     enemyPrep: ["gets into a battle stance", "intimidatingly waves his weapon", "charges up an attack", "flexes his muscles"],
-    enemyAppeared: ["appeared in front of you", "landed in front of you", "emerged from the shaddows"],
+    enemyAppeared: ["appeared in front of you", "landed in front of you", "emerged from the shadows"],
     find: ['locate', 'stumble upon', 'discover', 'see'],
     location: ['in a wooden crate', 'hidden in a corner', 'on a rock', 'on the ground'],
-    insults: ['Taj deez nuts', 'Ta-Ja', 'you spedlord', 'you sped'],
+    insults: ['Taj deez nuts', 'ur mum fat', 'you spedlord', 'you sped', 'L bozo + ratio'],
     rage: [`"I hate you!"`, `"DIE!`]
 };
 
 // Constants
-// Teir 1: Taj's basement 
-// Teir 2: Innovations Island
-// Teir 3: Taj Church
-// Teir 4: Taj Territory
+// tier 1: Taj's basement 
+// tier 2: Innovations Island
+// tier 3: Taj Church
+// tier 4: Taj Territory
 
 var player_name = 'Spedry';
 var settings = { // most of these do nothing
@@ -51,35 +67,2947 @@ var settings = { // most of these do nothing
     
 };
 
-const data = {
-    buttons: {
-        continue: `<button id="continue" onclick="finishCutscene()">Continue</button>`,
+const weapons = {
+    body: {
+        none: {
+            name: 'none',
+            player_useable: true,
+            damage: [0,0],
+            baseAccuracy: 0,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,1],
+            ammo: 'bad game design',
+            consumption: 1,
+            attack_description: {
+                KO: [
+                    'If you see this, there is a problem',
+                ],
+                single: [
+                    'If you see this, there is a problem',
+                ],
+                miss: [
+                    'If you see this, there is a problem',
+                ]
+            }
+        },
+        stumble: {
+            name: 'stumble',
+            player_useable: true,
+            damage: [0,0],
+            baseAccuracy: 0,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] tripped over, falling onto [defender] and crushed him!',
+                ],
+                single: [
+                    '[attacker] tripped over, falling face first into the ground!',
+                    '[attacker] tripped on a [naturalHazard]!',
+                ],
+                miss: [
+                    '[attacker] tripped over, falling face first into the ground!',
+                    '[attacker] tripped on a [naturalHazard]!',
+                    '[defender] laughed as [attacker] pathetically tripped on a [naturalHazard]!',
+                    '[defender] laughed as [attacker] pathetically flailed his arms, trying to attack him!',
+                ]
+            }
+        },
+        punch: {
+            name: 'punch',
+            player_useable: true,
+            damage: [10,18],
+            baseAccuracy: 95,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[attacker] sent [defender] flying with [strong] blow!', 
+                    '[defender] collapses after taking [strong] punch from [attacker]!', 
+                    '[defender] flees after taking [strong] hit from [attacker]!',
+                    '[attacker] kills [defender] with [strong] punch!',
+                ],
+                single: [
+                    '[attacker] landed [description] punch on [defender]!', 
+                    '[attacker] punched [defender] in the [body]!',
+                    '[attacker] karate chops [defender]!',
+                    '[attacker] slaps [defender] in the face!'
+                ],
+                multi: [
+                    '[attacker] landed [description] series of punches on [defender]!',
+                    '[attacker] unleashes a powerful martial arts technique on [defender]!',
+                ],
+                miss: [
+                    '[attacker]\'s punch misses [defender]!',
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s punch with ease!',
+                ]
+            }
+        },
+        kick: {
+            name: 'kick',
+            player_useable: true,
+            damage: [30,50],
+            baseAccuracy: 75,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,2],
+            attack_description: {
+                KO: [
+                    '[attacker] sent [defender] flying with [strong] kick!', 
+                    '[defender] collapses after taking [strong] roundhouse kick from [attacker]!', 
+                    '[defender] flees after taking [strong] kick from [attacker]!',
+                    '[attacker] kills [defender] with [strong] kick!',
+                ],
+                single: [
+                    '[attacker] landed [description] kick on [defender]!', 
+                    '[attacker] kicks [defender] in the [body]!',
+                ],
+                multi: [
+                    '[attacker] landed [description] series of kicks on [defender]!',
+                    '[attacker] unleashes a powerful martial arts technique on [defender]!',
+                ],
+                miss: [
+                    '[attacker]\'s kick misses [defender]!',
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker]\'s kick is blocked by [naturalHazard]!',
+                    '[attacker] kicks at [defender] and loses ballence, missing [defender] by a wide margin!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s kick with ease!',
+                ]
+            }
+        },
+        headbut: {
+            name: 'headbut',
+            player_useable: false,
+            damage: [15,30],
+            baseAccuracy: 50,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] collapses after taking [strong] headbut from [attacker]!', 
+                ],
+                single: [
+                    '[attacker] landed [description] headbut on [defender]!', 
+                    '[attacker] headbutted [defender]!',
+                ],
+                miss: [
+                    '[attacker]\'s headbut misses [defender]!',
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] charges straight past [defender]!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s headbut with ease!',
+                ]
+            }
+        },
+        bodyslam: {
+            name: 'bodyslam',
+            player_useable: false,
+            damage: [30,50],
+            baseAccuracy: 75,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] is flattened by [attacker]\'s bodyslam!', 
+                    '[defender] faints after being bodyslamed by [attacker]\'s!', 
+                ],
+                single: [
+                    '[attacker] landed [description] bodyslam on [defender]!', 
+                    '[attacker] rams into [defender]!',
+                ],
+                miss: [
+                    '[attacker]\'s bodyslam misses [defender]!',
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] charges straight past [defender]!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s bodyslam with ease!',
+                ]
+            }
+        },
+    },
+    enemy: {
+        baseballBat: {
+            name: 'baseball bat',
+            player_useable: false,
+            damage: [30,50],
+            baseAccuracy: 60,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[attacker] knocks [defender] unconscious with a baseball bat!', 
+                    '[attacker] cracks [defender]\'s skull with a baseball bat!', 
+                    '[attacker] sends [defender] flying into a wall with a baseball bat!', 
+                ],
+                single: [
+                    '[attacker] hit [defender]\'s [body] with a baseball bat!', 
+                    '[attacker] swung a baseball bat into [defender]\'s [body]!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of blows on [defender]!',
+                    '[attacker] rains down blows upon [defender] with a baseabll bat!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his baseball bat wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s baseball bat with some difficulty!',
+                ]
+            }
+        },
+        magicBeam: {
+            name: 'magic beam',
+            player_useable: false,
+            damage: [10,100],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] desintigrates [defender] with a blast of magic!', 
+                    '[attacker] deatomises [defender] with a ball of destructive magic!', 
+                    '[attacker] obliterates [defender] with a ray of destruction!'
+                ],
+                single: [
+                    '[attacker] fires a beam of magic at [defender]\'s [body]!', 
+                    '[attacker] hits [defender]\'s [body] with a ball of destructuve magic!', 
+                    '[attacker] fires magical beams at [defender]!', 
+                ],
+                miss: [
+                    '[attacker]\'s magical beam hits a [naturalHazard] and is deflected!',
+                    '[attacker]\'s concentration is broken by a [naturalHazard] falling onto his head!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s blast of magic with difficulty!',
+                ]
+            }
+        },
+        flamesOfTerrorism: {
+            name: 'flames of terrorism',
+            player_useable: false,
+            damage: [75,150],
+            baseAccuracy: 95,
+            type: normal,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] incinerates [defender] with Taj\'s unholy holy flames of terrorism!', 
+                    '[defender] is burnt to a crisp by [attacker]\'s unholy flames of terrorism!', 
+                ],
+                single: [
+                    '[attacker] shoots a fireball at [defender]\'s [body]!', 
+                    '[attacker] invokes Taj\'s flames of terrorism to attack [defender]!', 
+                    '[attacker] unleashes a waye of fire at [defender]!', 
+                ],
+                miss: [
+                    '[attacker] spell goes out in a puff of smoke!',
+                    '[attacker]\'s fireball swerves wildly and misses',
+                    '[defender] dodges to the side, narrowly avoiding a 20 meter tall wall of fire!',
+                ]
+            }
+        },
+        swordOfTerrorism: {
+            name: 'sword of terrorism',
+            player_useable: false,
+            damage: [10,25],
+            baseAccuracy: 75,
+            type: normal,
+            multiplier: intel,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[attacker] decapitates [defender] with Taj\'s unholy sword of terrorism!', 
+                    '[defender] is desintigrated by [attacker]\'s demon sword of terrorism!', 
+                    '[defender] is deatomised by [attacker]\'s demonic sword arts!', 
+                ],
+                single: [
+                    '[attacker] slashes at [defender]\'s [body] with Taj\'s demon sword of terrorism!', 
+                    '[attacker] stabbes at [defender]\'s [body] with Taj\'s sword of terrorism!', 
+                    '[attacker] launches a mighty swing at [defender]\'s [body] with the sword of terrorism!', 
+                ],
+                multi: [
+                    '[attacker] unleashes a flury of slashes at [defender]\'s [body] with Taj\'s sword of terrorism!', 
+                    '[attacker] madly hacks away at [defender] with the unholy sword of terrorism!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his sword of terrorism into a [naturalHazard] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s swing with great difficulty!',
+                ]
+            }
+        },
+        chant: {
+            name: 'cultist chant',
+            player_useable: false,
+            damage: [30,100],
+            baseAccuracy: 75,
+            type: mental,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] corrupts [defender]\'s mind with Taj\'s terrorist ideology!', 
+                    '[defender] falls into despair after hearing [attacker]\'s cultist chant!', 
+                ],
+                single: [
+                    '[attacker] does a creepy ritual that scares [defender]!', 
+                    '[attacker] scares [defender] with a cultist chant!', 
+                    '[attacker] scares [defender] with a cultist dance!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and makes a fool of himself!',
+                    '[attacker] rambles on about nonsense infront of an irritated [defender]!',
+                ]
+            }
+        },
+        insult: {
+            name: 'insult',
+            player_useable: false,
+            damage: [50,100],
+            baseAccuracy: 95,
+            type: mental,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] falls onto the ground crying after hearing [attacker]\'s harsh insults!', 
+                ],
+                single: [
+                    '[attacker] trashtalks [defender]!', 
+                    '[attacker] uses some savage insults on [defender]!', 
+                ],
+                miss: [
+                    '[defender] ignores [attacker]\'s verbal attack!',
+                    '[attacker] rambles on about nonsense infront of an irritated [defender]!',
+                ]
+            }
+        },
+        voodooMagic: {
+            name: 'voodoo magic',
+            player_useable: false,
+            damage: [-50,50],
+            baseAccuracy: 85,
+            type: normal,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] is killed by [attacker]\'s voodoo magic!', 
+                    '[defender] is transmutated into a rotting lump of flesh by [attacker]\'s voodoo magic!', 
+                    '[defender] is transmutated into a [naturalHazard] by [attacker]\'s voodoo magic!', 
+                ],
+                single: [
+                    '[attacker] throws a questionable potion at [defender]!', 
+                    '[attacker] fires a random spell at [defender]!', 
+                    '[attacker] casts an unknown spell at [defender]!', 
+                    '[attacker] uses creepy voodoo magic on [defender]!', 
+                ],
+                miss: [
+                    '[defender] watches as [attacker]\'s spell flies harmlessly past him!',
+                    '[attacker]\'s voodoo magic backfires, doing no damage to [defender]!',
+                ]
+            }
+        },
+        curry: {
+            name: 'curry wave',
+            player_useable: false,
+            damage: [50,200],
+            baseAccuracy: 1000,
+            type: normal,
+            multiplier: none,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] is burned alive by [attacker]\'s wave of burning curry!', 
+                ],
+                single: [
+                    '[attacker] launches a tsunami of burning curry at [defender]!', 
+                    '[attacker] slams a wall of curry into [defender]!', 
+                    '[attacker] summons a rain of burning hot curry upon [defender]!', 
+                    '[attacker] sends a wave of burning hot curry into [defender]!', 
+                ],
+                miss: [
+                    '[attacker] loses focus due to a [naturalHazard] falling onto his head and fails to activate his attack!',
+                    '[attacker] fumbles his chant and his spell dissipates into black smoke!',
+                ]
+            }
+        },
+        footwork: {
+            name: 'footwork',
+            player_useable: false,
+            damage: [75,100],
+            baseAccuracy: 95,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] bamboozled [defender] with his ncredibly footwork and sent [defender] flying with a [strong] blow!', 
+                ],
+                single: [
+                    '[attacker] outmanoeuvered [defender] using his superiour footwork and landed a [description] punch to [defender]\'s [body]!', 
+                    '[attacker] outmanoeuvered [defender] using his superiour footwork and landed a [description] kick to [defender]\'s [body]!', 
+                ],
+                miss: [
+                    '[attacker] trips on a [naturalHazard] and no amount of footwork could prevent his fall!',
+                ]
+            }
+        },
+        maths: {
+            name: 'maths',
+            player_useable: false,
+            damage: [50,150],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: str,
+            rapidfire: [0,0],
+            attack_description: {
+                KO: [
+                    '[attacker] sent [defender] flying with an accurately aimed punch calculated with projectile motion!', 
+                    '[attacker] pierces [defender]\'s heart with a punch through the 4th dimension!', 
+                ],
+                single: [
+                    '[attacker] calculated [defender]\'s vector in the 4th dimension of spacetime using his superiour intelect, alowing [attacker] to land a [strong] kick to [defender]\'s [body]!', 
+                    '[attacker] utilised calculus and triganometry to predict [defender]\'s angular momentum, alowing him to land a [description] kick to [defender]\'s [body]!', 
+                    '[attacker] calculated [defender]\'s vector in the 4th dimension of spacetime using his superiour intelect, alowing [attacker] to land a [strong] punch to [defender]\'s [body]!', 
+                    '[attacker] utilised calculus and triganometry to predict [defender]\'s angular momentum, alowing him to land a [description] punch to [defender]\'s [body]!', 
+                ],
+                miss: [
+                    '[attacker] made a basic mathamatical error in his calculations and miscalculated the velosity of his attack, causing [attacker] to miss!',
+                    '[attacker] forgot to account for air resistance and miscalculated the velosity of his attack, causing [attacker] to miss!',
+                ]
+            }
+        },
+        trip: {
+            name: 'trip',
+            player_useable: false,
+            damage: [150,250],
+            baseAccuracy: 100,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] tripped on a [naturalHazard], creating a massive shockwave that annihilated [defender]\'s internal organs!', 
+                ],
+                single: [ 
+                    '[attacker] tripped on a [naturalHazard], creating a massive shockwave aimed at [defender]!', 
+                    '[attacker] tripped on a [naturalHazard], causing an earthquake under [defender]\'s feet!', 
+                ],
+                miss: [
+                    '[attacker] forgot what he was doing and did not attack!',
+                ]
+            }
+        },
+        stumble: {
+            name: 'stumble',
+            player_useable: false,
+            damage: [100,150],
+            baseAccuracy: 100,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] stumbled on a [naturalHazard], creating a massive shockwave that annihilated [defender]\'s internal organs!', 
+                ],
+                single: [ 
+                    '[attacker] stumbled on a [naturalHazard], creating a massive shockwave aimed at [defender]!', 
+                    '[attacker] stumbled on a [naturalHazard], causing an earthquake under [defender]\'s feet!', 
+                ],
+                miss: [
+                    '[attacker] forgot what he was doing and did not attack!',
+                ]
+            }
+        },
+        bullshit: {
+            name: 'bullshit',
+            player_useable: false,
+            damage: [150,300],
+            baseAccuracy: 25,
+            type: normal,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] bullshitted the system, instantly reducing [defender]\'s health to 0!', 
+                    '[attacker] inspect elemented the system, instantly reducing [defender]\'s health to 0!', 
+                    '[attacker] activated aimbot, 360 noscoping [defender] with a sniper rifle!', 
+                    '[attacker] activated killaura, obliterating [defender] in a PvP battle!', 
+                ],
+                single: [ 
+                    '[attacker] bullshitted the system, causing [defender] to take damage!', 
+                    '[attacker] blatently hacked the stystem to make [defender] take damage!', 
+                ],
+                miss: [
+                    '[attacker] tried to bullshit the system but failed!',
+                    '[attacker]\'s hacking attempt failed!',
+                    '[attacker] failed to locate a glitch in the matrix!',
+                    '[attacker] failed to account for the game\'s anticheat system!',
+                    '[attacker]\'s internet disconnected during his hacking attempt!',
+                    '[attacker] dealt so much damage that it caused an interger overlow and resulted in exactly 0 damage!',
+                ]
+            }
+        },
+        MQ28GhostBat: {
+            name: 'MQ-28 Ghost Bat',
+            player_useable: false,
+            damage: [50,150],
+            baseAccuracy: 100,
+            type: normal,
+            multiplier: none,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] bullshitted the system, summoning a MQ-28 Ghost Bat to obliterate [defender] with machinegun fire!', 
+                ],
+                single: [ 
+                    '[attacker] bullshitted the system, summoning a MQ-28 Ghost Bat to attack [defender]!', 
+                    '[attacker] cheated the system, summoning a MQ-28 Ghost Bat crash into [defender]!', 
+                ],
+                miss: [
+                    '[attacker]\'s bullshit proved ineffective against the system\'s firewalls!',
+                    '[attacker]\'s hacking attempt failed!',
+                    '[attacker] failed to locate a glitch in the matrix!',
+                    '[attacker] failed to account for the game\'s anticheat system!',
+                ]
+            }
+        },
+        sneak100: {
+            name: 'sneak 100',
+            player_useable: false,
+            damage: [50,150],
+            baseAccuracy: 50,
+            type: mental,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] falls onto the ground dead after [attacker] stabs them in the back!', 
+                ],
+                single: [
+                    '[attacker] sneaks behind [defender] and taps him on the back, confusng [defender]!', 
+                    '[attacker] sneakily steals [defender] water bottle, making [defender] cry!', 
+                ],
+                miss: [
+                    '[attacker] tries to sneak behind [defender] but is noticed!',
+                    '[attacker] trips on a [naturalHazard] and faceplants into a dog turd!',
+                ]
+            }
+        },
+        AK47: {
+            name: 'AK-47',
+            player_useable: false,
+            damage: [250,500],
+            baseAccuracy: 75,
+            type: normal,
+            multiplier: none,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] shoots [defender] dead with an AK-47!', 
+                ],
+                single: [
+                    '[attacker] shot [defender] with his AK-47!', 
+                ],
+                miss: [
+                    '[attacker] opened fire at [defender] but missed all his shots!',
+                    '[attacker] tries to shoot [defender] but his gun is jamed!',
+                ]
+            }
+        },
+        nuke: {
+            name: 'suicide bomb',
+            player_useable: false,
+            damage: [1500,2000],
+            baseAccuracy: 1000,
+            type: normal,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] suicide bombs [defender], killing them both in a massive explosion!', 
+                ],
+                single: [
+                    '[attacker] suicide bombs [defender] but [defender] miraculously survives!', 
+                ],
+                miss: [
+                    '[attacker] tries to suicide bomb [defender] but [defender] gets out of the blast radius in time!',
+                ]
+            }
+        },
+    },
+    taj: {
+        ultimateBlast: {
+            name: 'ultimate blast',
+            player_useable: false,
+            damage: [1300,1300],
+            baseAccuracy: 100000,
+            type: normal,
+            multiplier: none,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] obliterates [defender] with his ultimate energy blast!', 
+                ],
+                single: [
+                    '[defender] manages to survive [attacker]\'s massive energy blast!', 
+                ],
+            }
+        },
+        tomahawk: {
+            name: 'tomahawk cruise missile',
+            player_useable: false,
+            damage: [250,500],
+            baseAccuracy: 100000,
+            type: normal,
+            multiplier: none,
+            rapidfire: [0,0],
+            attack_description: {
+                KO: [
+                    '[defender] is engulfed in a massive explosion!', 
+                    '[defender] is annihilated by a Tomahawk cruise missile!', 
+                ],
+                single: [
+                    '[defender] barely manages to survive a Tomahawk cruise missile!', 
+                    '[defender] manages to tank a Tomahawk cruise missile!', 
+                ],
+            }
+        },
+        strPunch: {
+            name: 'punch',
+            player_useable: false,
+            damage: [1000000,1000000],
+            baseAccuracy: 100000,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,5],
+            attack_description: {
+                KO: [
+                    '[attacker] sends a godly punch into [defender]\'s [body]!', 
+                    '[attacker] sends a incredibly powerful punch into [defender]\'s [body]!', 
+                ],
+                single: [
+                    '[attacker] sends a [strong] punch into [defender]\'s [body]!', 
+                ],
+            }
+        },
+        punch: {
+            name: 'punch',
+            player_useable: false,
+            damage: [500,750],
+            baseAccuracy: 100000,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,5],
+            attack_description: {
+                KO: [
+                    '[attacker] sends a godly punch into [defender]\'s [body]!', 
+                    '[attacker] sends a incredibly powerful punch into [defender]\'s [body]!', 
+                ],
+                single: [
+                    '[attacker] sends a [strong] punch into [defender]\'s [body]!', 
+                ],
+            }
+        },
+    },
+    tier1: {
+        bambooSpear: {
+            name: 'bamboo spear',
+            player_useable: true,
+            damage: [100,200],
+            baseAccuracy: 80,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] piered [defender]\'s heart with a bamboo spear!', 
+                    '[attacker] stabbed [defender]\'s eyes with a bamboo spear!', 
+                    '[defender] collapses after being whacked by a bamboo spear!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] whacked [defender]\'s [body] with a bamboo spear!', 
+                    '[attacker] stabbed [defender]\'s [body] with a bamboo spear!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his bamboo spear wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a bamboo spear and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s bamboo spear with ease!',
+                ]
+            }
+        },
+        twig: {
+            name: 'twig',
+            player_useable: true,
+            damage: [15,30],
+            baseAccuracy: 80,
+            type: normal,
+            multiplier: str,
+            rapidfire: [5,15],
+            attack_description: {
+                KO: [
+                    '[attacker] piered [defender]\'s heart with a twig!', 
+                    '[attacker] stabbed [defender]\'s eyes with a twig!', 
+                    '[defender] collapses after being whacked by a twig!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] whacked [defender]\'s [body] with a twig!', 
+                    '[attacker] stabbed [defender]\'s [body] with a twig!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly hits [defender] with a twig!',
+                    '[attacker] slashed wildly at [defender] with a twig!',
+                    '[attacker] sent a flury of slashes at [defender]!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his twig wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a twig and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s twig with ease!',
+                ]
+            }
+        },
+        stick: {
+            name: 'stick',
+            player_useable: true,
+            damage: [20,35],
+            baseAccuracy: 95,
+            type: normal,
+            multiplier: str,
+            rapidfire: [2,5],
+            attack_description: {
+                KO: [
+                    '[attacker] piered [defender]\'s heart with a stick!', 
+                    '[attacker] stabbed [defender]\'s eyes with a stick!', 
+                    '[defender] collapses after being whacked by a stick!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] whacked [defender]\'s [body] with a stick!', 
+                    '[attacker] stabbed [defender]\'s [body] with a stick!', 
+                    '[attacker] whipped [defender]\'s [body] with a stick!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly hits [defender] with a stick!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] thrusts his stick at [defender] and misses!',
+                    '[attacker] swings his stick wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a stick and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s stick with ease!',
+                ]
+            }
+        },
+        treeBranch: {
+            name: 'tree branch',
+            player_useable: true,
+            damage: [50,100],
+            baseAccuracy: 70,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,2],
+            attack_description: {
+                KO: [
+                    '[attacker] crushes [defender] with a tree branch!', 
+                    '[attacker] sends [defender] flying with [strong] hit!', 
+                    '[defender] collapses after being whacked by a tree branch!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] whacked [defender]\'s [body] with a tree branch!', 
+                    '[attacker] stabbed [defender]\'s [body] with a tree branch!', 
+                    '[attacker] whipped [defender]\'s [body] with a tree branch!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly hits [defender] with a tree branch!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] thrusts his tree branch at [defender] and misses!',
+                    '[attacker] swings his tree branch wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a tree branch and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s tree branch with ease!',
+                ]
+            }
+        },
+        log: {
+            name: 'log',
+            player_useable: true,
+            damage: [200,500],
+            baseAccuracy: 25,
+            type: normal,
+            multiplier: str,
+            rapidfire: [0,0],
+            attack_description: {
+                KO: [
+                    '[attacker] crushes [defender] with a log!', 
+                    '[attacker] sends [defender] flying with [strong] hit!', 
+                    '[defender] collapses after being whacked by a log!', 
+                    '[defender] is crushed under [attacker]\'s log!',
+                ],
+                single: [
+                    '[attacker] bashed [defender]\'s [body] with a log!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] collapses under the weight of his log!',
+                    '[attacker] thrusts his log at [defender] and misses!',
+                    '[attacker] swings his log wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a log and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s log with ease!',
+                ]
+            }
+        },
+        sharpRock: {
+            name: 'sharp rock',
+            player_useable: true,
+            damage: [25,50],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,5],
+            attack_description: {
+                KO: [
+                    '[attacker] pierces [defender]\'s heart with a sharp rock!', 
+                    '[defender] flees after being stabbled by [attacker]\'s sharp rock!',
+                ],
+                single: [
+                    '[attacker] slashed [defender]\'s [body] with a sharp rock!', 
+                    '[attacker] stabbed [defender]\'s [body] with a sharp rock!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly cuts [defender] with a sharp rock!',
+                    '[attacker] rapidly slashes at [defender] with a sharp rock!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] fumbles and almost drops his sharp rock!',
+                    '[attacker] thrusts his sharp rock at [defender] and misses!',
+                    '[attacker] swings his sharp rock wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a sharp rock and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s sharp rock with ease!',
+                ]
+            }
+        },
+
+    },
+    tier2: {
+        rustyKnife: {
+            name: 'rusty knife',
+            player_useable: true,
+            damage: [45,75],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,6],
+            attack_description: {
+                KO: [
+                    '[attacker] piered [defender]\'s heart with a rusty knife!', 
+                    '[attacker] stabbed [defender]\'s eyes with a rusty knife!', 
+                    '[defender] collapses after being stabbed by a rusty knife!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] slashed [defender]\'s [body] with a rusty knife!', 
+                    '[attacker] stabbed [defender]\'s [body] with a rusty knife!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of slashes on [defender]!',
+                    '[attacker] rapidly stabbed [defender] with a rusty knife!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his rusty knife wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a rusty knife and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s rusty knife with ease!',
+                ]
+            }
+        },
+        rustySword: {
+            name: 'rusty sword',
+            player_useable: true,
+            damage: [60,100],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,4],
+            attack_description: {
+                KO: [
+                    '[attacker] piered [defender]\'s heart with a rusty sword!', 
+                    '[attacker] decapitates [defender] with a rusty sword!', 
+                    '[defender] collapses after being stabbed by a rusty sword!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] slashed [defender]\'s [body] with a rusty sword!', 
+                    '[attacker] stabbed [defender]\'s [body] with a rusty sword!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of slashes on [defender]!',
+                    '[attacker] rapidly stabbed [defender] with a rusty sword!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his rusty sword wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a rusty sword and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s rusty sword with ease!',
+                ]
+            }
+        },
+        axe: {
+            name: 'axe',
+            player_useable: true,
+            damage: [50,75],
+            baseAccuracy: 80,
+            type: shatter,
+            multiplier: str,
+            rapidfire: [1,2],
+            attack_description: {
+                KO: [
+                    '[attacker] decapitates [defender] with an axe!', 
+                    '[defender] collapses after being chopped by an axe!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] slashed [defender]\'s [body] with an axe!', 
+                    '[attacker] hit [defender]\'s [body] with an axe!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] rapidly cut [defender] with an axe!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his axe wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with an axe and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s axe with ease!',
+                ]
+            }
+        },
+        mace: {
+            name: 'mace',
+            player_useable: true,
+            damage: [40,60],
+            baseAccuracy: 60,
+            type: shatter,
+            multiplier: str,
+            rapidfire: [1,8],
+            attack_description: {
+                KO: [
+                    '[defender] collapses after being whacked by a mace!', 
+                    '[attacker] knocks [defender] unconscious with a mace!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] hit [defender]\'s [body] with a mace!', 
+                    '[attacker] swing a mace into [defender]\'s [body]!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] wildly swing his mace, bashing [defender] multiple times!',
+                    '[attacker] repeatedly bashed [defender] with a mace!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his mace wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s mace with ease!',
+                ]
+            }
+        },
+        hammer: {
+            name: 'hammer',
+            player_useable: true,
+            damage: [75,150],
+            baseAccuracy: 60,
+            type: shatter,
+            multiplier: str,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] collapses after being whacked by a hammer!', 
+                    '[attacker] knocks [defender] unconscious with a hammer!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] hit [defender]\'s [body] with a hammer!', 
+                    '[attacker] swing a hammer into [defender]\'s [body]!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] wildly swings his hammer, bashing [defender] multiple times!',
+                    '[attacker] repeatedly bashed [defender] with a hammer!',
+                    '[attacker] hits the ground with his hammer, creating a devastating shockwave!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his hammer wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s hammer with ease!',
+                ]
+            }
+        },
+        pitchfork: {
+            name: 'pitchfork',
+            player_useable: true,
+            damage: [60,90],
+            baseAccuracy: 50,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[defender] collapses after being stabbled by a pitchfork!', 
+                    '[attacker] knocks [defender] unconscious with a pitchfork!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] jabs [defender]\'s [body] with a pitchfork!', 
+                    '[attacker] stabs [defender]\'s [body] with a pitchfork!', 
+                    '[attacker] swing a pitchfork into [defender]\'s [body]!', 
+                ],
+                multi: [
+                    '[attacker] wildly swings his pitchfork, stabbing [defender] multiple times!',
+                    '[attacker] repeatedly jabbed [defender] with a pitchfork!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his pitchfork wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s pitchfork with ease!',
+                ]
+            }
+        },
+        pickaxe: {
+            name: 'pickaxe',
+            player_useable: true,
+            damage: [50,90],
+            baseAccuracy: 45,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[attacker] knocks [defender] unconscious with a pickaxe!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] stabs [defender]\'s [body] with a pickaxe!', 
+                    '[attacker] swing a pickaxe into [defender]\'s [body]!', 
+                ],
+                multi: [
+                    '[attacker] wildly swings his pickaxe, hitting [defender] multiple times!',
+                    '[attacker] repeatedly jabbed [defender] with a pickaxe!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his pickaxe wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s pickaxe with ease!',
+                ]
+            }
+        },
+    },
+    tier3: {
+        sledgehammer: {
+            name: 'sledgehammer',
+            player_useable: true,
+            damage: [150,200],
+            baseAccuracy: 90,
+            type: shatter,
+            multiplier: str,
+            rapidfire: [1,2],
+            attack_description: {
+                KO: [
+                    '[defender] collapses after being whacked by a sledgehammer!', 
+                    '[attacker] knocks [defender] unconscious with a sledgehammer!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] hit [defender]\'s [body] with a sledgehammer!', 
+                    '[attacker] swing a sledgehammer into [defender]\'s [body]!', 
+                ],
+                multi: [
+                    '[attacker] wildly swing his sledgehammer, bashing [defender] multiple times!',
+                    '[attacker] repeatedly bashed [defender] with a sledgehammer!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his sledgehammer wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s sledgehammer with ease!',
+                ]
+            }
+        },
+        katana: {
+            name: 'katana',
+            player_useable: true,
+            damage: [50,70],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,6],
+            attack_description: {
+                KO: [
+                    '[defender] was decapitated by [attacker!', 
+                    '[attacker] kills [defender] with a katana!',
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] slashed [defender]\'s [body] with a katana!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] wildly swing his katana, cutting [defender] multiple times!',
+                    '[attacker] repeatedly cut [defender] with a katana!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his katana wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s katana with ease!',
+                ]
+            }
+        },
+        spear: {
+            name: 'spear',
+            player_useable: true,
+            damage: [10,150],
+            baseAccuracy: 95,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[attacker] pierced [defender\'s heart with a spear!',
+                    '[defender] flees after being stabbed by [attacker]!',
+                ],
+                single: [
+                    '[attacker] stabbed [defender]\'s [body] with a spear!', 
+                ],
+                multi: [
+                    '[attacker] repeatedly stabbed [defender] with a spear!',
+                    '[attacker] repeatedly stabbed [defender]\'s [body] with a spear!',
+                    '[attacker] landed consecutive attacks on [defender] with a spear!',
+                ],
+                miss: [
+                    '[attacker] charges at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s spear with ease!',
+                ]
+            }
+        },
+    },
+    tier4: {
+        sledgehammer: {
+            name: 'sledgehammer',
+            player_useable: true,
+            damage: [150,200],
+            baseAccuracy: 90,
+            type: shatter,
+            multiplier: str,
+            rapidfire: [1,2],
+            attack_description: {
+                KO: [
+                    '[defender] collapses after being whacked by a sledgehammer!', 
+                    '[attacker] knocks [defender] unconscious with a sledgehammer!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] hit [defender]\'s [body] with a sledgehammer!', 
+                    '[attacker] swing a sledgehammer into [defender]\'s [body]!', 
+                ],
+                multi: [
+                    '[attacker] wildly swing his sledgehammer, bashing [defender] multiple times!',
+                    '[attacker] repeatedly bashed [defender] with a sledgehammer!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his sledgehammer wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s sledgehammer with ease!',
+                ]
+            }
+        },
+        katana: {
+            name: 'katana',
+            player_useable: true,
+            damage: [50,70],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,6],
+            attack_description: {
+                KO: [
+                    '[defender] was decapitated by [attacker!', 
+                    '[attacker] kills [defender] with a katana!',
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] slashed [defender]\'s [body] with a katana!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of hits on [defender]!',
+                    '[attacker] wildly swing his katana, cutting [defender] multiple times!',
+                    '[attacker] repeatedly cut [defender] with a katana!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his katana wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s katana with ease!',
+                ]
+            }
+        },
+        spear: {
+            name: 'spear',
+            player_useable: true,
+            damage: [10,150],
+            baseAccuracy: 95,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[attacker] pierced [defender\'s heart with a spear!',
+                    '[defender] flees after being stabbed by [attacker]!',
+                ],
+                single: [
+                    '[attacker] stabbed [defender]\'s [body] with a spear!', 
+                ],
+                multi: [
+                    '[attacker] repeatedly stabbed [defender] with a spear!',
+                    '[attacker] repeatedly stabbed [defender]\'s [body] with a spear!',
+                    '[attacker] landed consecutive attacks on [defender] with a spear!',
+                ],
+                miss: [
+                    '[attacker] charges at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s spear with ease!',
+                ]
+            }
+        },
+    },
+    special: {
+        scythe: {
+            name: 'reaper\'s scythe',
+            player_useable: true,
+            damage: [200,500],
+            baseAccuracy: 90,
+            type: piercing,
+            multiplier: str,
+            rapidfire: [1,8],
+            attack_description: {
+                KO: [
+                    '[attacker] decapitates [defender] with the reaper\'s scythe!',
+                    '[attacker] severs [defender]\'s soul from his body with the reaper\'s scythe!', 
+                    '[attacker] sends [defender] to hell with the reaper\'s scythe!',
+                ],
+                single: [
+                    '[attacker] cuts [defender]\'s [body] with the reaper\'s scythe!', 
+                    '[attacker] slashes at [defender]\'s [body] with the reaper\'s scythe!', 
+                ],
+                multi: [
+                    '[attacker] slashes at [defender] multiple times the reaper\'s scythe!',
+                    '[attacker] repeatedly cut [defender] with the reaper\'s scythe!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his scythe wildly at [defender] and misses!',
+                    '[defender] dodges to the side, narrowly avoiding [attacker]\'s swing!',
+                ]
+            }
+        },
+    }
+};
+
+const secondaries = {
+    bow: {
+        name: 'bow',
+        player_useable: true,
+        damage: [75,125],
+        baseAccuracy: 90,
+        type: normal,
+        ammo: 'arrow',
+        consumption: 1,
+        attack_description: {
+            KO: [
+                '[attacker] pierced [defender\'s heart with an arrow!',
+                '[defender] flees after being shot full of arrows!',
+            ],
+            single: [
+                '[attacker] shot an arrow into [defender]\'s [body]!', 
+            ],
+            miss: [
+                '[attacker] shoots at [defender] and misses!',
+                '[defender] dodges to the side, avoiding [attacker]\'s arrow with ease!',
+            ]
+        }
+    },
+    longbow: {
+        name: 'divine longbow',
+        player_useable: true,
+        damage: [100,250],
+        baseAccuracy: 75,
+        type: normal,
+        ammo: 'arrow',
+        consumption: 1,
+        attack_description: {
+            KO: [
+                '[attacker] shot [defender] in the head with a divine longbow, instantly killing him!',
+            ],
+            single: [
+                '[attacker] fired an arrow at [defender]!',
+                '[attacker] shot at [defender] with his divine bow!',
+            ],
+            miss: [
+                '[attacker] fired at [defender] but missed!',
+                '[attacker]\'s arrow sailed harmlessly past [defender]!',
+            ]
+        }
+    },
+    crossbow: {
+        name: 'crossbow',
+        player_useable: true,
+        damage: [75,75],
+        baseAccuracy: 100,
+        type: normal,
+        ammo: 'arrow',
+        consumption: 1,
+        attack_description: {
+            KO: [
+                '[attacker] shot [defender] in the head, instantly killing him!',
+            ],
+            single: [
+                '[attacker] fired an arrow at [defender]!',
+                '[attacker] shot at [defender] with his crossbow!',
+            ],
+            miss: [
+                '[attacker] fired at [defender] but missed!',
+                '[attacker]\'s arrow sailed harmlessly past [defender]!',
+            ]
+        }
+    },
+    pistol: {
+        name: 'pistol',
+        player_useable: true,
+        damage: [240,600],
+        baseAccuracy: 90,
+        type: piercing,
+        ammo: '9mm magazine',
+        consumption: 1,
+        attack_description: {
+            KO: [
+                '[attacker] shot [defender] in the head, instantly killing him!',
+            ],
+            single: [
+                '[attacker] fired at [defender] with a pistol!',
+                '[attacker] shot at [defender] with his pistol!',
+            ],
+            miss: [
+                '[attacker] fired at [defender] but missed!',
+                '[attacker]\'s bullets sailed harmlessly past [defender]!',
+            ]
+        }
+    },
+    AK47: {
+        name: 'AK-47',
+        player_useable: true,
+        damage: [50,150],
+        baseAccuracy: 75,
+        type: piercing,
+        ammo: 'assault rifle magazine',
+        consumption: 1,
+        attack_description: {
+            KO: [
+                '[attacker] shot [defender] in the head, instantly killing him!',
+            ],
+            single: [
+                '[attacker] fired an colley of bullets at [defender]!',
+                '[attacker] shot at [defender] with his AK-47!',
+            ],
+            miss: [
+                '[attacker] fired at [defender] but missed all his shots!',
+                '[attacker]\'s bullets sailed harmlessly past [defender]!',
+            ]
+        }
+    },
+    sniper: {
+        name: 'sniper rifle',
+        player_useable: true,
+        damage: [1500,2000],
+        baseAccuracy: 100,
+        type: piercing,
+        ammo: '.50cal bullets',
+        consumption: 1,
+        attack_description: {
+            KO: [
+                '[attacker] shot [defender] in the head, instantly killing him!',
+            ],
+            single: [
+                '[attacker] fired an bullet at [defender]!',
+                '[attacker] shot at [defender] with his sniper!',
+            ],
+            miss: [
+                '[attacker] fired at [defender] but missed!',
+                '[attacker]\'s bullet sailed harmlessly past [defender]!',
+            ]
+        }
+    },
+    GAU8Avenger: {
+        name: 'GAU-8 Avenger',
+        player_useable: true,
+        damage: [5000,10000],
+        baseAccuracy: 1000,
+        type: piercing,
+        ammo: '30mm depleted uranium rounds',
+        consumption: 1,
+        attack_description: {
+            KO: [
+                '[attacker] annililated [defender] with a GAU-8 gattling gun!',
+                '[attacker] turned [defender] into swiss cheese!',
+            ],
+            single: [
+                '[attacker] fired at [defender] with a GAU-8 gattling gun!',
+            ],
+            miss: [
+                '[attacker] fired at [defender] with a GAU-8 but somehow missed all his shots!',
+                '[defender]\'s plot armour was too much for [attacker] to handle!',
+            ]
+        }
     },
 };
 
-//Functions
-function replaceHtml(textID, text) {
-    document.getElementById(textID).innerHTML = text;
+const enemies = {
+    default: [
+        {
+            name: "Bodyguard",
+            //         "_______________"
+            shortName: "      Bodyguard",
+            maxHealth: 500,
+            health: 500,
+            strength: 1.5,
+            attacks: [weapons.enemy.baseballBat, weapons.body.punch, weapons.body.kick],
+            quotes: ["I shall defend Taj with my life!", "Death to the enemies of Taj!", "I shall protect Taj!", "You shall not Pass!"],
+            last_words: null,
+            quantity: [1,1],
+            can_die: true,
+            evasionChance: 1,
+            romance: -1,
+            armour: {
+                durability: 100,
+                maxBlock: 10,
+            },
+            lost: 0
+        },
+        {
+            name: "Terrorist",
+            //         "_______________"
+            shortName: "      Terrroist",
+            maxHealth: 200,
+            health: 200,
+            strength: 1,
+            attacks: [weapons.body.punch, weapons.body.kick],
+            quotes: ["Death to the enemies of Taj!", "For Taj!"],
+            last_words: null,
+            quantity: [1,3],
+            can_die: true,
+            evasionChance: 1,
+            romance: -1,
+            armour: {
+                durability: 100,
+                maxBlock: 10,
+            },
+            lost: 0
+        },
+        {
+            name: "Gangster",
+            //         "_______________"
+            shortName: "       Gangster",
+            maxHealth: 100,
+            health: 100,
+            strength: 1,
+            attacks: [weapons.body.punch, weapons.body.kick],
+            quotes: ["you shall die!", "For Taj!"],
+            last_words: null,
+            quantity: [2,5],
+            can_die: true,
+            evasionChance: 1,
+            romance: 10,
+            armour: {
+                normal: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            },
+            lost: 0
+        },
+        {
+            name: "Sped",
+            //         "_______________"
+            shortName: "           Sped",
+            maxHealth: 1500,
+            health: 1500,
+            strength: 10,
+            attacks: [weapons.body.punch, weapons.body.kick, weapons.body.headbut, weapons.body.bodyslam],
+            quotes: ["die, enemy of Taj"],
+            last_words: null,
+            quantity: [1,1],
+            can_die: true,
+            evasionChance: 100,
+            romance: 2,
+            armour: {
+                durability: 200,
+                maxBlock: 50,
+            },
+        },
+        {
+            name: "Servant",
+            //         "_______________"
+            shortName: "        Servant",
+            maxHealth: 150,
+            health: 150,
+            strength: 1,
+            attacks: [weapons.body.punch, weapons.body.kick],
+            quotes: ["I serve Taj!", 'for Taj!'],
+            last_words: null,
+            quantity: [1,2],
+            can_die: true,
+            evasionChance: 1.5,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Anarchist",
+            //         "_______________"
+            shortName: "      Anarchist",
+            maxHealth: 250,
+            health: 250,
+            strength: 1,
+            attacks: [weapons.body.punch, weapons.body.kick, weapons.enemy.AK47],
+            quotes: ["For anarchy!", 'down with the governemnt!'],
+            last_words: null,
+            quantity: [1,1],
+            can_die: true,
+            evasionChance: 1,
+            romance: -1,
+            armour: {
+                durability: 200,
+                maxBlock: 50,
+            },
+            lost: 0
+        },
+        {
+            name: "Suicide Bomber",
+            //         "_______________"
+            shortName: " Suicide Bomber",
+            maxHealth: 0,
+            health: 0,
+            strength: 1,
+            attacks: [weapons.enemy.nuke],
+            quotes: ["DIE!", 'I will kill you!'],
+            last_words: null,
+            quantity: [1,1],
+            can_die: true,
+            evasionChance: 1,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+    ],
+    religious: [
+        {
+            name: "Tajism Priest",
+            //         "_______________"
+            shortName: "  Tajism Priest",
+            maxHealth: 100,
+            health: 100,
+            strength: 1,
+            attacks: [weapons.enemy.magicBeam,weapons.enemy.flamesOfTerrorism,weapons.enemy.swordOfTerrorism],
+            quotes: ["Hail Taj our lord and saviour!", "For Terrorist Taj!", "I shall protect the lord!"],
+            last_words: ["You shall not defeat the Taj of Terrorism"],
+            quantity: [2,5],
+            can_die: true,
+            evasionChance: 0.9,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+        },
+        {
+            name: "Tajism Cultist",
+            //         "_______________"
+            shortName: " Tajism Cultist",
+            maxHealth: 50,
+            health: 50,
+            strength: 0.5,
+            attacks: [weapons.enemy.swordOfTerrorism,weapons.enemy.chant,weapons.body.punch,weapons.body.kick],
+            quotes: ["Hail Terrorist Taj!", "For Taj, our lord and saviour!"],
+            last_words: ["You shall not defeat the Taj"],
+            quantity: [4,6],
+            can_die: true,
+            evasionChance: 100,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Tajism Believer",
+            //         "_______________"
+            shortName: "Tajism Believer",
+            maxHealth: 75,
+            health: 75,
+            strength: 0.5,
+            attacks: [weapons.enemy.chant,weapons.body.punch,weapons.body.kick],
+            quotes: ["Hail Terrorist Taj!", "For Taj, our lord and saviour!", "I believe in th power of Taj"],
+            last_words: ["You shall not defeat the Taj"],
+            quantity: [3,6],
+            can_die: true,
+            evasionChance: 10,
+            romance: 7,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+    ],
+    innovations: [
+        /*
+        {
+            name: "Choyuni Farmer",
+            //         "_______________"
+            shortName: " Choyuni Farmer",
+            maxHealth: 125,
+            health: 125,
+            strength: 0.75,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.tier2.pitchfork],
+            quotes: ["die", "how dare you threaten my beans", "I shall defend the choyuni rice fields", "I shall cut you down", "you shall become fertilizer for my crops"],
+            last_words: null,
+            quantity: [1,3],
+            can_die: true,
+            evasionChance: 2,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Choyuni Miner",
+            //         "_______________"
+            shortName: "  Choyuni Miner",
+            maxHealth: 150,
+            health: 150,
+            strength: 1,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.tier2.pickaxe],
+            quotes: ["die", "I have a pickaxe, and I'll put it through your teeth", "you stand no chance against me"],
+            last_words: null,
+            quantity: [1,2],
+            can_die: true,
+            evasionChance: 5,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Choyuni Gold Digger",
+            //         "_______________"
+            shortName: "    Gold Digger",
+            maxHealth: 100,
+            health: 100,
+            strength: 1,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.tier2.pickaxe],
+            quotes: ["die", "I shall have your bounty", "gimme all your money and your life", "your belongs shall be mine", "this is a mugging, do not resist"],
+            last_words: null,
+            quantity: [1,4],
+            can_die: true,
+            evasionChance: 5,
+            romance: 15,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Choyuni Soldier",
+            //         "_______________"
+            shortName: "Choyuni Soldier",
+            maxHealth: 150,
+            health: 150,
+            strength: 1,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.tier2.rustySword,weapons.tier2.rustyKnife],
+            quotes: ["die, enemies of the choyuni nation!", "die", "die scum", "tremble before our glorious nation"],
+            last_words: null,
+            quantity: [1,3],
+            can_die: true,
+            evasionChance: 1,
+            romance: -1,
+            armour: {
+                durability: 75,
+                maxBlock: 25,
+            },
+            lost: 0
+        },*/
+        {
+            name: "Mace Incarnation",
+            //         "_______________"
+            shortName: "MaceIncarnation",
+            maxHealth: 125,
+            health: 125,
+            strength: 1,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.enemy.curry],
+            quotes: ["I am the all mighty Mace!", "die peasants!", "you suck", "you lowly peasant"],
+            last_words: ["I will be back..."],
+            quantity: [1,1],
+            can_die: true,
+            evasionChance: 1,
+            romance: 3,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        /*
+        {
+            name: "Witch doctor",
+            //         "_______________"
+            shortName: "   Witch doctor",
+            maxHealth: 250,
+            health: 250,
+            strength: 1,
+            attacks: [weapons.enemy.magicBeam,weapons.enemy.voodooMagic],
+            quotes: ["die to my voodoo magic", "tremble before my curses", "you shall witness my true power", "you stand no chance against my magic"],
+            last_words: null,
+            quantity: [1,1],
+            can_die: true,
+            evasionChance: 1,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Refugee",
+            //         "_______________"
+            shortName: "        Refugee",
+            maxHealth: 75,
+            health: 75,
+            strength: 0.5,
+            attacks: [weapons.body.punch,weapons.body.kick],
+            quotes: ["die die die", "strength in numbers", "give me food"],
+            last_words: null,
+            quantity: [2,6],
+            can_die: true,
+            evasionChance: 0.75,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },*/
+    ],
+    spedlords: [
+        {
+            name: "Spedlord Mace", 
+            //         "_______________"
+            shortName: "  Sp3dl0rd Mace",
+            maxHealth: 1000,
+            health: 1000,
+            strength: 1,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.enemy.insult,weapons.enemy.curry,weapons.tier2.mace],
+            quotes: ["die peasants", "I am the GOAT", "you can not win", "your inferior inteligence can not defeat me", "I am the geatest html programmer", "you dingleberry", "you nigglefard"],
+            last_words: ["I shall be back..."],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 0.5,
+            romance: 100,
+            armour: {
+                normal: {durability: 1000, resistance: 10},
+                fire: {durability: 1000, resistance: 10},
+                energy: {durability: 1000, resistance: 10},
+                magical: {durability: 1000, resistance: 10}
+            },
+            lost: 0
+        },
+        {
+            name: "Spedlord Yape", 
+            //         "_______________"
+            shortName: "  Sp3dl0rd Yape",
+            maxHealth: 5000,
+            health: 5000,
+            strength: 2,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.enemy.footwork,weapons.enemy.maths],
+            quotes: ["For geobears", "you can not defeat the perpendicular bisectors of the equilibrium of the photosynthesis!", "I have the power of the monomial derivitive of the trigonometry apothem", "you shall fall to the power of Unit 3&4 of maths specialist"],
+            last_words: ["I will be back..."],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 5,
+            romance: -1,
+            armour: {
+                normal: {durability: 10000, resistance: 500},
+                fire: {durability: 10000, resistance: 500},
+                energy: {durability: 10000, resistance: 500},
+                magical: {durability: 10000, resistance: 500}
+            },
+            lost: 0
+        },
+        {
+            name: "Spedlord jaT", 
+            //         "_______________"
+            shortName: "   Sp3dl0rd jaT",
+            maxHealth: 1000,
+            health: 1000,
+            strength: 1,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.enemy.bullshit,weapons.enemy.MQ28GhostBat,weapons.enemy.sneak100],
+            quotes: ["I is very stronger than you", "you is dying to me"],
+            last_words: ["me no die to you"],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 1,
+            romance: -1,
+            armour: {
+                normal: {durability: 1000, resistance: 100},
+                fire: {durability: 1000, resistance: 100},
+                energy: {durability: 1000, resistance: 100},
+                magical: {durability: 1000, resistance: 100}
+            },
+            lost: 0
+        },
+        {
+            name: "Spedlord Bird", 
+            //         "_______________"
+            shortName: "  Sp3dl0rd B1rd",
+            maxHealth: 1,
+            health: 1,
+            strength: 0.1,
+            attacks: [weapons.body.punch,weapons.body.kick,weapons.enemy.stumble,weapons.enemy.trip],
+            quotes: ["you idot"],
+            last_words: ["I will be back..."],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 1000,
+            romance: -1,
+            armour: {
+                normal: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            },
+            lost: 0
+        },
+        {
+            name: "Ta-Ja",
+            //         "_______________"
+            shortName: "          Ta-JA", 
+            maxHealth: 1500,
+            health: 1500,
+            strength: 1,
+            attacks: [weapons.enemy.stumble,weapons.enemy.trip,weapons.enemy.bullshit,weapons.enemy.MQ28GhostBat,weapons.enemy.sneak100],
+            quotes: ["Taj quote", "Taj quote 2"],
+            last_words: ["I will be back"],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 1,
+            romance: -1,
+            armour: {
+                normal: {durability: 1000, resistance: 100},
+                fire: {durability: 1000, resistance: 100},
+                energy: {durability: 1000, resistance: 100},
+                magical: {durability: 1000, resistance: 100}
+            },
+            lost: 0
+        },
+    ],
+    taj: [
+        {
+            name: "Terrorist Taj", 
+            //         "_______________"
+            shortName: "  Terrorist Taj",
+            maxHealth: 1000,
+            health: 1000,
+            strength: 1,
+            attacks: [],
+            quotes: [],
+            last_words: [],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 0,
+            romance: -1,
+            armour: {
+                normal: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            },
+            lost: 0
+        },
+        {
+            name: "Terrorist Taj", 
+            //         "_______________"
+            shortName: "  Terrorist Taj",
+            maxHealth: 1000,
+            health: 0,
+            strength: 1,
+            attacks: [],
+            quotes: [],
+            last_words: [],
+            quantity: [1,1],
+            can_die: false,
+            evasionChance: 0,
+            romance: -1,
+            armour: {
+                normal: {durability: 0, resistance: 0},
+                fire: {durability: 0, resistance: 0},
+                energy: {durability: 0, resistance: 0},
+                magical: {durability: 0, resistance: 0}
+            },
+            lost: 1000
+        },
+    ]
 };
 
-function addHtml(textID, text) {
-    document.getElementById(textID).innerHTML = document.getElementById(textID).innerHTML + text;
-};
+const armours = [
+    {
+        name: 'leather vest of strength',
+        armour: {
+            durability: 500,
+            maxBlock: 5,
+        },
+        strengthIncease: 0.25
+    },
+    {
+        name: 'suit of leather armour',
+        armour: {
+            durability: 500,
+            maxBlock: 10,
+        },
+        strengthIncease: 0
+    },
+    {
+        name: 'suit of rusty iron armour',
+        armour: {
+            durability: 2500,
+            maxBlock: 50,
+        },
+        strengthIncease: -0.05
+    },
+    {
+        name: 'suit of bronze armour',
+        armour: {
+            durability: 1500,
+            maxBlock: 30,
+        },
+        strengthIncease: 0
+    },
+    {
+        name: 'suit of chainmail armour',
+        armour: {
+            durability: 2000,
+            maxBlock: 45,
+        },
+        strengthIncease: 0
+    },
+    {
+        name: 'suit of iron plate armour',
+        armour: {
+            durability: 3000,
+            maxBlock: 75,
+        },
+        strengthIncease: -0.05
+    },
+    {
+        name: 'bulletproof vest',
+        armour: {
+            durability: 5000,
+            maxBlock: 60,
+        },
+        strengthIncease: 0
+    },
+    {
+        name: 'suit of enchanted iron armour',
+        armour: {
+            durability: 5000,
+            maxBlock: 100,
+        },
+        strengthIncease: 0.25
+    },
+    {
+        name: 'mechanised combat suit',
+        armour: {
+            durability: 15000,
+            maxBlock: 250,
+        },
+        strengthIncease: 0.5
+    },
+    {
+        name: 'Power Armour MK1',
+        armour: {
+            durability: 15000,
+            maxBlock: 400,
+        },
+        strengthIncease: 0.75
+    },
+    {
+        name: 'Power Armour MK2',
+        armour: {
+            durability: 25000,
+            maxBlock: 1250,
+        },
+        strengthIncease: 2
+    },
+    {
+        name: 'exoskeleton',
+        armour: {
+            durability: 25000,
+            maxBlock: 750,
+        },
+        strengthIncease: 5
+    },
+    {
+        name: 'Power Armour MK4',
+        armour: {
+            durability: 100000,
+            maxBlock: 2500,
+        },
+        strengthIncease: 10
+    },
+    {
+        name: 'Plot Armour',
+        armour: {
+            durability: 100000000,
+            maxBlock: 100000000,
+        },
+        strengthIncease: 100
+    },
+];
 
-async function displayText(textID, text, delay=10) {
-    for(let i=0;i<text.length;i++) {
-        document.getElementById(textID).innerHTML += text[i];
-        await delay(delay);
+const sample_items = [
+    {
+        name: 'arrow',
+        itemType: 'ammunition',
+        quantity: 16,
+        stackSize: 16
+    },
+    {
+        name: 'assault rifle magazine',
+        itemType: 'ammunition',
+        quantity: 8,
+        stackSize: 8
+    },
+    {
+        name: '.50cal bullets',
+        itemType: 'ammunition',
+        quantity: [1,1,1,1,2],
+        stackSize: 5
+    },
+    {
+        name: 'Maceline™ Painkillers',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [500, 500],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: 16,
+        stackSize: 16
+    },
+    {
+        name: 'Maceline™ Steroids',
+        itemType: 'consumable',
+        healthRegen: [-25, -10],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0.1, 0.1],
+        quickConsume: true,
+        quantity: 4,
+        stackSize: 4
+    },
+    {
+        name: 'Maceline™ [name]',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [1, 1],
+        quickConsume: true,
+        quantity: [1],
+        stackSize: 1
+    },
+    {
+        name: 'frag grenade',
+        itemType: 'throwable',
+        damage: [75, 150],
+        quickConsume: false,
+        type: splash,
+        quantity: 5,
+        stackSize: 5
+    },
+    {
+        name: 'high explosive grenade',
+        itemType: 'throwable',
+        damage: [125, 350],
+        quickConsume: false,
+        type: normal,
+        quantity: 5,
+        stackSize: 5
+    },
+    {
+        name: 'bandaid',
+        itemType: 'consumable',
+        healthRegen: [45, 75],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [2,2,3,3,3,4,4,5],
+        stackSize: 16
+    },
+    {
+        name: 'throwing knife',
+        type: 'throwable',
+        damage: [50, 100],
+        quickConsume: true,
+        type: normal,
+        quantity: 16,
+        stackSize: 16
+    },
+    
+];
+
+const startingItems = [
+    {
+        name: '9mm magazine',
+        itemType: 'ammunition',
+        quantity: [1],
+        stackSize: 10
+    },
+    {
+        name: 'small rock',
+        itemType: 'throwable',
+        damage: [50, 100],
+        quickConsume: true,
+        type: normal,
+        quantity: [1,2,2,2,3,3],
+        stackSize: 8
+    },
+    {
+        name: 'medium rock',
+        itemType: 'throwable',
+        damage: [75, 150],
+        quickConsume: false,
+        type: normal,
+        quantity: [1,1,1,2],
+        stackSize: 3
+    },
+    {
+        name: 'big rock',
+        itemType: 'throwable',
+        damage: [150, 300],
+        quickConsume: false,
+        type: normal,
+        quantity: [1],
+        stackSize: 1
+    },
+    {
+        name: 'rotten Flesh',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [75, 200],
+        mentalRegen: [-25, -10],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: false,
+        quantity: 1,
+        stackSize: 5
+    },
+    {
+        name: 'apple',
+        itemType: 'consumable',
+        healthRegen: [15, 25],
+        hungerRegen: [50, 100],
+        mentalRegen: [50, 75],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,1,2,2,3],
+        stackSize: 5
+    },
+    {
+        name: 'bottle of milk',
+        itemType: 'consumable',
+        healthRegen: [20, 40],
+        hungerRegen: [30, 100],
+        mentalRegen: [100, 200],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0.025, 0.025],
+        quickConsume: false,
+        quantity: [1],
+        stackSize: 1
+    },
+    {
+        name: 'bandaid',
+        itemType: 'consumable',
+        healthRegen: [45, 75],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [2,2,3,3,3,4,4,5],
+        stackSize: 16
+    },
+    {
+        name: 'Maceline™ Drugs',
+        itemType: 'consumable',
+        healthRegen: [-30, 30],
+        hungerRegen: [0, 0],
+        mentalRegen: [-25, 25],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0.05],
+        quickConsume: true,
+        quantity: [1,2,2,3,3,3,4,4,4,4],
+        stackSize: 16
+    },
+];
+
+const t1Items = [
+    {
+        name: 'arrow',
+        itemType: 'ammunition',
+        quantity: [1,2,3],
+        stackSize: 16
+    },
+    {
+        name: 'poison dart',
+        itemType: 'throwable',
+        damage: [50, 100],
+        quickConsume: true,
+        type: normal,
+        quantity: [1,1,2,3],
+        stackSize: 5
+    },
+    {
+        name: 'fire bomb',
+        itemType: 'throwable',
+        damage: [50, 150],
+        quickConsume: false,
+        type: splash,
+        quantity: [1],
+        stackSize: 3
+    },
+    {
+        name: 'small rock',
+        itemType: 'throwable',
+        damage: [50, 100],
+        type: normal,
+        quickConsume: true,
+        type: normal,
+        quantity: [1,2,2,2,3,3],
+        stackSize: 8
+    },
+    {
+        name: 'medium rock',
+        itemType: 'throwable',
+        damage: [75, 150],
+        quickConsume: false,
+        type: normal,
+        quantity: [1,1,1,2],
+        stackSize: 3
+    },
+    {
+        name: 'big rock',
+        itemType: 'throwable',
+        damage: [150, 300],
+        quickConsume: false,
+        type: normal,
+        quantity: [1],
+        stackSize: 1
+    },
+    {
+        name: 'raw fish',
+        itemType: 'throwable',
+        damage: [75, 125],
+        quickConsume: true,
+        type: normal,
+        quantity: [1,1,1,2,2,3],
+        stackSize: 4
+    },
+    {
+        name: 'grilled fish',
+        itemType: 'consumable',
+        healthRegen: [25, 50],
+        hungerRegen: [450, 600],
+        mentalRegen: [40, 75],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: false,
+        quantity: [1,1,1,1,2],
+        stackSize: 2,
+    },
+    {
+        name: 'Healing Herb',
+        itemType: 'consumable',
+        healthRegen: [100, 200],
+        hungerRegen: [0, 0],
+        mentalRegen: [25, 50],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,1,2,2,3,4],
+        stackSize: 5
+    },
+    {
+        name: 'voo doo medicine',
+        itemType: 'consumable',
+        healthRegen: [225, 500],
+        hungerRegen: [10, 50],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: false,
+        quantity: [1],
+        stackSize: 1,
+    },
+    {
+        name: 'apple',
+        itemType: 'consumable',
+        healthRegen: [15, 25],
+        hungerRegen: [50, 100],
+        mentalRegen: [50, 75],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,1,2,2,3],
+        stackSize: 5
+    },
+    {
+        name: 'golden apple',
+        itemType: 'consumable',
+        healthRegen: [750, 750],
+        hungerRegen: [500, 500],
+        mentalRegen: [250, 250],
+        intelligenceIncrease: [100, 100],
+        strengthChange: [0.1, 0.1],
+        quickConsume: true,
+        quantity: [1],
+        stackSize: 5
+    },
+    {
+        name: 'bottle of milk',
+        itemType: 'consumable',
+        healthRegen: [20, 40],
+        hungerRegen: [30, 100],
+        mentalRegen: [100, 200],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0.025, 0.025],
+        quickConsume: false,
+        quantity: [1],
+        stackSize: 1
+    },
+    {
+        name: 'roasted banana',
+        itemType: 'consumable',
+        healthRegen: [50, 100],
+        hungerRegen: [125, 175],
+        mentalRegen: [100, 200],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,1,2],
+        stackSize: 5
+    },
+    {
+        name: 'berserker brew',
+        itemType: 'consumable',
+        healthRegen: [10, 20],
+        hungerRegen: [15, 30],
+        mentalRegen: [500, 1000],
+        intelligenceIncrease: [-50, -100],
+        strengthChange: [0.1, 0.1],
+        quickConsume: true,
+        quantity: [1],
+        stackSize: 3
     }
+];
+
+const t2Items = [
+    {
+        name: 'arrow',
+        itemType: 'ammunition',
+        quantity: [1,2,3,4],
+        stackSize: 16
+    },
+    {
+        name: 'Maceline™ Painkillers',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [500, 500],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,2,2,3],
+        stackSize: 16
+    },
+    {
+        name: 'Maceline™ Steroids',
+        itemType: 'consumable',
+        healthRegen: [-25, -10],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0.1, 0.1],
+        quickConsume: true,
+        quantity: [1,1,1,2],
+        stackSize: 4
+    },
+    {
+        name: 'Maceline™ Instant Noodles',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [150, 350],
+        mentalRegen: [25, 50],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,2],
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Health Potion',
+        itemType: 'consumable',
+        healthRegen: [100,250],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,2,3],
+        stackSize: [16],
+    },
+    {
+        name: 'throwing knife',
+        itemType: 'throwable',
+        damage: [50, 100],
+        quickConsume: true,
+        type: normal,
+        quantity: [1,2,3],
+        stackSize: 16
+    },
+];
+
+const t3Items = [
+    {
+        name: '9mm magazine',
+        itemType: 'ammunition',
+        quantity: [1,2,3],
+        stackSize: 10
+    },
+    {
+        name: 'arrow',
+        itemType: 'ammunition',
+        quantity: [1,2,3,4,5],
+        stackSize: 16
+    },
+    {
+        name: 'assault rifle magazine',
+        itemType: 'ammunition',
+        quantity: [1,2],
+        stackSize: 8
+    },
+    {
+        name: '.50cal bullets',
+        itemType: 'ammunition',
+        quantity: [1,1,1,1,2],
+        stackSize: 5
+    },
+    {
+        name: '30mm depleted uranium rounds',
+        itemType: 'ammunition',
+        quantity: [1],
+        stackSize: 8
+    },
+    {
+        name: 'Maceline™ Painkillers',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [500, 500],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,2,2,3,3,3,4,4,4,5],
+        stackSize: 16
+    },
+    {
+        name: 'Maceline™ Steroids',
+        itemType: 'consumable',
+        healthRegen: [-25, -10],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0.1, 0.1],
+        quickConsume: true,
+        quantity: [1],
+        stackSize: 4
+    },
+    {
+        name: 'Maceline™ Instant Noodles',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [150, 250],
+        mentalRegen: [25, 50],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,1,2,3],
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Ice Tea',
+        itemType: 'consumable',
+        healthRegen: [200, 250],
+        hungerRegen: [0, 0],
+        mentalRegen: [225, 350],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [1,1,2],
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Health Potion',
+        itemType: 'consumable',
+        healthRegen: [100,250],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [2,2,3,3,3,4,4,4,4,5,5,6],
+        stackSize: 16,
+    },
+    {
+        name: 'Maceline™ Large Health Potion',
+        itemType: 'consumable',
+        healthRegen: [550,850],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: false,
+        quantity: [1],
+        stackSize: 3,
+    },
+    {
+        name: 'frag grenade',
+        itemType: 'throwable',
+        damage: [75, 150],
+        type: splash,
+        quickConsume: false,
+        type: normal,
+        quantity: [1],
+        stackSize: 5
+    },
+    {
+        name: 'high explosive grenade',
+        itemType: 'throwable',
+        damage: [125, 350],
+        quickConsume: false,
+        type: normal,
+        quantity: [1],
+        stackSize: 5
+    },
+    {
+        name: 'throwing knife',
+        type: 'throwable',
+        damage: [50, 100],
+        quickConsume: true,
+        type: normal,
+        quantity: [2,2,3,3,3,4],
+        stackSize: 16
+    },
+];
+
+const t4Items = [
+    {
+        name: '9mm magazine',
+        itemType: 'ammunition',
+        quantity: [10],
+        stackSize: 10
+    },
+    {
+        name: 'arrow',
+        itemType: 'ammunition',
+        quantity: [16],
+        stackSize: 16
+    },
+    {
+        name: 'assault rifle magazine',
+        itemType: 'ammunition',
+        quantity: [8],
+        stackSize: 8
+    },
+    {
+        name: '.50cal bullets',
+        itemType: 'ammunition',
+        quantity: [5],
+        stackSize: 5
+    },
+    {
+        name: '30mm depleted uranium rounds',
+        itemType: 'ammunition',
+        quantity: [8],
+        stackSize: 8
+    },
+    {
+        name: 'Maceline™ Painkillers',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [0, 0],
+        mentalRegen: [500, 500],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [16],
+        stackSize: 16
+    },
+    {
+        name: 'Maceline™ Steroids',
+        itemType: 'consumable',
+        healthRegen: [-25, -10],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0.1, 0.1],
+        quickConsume: true,
+        quantity: [4],
+        stackSize: 4
+    },
+    {
+        name: 'Maceline™ Instant Noodles',
+        itemType: 'consumable',
+        healthRegen: [0, 0],
+        hungerRegen: [150, 250],
+        mentalRegen: [25, 50],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [6],
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Ice Tea',
+        itemType: 'consumable',
+        healthRegen: [200, 250],
+        hungerRegen: [0, 0],
+        mentalRegen: [225, 350],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [6],
+        stackSize: 6
+    },
+    {
+        name: 'Maceline™ Health Potion',
+        itemType: 'consumable',
+        healthRegen: [100,250],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: true,
+        quantity: [16],
+        stackSize: 16,
+    },
+    {
+        name: 'Maceline™ Large Health Potion',
+        itemType: 'consumable',
+        healthRegen: [550,850],
+        hungerRegen: [0, 0],
+        mentalRegen: [0, 0],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: false,
+        quantity: [3],
+        stackSize: 3,
+    },
+    {
+        name: 'Elixir of Vitality',
+        itemType: 'consumable',
+        healthRegen: [10000,10000],
+        hungerRegen: [10000,10000],
+        mentalRegen: [10000,10000],
+        intelligenceIncrease: [0, 0],
+        strengthChange: [0, 0],
+        quickConsume: false,
+        quantity: [1],
+        stackSize: 1,
+    },
+    {
+        name: 'Elixir of Stronk',
+        itemType: 'consumable',
+        healthRegen: [0,0],
+        hungerRegen: [0,0],
+        mentalRegen: [0,0],
+        intelligenceIncrease: [0,0],
+        strengthChange: [1, 1],
+        quickConsume: false,
+        quantity: [1],
+        stackSize: 1,
+    },
+    {
+        name: 'Elixir of Wisdom',
+        itemType: 'consumable',
+        healthRegen: [0,0],
+        hungerRegen: [0,0],
+        mentalRegen: [10000,10000],
+        intelligenceIncrease: [10000,10000],
+        strengthChange: [0, 0],
+        quickConsume: false,
+        quantity: [1],
+        stackSize: 1,
+    },
+    {
+        name: 'Crystal Meth',
+        itemType: 'consumable',
+        healthRegen: [-10,-10],
+        hungerRegen: [0,0],
+        mentalRegen: [-100,-100],
+        intelligenceIncrease: [-100,-100],
+        strengthChange: [0.5, 0.5],
+        quickConsume: true,
+        quantity: [1,2,3,4],
+        stackSize: 4,
+    },
+    {
+        name: 'frag grenade',
+        itemType: 'throwable',
+        damage: [75, 150],
+        type: splash,
+        quickConsume: false,
+        type: normal,
+        quantity: [5],
+        stackSize: 5
+    },
+    {
+        name: 'fusion grenade',
+        itemType: 'throwable',
+        damage: [250, 750],
+        type: splash,
+        quickConsume: false,
+        type: normal,
+        quantity: [5],
+        stackSize: 5
+    },
+    {
+        name: 'high explosive grenade',
+        itemType: 'throwable',
+        damage: [125, 350],
+        quickConsume: false,
+        type: normal,
+        quantity: [5],
+        stackSize: 5
+    },
+    {
+        name: 'throwing knife',
+        type: 'throwable',
+        damage: [50, 100],
+        quickConsume: true,
+        type: normal,
+        quantity: [16],
+        stackSize: 16
+    },
+];
+
+//Default player
+var player = {
+    playerName: player_name,
+    name: player_name,
+    health: (settings.stat_limit/4)*3,  // Max 1000
+    hunger: settings.stat_limit/4,
+    mental_health: settings.stat_limit/2,
+    intelligence: 250,
+    strength: 1,
+    isTerrorist: false,
+    armour: {
+        durability: 0,
+        maxBlock: 0,
+    },
+    inventory: {
+        weapons: {
+            hands: weapons.body.punch,
+            feet: weapons.body.kick,
+            main1: weapons.body.none,
+            main2: weapons.body.none,
+            secondary: secondaries.bow
+        },
+        items: [
+            // Limit of strength*5 inventory slots, if inventory is too full items are ejected from the inventory
+            {
+                name: 'arrow',
+                itemType: 'ammunition',
+                quantity: 2,
+                stackSize: 16
+            },
+            {
+                name: 'frag grenade',
+                itemType: 'throwable',
+                damage: [250, 500],
+                quickConsume: true,
+                type: splash,
+                quantity: 5,
+                stackSize: 5
+            },
+            {
+                name: 'grilled fish',
+                itemType: 'consumable',
+                healthRegen: [25, 50],
+                hungerRegen: [450, 600],
+                mentalRegen: [40, 75],
+                intelligenceIncrease: [0, 0],
+                strengthChange: [0, 0],
+                quickConsume: false,
+                quantity: 2,
+                stackSize: 2,
+            },
+            {
+                name: 'bandaid',
+                itemType: 'consumable',
+                healthRegen: [45, 75],
+                hungerRegen: [0, 0],
+                mentalRegen: [0, 0],
+                intelligenceIncrease: [0, 0],
+                strengthChange: [0, 0],
+                quickConsume: true,
+                quantity: 16,
+                stackSize: 16
+            },
+        ],
+    },
+    lost: [0,0,0,0]
+};
+
+// Boss fight Config
+var bossPlayer = {
+    playerName: player_name,
+    name: player_name+' the Terrorist',
+    health: settings.stat_limit,
+    hunger: settings.stat_limit,
+    mental_health: settings.stat_limit,
+    intelligence: settings.stat_limit,
+    strength: 10,
+    isTerrorist: false,
+    armour: {
+        normal: {durability: 1000, resistance: 400},
+        fire: {durability: 0, resistance: 0},
+        energy: {durability: 0, resistance: 0},
+        magical: {durability: 0, resistance: 0},
+        poison: {durability: 0, resistance: 0}
+    },
+    inventory: {
+        weapons: {
+            hands: weapons.body.punch,
+            feet: weapons.body.kick,
+            main1: weapons.body.none,
+            main2: weapons.body.none,
+            secondary: weapons.body.none
+        },
+        items: [
+            // Limit of strength*5 inventory slots, if inventory is too full items are ejected from the inventory
+        ],
+    },
+    lost: [0,0,0,0]
+};
+
+const string = player_name;
+const substring = 'Terrorist';
+const index = string.indexOf(substring);
+if (string.indexOf(substring) !== -1) {
+  player.isTerrorist=true;
+};
+
+if (player.name == 'Taj') {
+    player.health = settings.stat_limit
+    player.intelligence = settings.stat_limit/5;
+};
+
+//Functions
+function hideText(textID) {
+    document.getElementById(textID).innerHTML = "";
+};
+
+async function addText(text) {
+    for(let i=0;i<text.length;i++) {
+        document.getElementById("console").innerHTML += text[i];
+        await delay(10);
+    }
+};
+
+function showTitle(text) {
+    document.getElementById("startScreen").innerHTML = text;
+};
+
+async function showText(text, sped=true) {
+    document.getElementById("console").innerHTML = '';
+    if (sped) {
+        for(let i=0;i<text.length;i++) {
+            document.getElementById("console").innerHTML += text[i];
+            await delay(10);
+        }
+    } else {
+        document.getElementById("console").innerHTML = text;
+    }
+};
+
+function hideButton(text) {
+    document.getElementById("controlPannel").innerHTML = "";
+};
+
+function showButton(text) {
+    document.getElementById("controlPannel").innerHTML = text;
+};
+
+function addButton(text) {
+    document.getElementById("controlPannel").innerHTML = document.getElementById("controlPannel").innerHTML + text;
 };
 
 // Cutscene stuff, this took many hours :( 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 var cutsceneEnded = false;
 async function cutscene(text, sped = true) {
-    replaceHtml('controlPannel', '');
+    showButton('');
     await showText(text,sped);
-    replaceHtml('controlPannel', '');
+    showButton(`<button id="continue" onclick="finishCutscene()">Continue</button>`);
     while (!cutsceneEnded) {
         console.log('Waiting in cutscene');
         await delay(250);
@@ -99,7 +3027,7 @@ async function choice(description,choices,useNames=false,returnObject=false,canC
     showButton('');
     console.log(canCancel);
     console.log(choices);
-    returnObj=returnObject;
+    //returnObj=returnObject;
     var globalChoices = choices;
     let numChoices = choices.length;
     await showText(description,sped);
@@ -139,13 +3067,8 @@ function choose(output) {
 };
 
 // The rest of the functions
+/*
 function bar(displayName, size, value, lost, limit=settings.stat_limit, showValue=true) {
-    /*
-    console.log(lost,value);
-    if (value < 0) {
-        lost += value;
-        value = 0;
-    }*/
     let startingvalue = value + lost;
     if (value < 0) {
         value = 0;
@@ -184,17 +3107,6 @@ function bar(displayName, size, value, lost, limit=settings.stat_limit, showValu
     }
     let display = `${displayName} ▕${bar}▏`;
     if (showValue) {
-        /*
-        let end = '';
-        if (value < 1000) {
-            end += ' ';
-        }
-        if (value < 100) {
-            end += ' ';
-        }
-        if (value < 10) {
-            end += ' ';
-        }*/
         let info = `(${Math.round(value)}/${limit})`;
         
         let filler = 12-info.length;
@@ -202,6 +3114,57 @@ function bar(displayName, size, value, lost, limit=settings.stat_limit, showValu
             info += ' ';
         }
         display+=info//+end;
+    }
+    //console.log(display);
+    return display
+};
+*/
+
+function bar(displayName, size, value, lost, limit=settings.stat_limit, showValue=true) {
+    let startingvalue = value + lost;
+    if (value < 0) {
+        value = 0;
+    }
+    lost = startingvalue - value;
+    //console.log(lost, value);
+    let fill = '';
+    let filled = Math.floor(value*size/limit);
+    for (let i=0; i<filled; i++) {
+        fill += '█';
+    }
+    let remainder = value-filled*limit/size;
+    filled++;
+    console.log(remainder, filled);
+    if (remainder > 2/3 * limit/size) {
+        fill += '▓';
+    } else if (remainder > 1/3 * limit/size) {
+        fill += '▒';
+    } else if (remainder != 0) {
+        fill += '░';
+    } else {
+        filled--;
+    }
+    let prevFilled = Math.floor(startingvalue*size/limit);
+    let lostBars = prevFilled - filled;
+    //console.log(lostBars, prevFilled, filled);
+    if (lostBars < 0) {
+        lostBars = 0;
+    }
+    for (let i=0; i<lostBars; i++) {
+        fill += '░';
+    }
+    while (fill.length < size) {
+        fill += ' ';
+    }
+    let display = `${displayName} ▕${fill}▏`;
+    if (showValue) {
+        let info = `(${Math.round(value)}/${limit})`;
+        
+        let filler = 12-info.length;
+        for (let i=0; i<filler; i++) {
+            info += ' ';
+        }
+        display+=info;
     }
     //console.log(display);
     return display
@@ -229,7 +3192,7 @@ async function updateEnemy(enemyList) {
         cont = false;
         let format = `<p id="bar">------------------------------------------Enemies------------------------------------------<br>`;
         for (let i=0; i<enemyList.length; i++) {
-            format += bar(enemyList[i].shortName, 15, enemyList[i].health, enemyList[i].lost, enemyList[i].maxHealth, false);
+            format += bar(enemyList[i].shortName, 10, enemyList[i].health, enemyList[i].lost, enemyList[i].maxHealth, false);
             format += '     ';
             if (i % 3 == 0) {
                 format += '<br>';
@@ -244,7 +3207,7 @@ async function updateEnemy(enemyList) {
         }
         format+=`</p>`;
         document.getElementById("enemyBars").innerHTML = format;
-        await delay(500);
+        await delay(60);
     }
 };
 
@@ -275,14 +3238,31 @@ async function giveItem(player, item=null, items=null) {
     }
     console.log(chosenItem);
     console.log(player);
-    let decision = await choice(`You ${randchoice(descriptions.find)} ${chosenItem.quantity} ${chosenItem.name} ${randchoice(descriptions.location)}`, ['take', 'leave'],false,false,false,false);
+    let decision = await choice(`You ${randchoice(descriptions.find)} some ${chosenItem.name} ${randchoice(descriptions.location)}`, ['take', 'leave'],false,false,false,false);
     if (!decision) {
-        if (player.inventory.items.length >= 7) {
-            await cutscene(`${player.name} is a weaking and can not carry any more items. Maybe if you worked out more instead of playing computer games (yes, I'm looking at you Taj), you could carry more items.`);
-        } else {
-            await cutscene(`You take the ${chosenItem.name}`);
-            player.inventory.items.push(JSON.parse(JSON.stringify(chosenItem)));
+        await cutscene(`You take the ${chosenItem.name}`);
+        console.log('Taking item');
+        console.log(player.inventory.items);
+        let newItem = JSON.parse(JSON.stringify(chosenItem));
+        newItem.quantity = randchoice(newItem.quantity);
+        for (let i = 0; i < player.inventory.items.length; i++) {
+            if (player.inventory.items[i].name == newItem.name && player.inventory.items[i].quantity < player.inventory.items[i].stackSize) {
+                let shift = Math.min(player.inventory.items[i].stackSize-player.inventory.items[i].quantity, newItem.quantity);
+                player.inventory.items[i].quantity += shift;
+                newItem.quantity -= shift;
+            }
+            if (newItem.quantity <= 0) {
+                break;
+            }
         }
+        if (newItem.quantity > 0) {
+            if (player.inventory.items.length >= 7) {
+                await cutscene(`${player.name} is a weaking and can not carry all of the items. Maybe if you worked out more instead of playing computer games, you could carry more items.`);
+            } else {
+                player.inventory.items.push(newItem);
+            }
+        }
+        console.log(player.inventory.items);
     } else {
         await cutscene(`You leave the ${chosenItem.name}`);
     }
@@ -323,15 +3303,20 @@ async function giveWeapon(player, weapon=null, weaponsList=null) {
     return player;
 };
 
-async function equipArmour(player, armour = null) {
+async function equipArmour(player, maxArmour = null, armour = null) {
     if (armour == null) {
-        armour = randchoice(armours);
+        if (maxArmour) {
+            armour = armours[randint(0, maxArmour)];
+        } else {
+            armour = randchoice(armours);
+        }
     }
     console.log(armour);
     console.log(player);
-    let decision = await choice(`You ${randchoice(descriptions.find)} a ${armour.name}`, ['equip', 'leave'],false,false,false,false);
+    let decision = await choice(`You ${randchoice(descriptions.find)} a ${armour.name}. You can only equip 1 armour at a time.`, ['equip', 'leave'],false,false,false,false);
     if (!decision) {
         await cutscene(`You put on the ${armour.name}`);
+        player.strength -= player.armour.strengthIncease;
         player.armour = JSON.parse(JSON.stringify(armour.armour));
         player.strength += armour.strengthIncease;
     } else {
@@ -437,116 +3422,130 @@ function updatePlayer(player, healthChange=0, hungerChange=0, mentalChange=0, in
 
 };
 
+function calculateDamage(defender, damage) {
+    console.log(defender, damage);
+    if (defender.armour.durability > 0) {
+        // Armour can lose infinite durability but only defend against a certain amount of damage
+        defender.armour.durability -= damage;
+        damage -= Math.min(damage, defender.armour.maxBlock);
+        if (defender.armour.durability < defender.armour.maxBlock) {
+            defender.armour.maxBlock = defender.armour.durability;
+        }
+    }
+    defender.health -= damage; 
+    console.log(defender, damage);
+    return defender;
+}
+
 async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) { // TODO: Fix This
     console.log('simulating attack');
     console.log(attack);
-    if (attack != null && attack.type == 'throwable') {
-        if (attack.damageType == 'splash') {
-            for (let i = 0; i < defenders.length; i++) {
-                if (defenders[i].armour[physical].durability > 0) {
-                    defenders[i].armour[physical].durability -= damage;
-                    damage -= defenders[i].armour[physical].resistance;
-                    if (damage < 0) {
-                        damage = 0;
+    if (attack.itemType == 'throwable') { // player threw item
+        console.log('simulating throw attack');
+        let hit = randint(0,10);
+        console.log(`rng: ${hit}`);
+        if (hit) {
+            await cutscene(`${attacker.name} threw a ${attack.name} at ${defenders[0].name}!`);
+            let damage = randint(attack.damage[0], attack.damage[1]);
+            console.log(damage);
+            switch (attack.type) {
+                case 'splash':
+                    await cutscene(`The ${attack.name} damages all enemies!`);
+                    for (let i = 0; i < defenders.length; i++) {
+                        defenders[i] = calculateDamage(defenders[i], damage);
                     }
-                }
-                defenders[i].health -= damage; 
+                    break;
+                case 'shatter':
+                    defenders[0].armour.durability -= attack.damage; // double durability damage
+                case 'normal':
+                    defenders[0] = calculateDamage(defenders[0], damage);
+                    break;
+                case 'mental':
+                case 'piercing':
+                    defenders[0].health -= damage;
+                    break;
+                default:
+                    throw `ERROR: unknown damage type (${attack.type}) (Line 3406)`;
             }
-        } else if (attack.damageType == 'true') {
-            defenders[0].health -= damage;
+            console.log(defenders[0]);
+            await updateEnemy(defenders);
+            while (1) {
+                if (defenders[0] && defenders[0].health <= 0) {
+                    console.log(`enemy ${defenders[0]} is dead`);
+                    await cutscene(`${defenders[0].name} has been defeated!`);
+                    defenders.shift();
+                    await updateEnemy(defenders);
+                } else {
+                    break;
+                }
+            }
         } else {
-            if (defenders[0].armour[physical].durability > 0) {
-                defenders[0].armour[physical].durability -= damage;
-                damage -= defenders[0].armour[physical].resistance;
-                if (damage < 0) {
-                    damage = 0;
-                }
-            }
-            defenders[0].health -= damage; 
+            await cutscene(`${attacker.name} threw a ${attack.name} at ${defenders[0].name} and missed!`);
         }
-        await cutscene(`${attacker} threw a ${attack.name} at ${defender}!`);
     } else {
         console.log('simulating normal attack');
         if (!isPlayer) {
             defenders = [defenders];
         }
-        defenders.push('ListEnd');
+        //defenders.push('ListEnd');
         let defenderNumber = 0;
-        let defender = defenders[defenderNumber];
+        let defender = defenders[0]
         if (attack === null) {
             console.log('chosing random attack');
             console.log(attacker);
             attack = randchoice(attacker.attacks);
+            console.log(attack);
         }
         let hitChance = 0; // initialise hitchance
         if (isPlayer) {
             //         Weapon base accuracy         enemy evasion
             hitChance = attack.baseAccuracy/100 * defender.evasionChance;
         } else {
-            //         Weapon base accuracy         player evasion (calculation is weird)
+            //         Weapon base accuracy         player evasion 
             console.log(attack.baseAccuracy/100);
             console.log(defender.intelligence);
             console.log(defender);
-            hitChance = attack.baseAccuracy/100 - (((defender.intelligence)/settings.stat_limit)-0.5)/2;
+            hitChance = attack.baseAccuracy/100 * (1-(defender.intelligence)/settings.stat_limit); // megamind (max intel) player can avoid all attacks
         }
-        console.log('simulating hit chance');
-        console.log(hitChance);
-        if (randint(1,500) <= hitChance*1000) { // attacker hits defender
+        console.log(`hitchance: ${hitChance}`);
+        if (randint(1,1000) <= hitChance*1000) { // attacker hits defender
             console.log('attacker hit');
-            let attackResults = [0,0];
-            let continueAttacking = true;
-            var totalAttacks = 0;
-            while (continueAttacking) {
+            let attacks = attack.rapidfire? randint(attack.rapidfire[0], attack.rapidfire[1]) : 1;
+            console.log(`attacker gets ${attacks} hits`);
+            for (let i = 0; i < attacks; i++) {
                 let damage = randint(attack.damage[0],attack.damage[1]);
-                damage *= attacker.strength;
-                console.log(damage);
-                if (attack.type == mental && !(isPlayer)) {
-                    attackResult[1] = -damage;
-                } else {
-                    // Calculate armour
-                    if (attack.type != mental || attack.type != piercing) {
-                        if (defender.armour[attack.type].durability > 0) {
-                            defender.armour[attack.type].durability -= damage;
-                            damage -= defender.armour[attack.type].resistance;
-                            if (damage < 0) {
-                                damage = 0;
-                            }
+                damage = Math.min(attacker.strength*damage, attack.damage[1]*1.5);
+                console.log(defender.health);
+                console.log(`attack damage: ${damage}`);
+                switch (attack.type) {
+                    case 'splash':
+                        for (let i = 0; i < defenders.length; i++) {
+                            defenders[i] = calculateDamage(defenders[i], damage);
                         }
-                    }
-                    if (attack.type == piercing) {
-                        defender.armour[physical].durability -= damage*5;
-                        damage = damage-(defender.armour[physical].resistance/2);
-                    }
-                    attackResults[0] = -damage;
+                        break;
+                    case 'shatter':
+                        defender.armour.durability -= attack.damage; // double durability damage
+                    case 'normal':
+                        defender = calculateDamage(defenders[0], damage);
+                        break;
+                    case 'mental':
+                    case 'piercing':
+                        defender.health -= damage;
+                        break;
+                    default:
+                        throw `ERROR: unknown damage type (${attack.type})`;
                 }
-                
+                console.log(defender.health, damage);
                 // Check if defender died
-                console.log('checking defender alive');
-                var defenderDied = false;
-                if (isPlayer) {
-                    defender.health += attackResults[0];
-                    defender.lost -= attackResults[0];
-                    if (defender.health <= 0) {
-                        defenderDied = true;
-                        if (defenders[defenderNumber+1] != 'ListEnd') {
-                            defenderNumber++;
-                        } else {
-                            break;
-                        }
+                var defenderDied = defender.health <= 0 ? true : false;
+                console.log(`defender died? ${defenderDied}`);
+                if (defenderDied) {
+                    defenderNumber++;
+                    console.log(defenders);
+                    if (defenderNumber >= defenders.length) {
+                        break;
                     }
-                } else {
-                    defender = updatePlayer(defender, attackResults[0], 0, attackResults[1], 0, 0, false);
-                    if (defender.health <= 0) {
-                        defenderDied = true;
-                    }
-                }
-
-                // Attack again?
-                console.log('checkign if attack again');
-                if (isPlayer && totalAttacks < attack.rapidfire[1] && randint(1,100) <= attack.rapidfire[0]) {
-                    totalAttacks++;
-                } else {
-                    continueAttacking = false;
+                    defender = defenders[defenderNumber];
                 }
             }
 
@@ -558,26 +3557,26 @@ async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) 
                 msg = msg.replace('[defender]', defender.name);
                 msg = msg.replace('[strong]', randchoice(descriptions.strong));
                 msg = msg.replace('[description]', randchoice(descriptions.general));
-                msg = msg.replace('[natrualHazard]', randchoice(descriptions.naturalHazard));
+                msg = msg.replace('[naturalHazard]', randchoice(descriptions.naturalHazard));
                 msg = msg.replace('[body]', randchoice(descriptions.bodyParts));
                 await cutscene(msg);
                 await cutscene(`${defender.name} has been defeated!`);
-            } else if (totalAttacks = 1) {
+            } else if (attacks == 1) {
                 let msg = randchoice(attack.attack_description.single);
                 msg = msg.replace('[attacker]', attacker.name);
                 msg = msg.replace('[defender]', defender.name);
                 msg = msg.replace('[strong]', randchoice(descriptions.strong));
                 msg = msg.replace('[description]', randchoice(descriptions.general));
-                msg = msg.replace('[natrualHazard]', randchoice(descriptions.naturalHazard));
+                msg = msg.replace('[naturalHazard]', randchoice(descriptions.naturalHazard));
                 msg = msg.replace('[body]', randchoice(descriptions.bodyParts));
                 await cutscene(msg);
-            } else if (totalAttacks > 1) {
+            } else if (attacks > 1) {
                 let msg = randchoice(attack.attack_description.multi);
                 msg = msg.replace('[attacker]', attacker.name);
                 msg = msg.replace('[defender]', defender.name);
                 msg = msg.replace('[strong]', randchoice(descriptions.strong));
                 msg = msg.replace('[description]', randchoice(descriptions.general));
-                msg = msg.replace('[natrualHazard]', randchoice(descriptions.naturalHazard));
+                msg = msg.replace('[naturalHazard]', randchoice(descriptions.naturalHazard));
                 msg = msg.replace('[body]', randchoice(descriptions.bodyParts));
                 await cutscene(msg);
             }
@@ -585,15 +3584,16 @@ async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) 
             console.log('attacker missed');
             console.log(attack)
             let msg = randchoice(attack.attack_description.miss);
+            console.log(msg);
             msg = msg.replace('[attacker]', attacker.name);
             msg = msg.replace('[defender]', defender.name);
             msg = msg.replace('[strong]', randchoice(descriptions.strong));
             msg = msg.replace('[description]', randchoice(descriptions.general));
-            msg = msg.replace('[natrualHazard]', randchoice(descriptions.naturalHazard));
+            msg = msg.replace('[naturalHazard]', randchoice(descriptions.naturalHazard));
             msg = msg.replace('[body]', randchoice(descriptions.bodyParts));
+            console.log(msg);
             await cutscene(msg);
         }
-        defenders.pop();
     }
     if (!isPlayer) {
         defenders = defenders[0];
@@ -604,14 +3604,16 @@ async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) 
 async function useItem(player, enemies, itemID) {
     console.log(itemID);
     console.log(player);
-    if (player.inventory.items[itemID].type == 'consumable') {
-        player = updatePlayer(player, randint(player.inventory.items[itemID].healthRegen[0],player.inventory.items[itemID].healthRegen[1]), randint(player.inventory.items[itemID].hungerRegen[0],player.inventory.items[itemID].hungerRegen[2]), randint(player.inventory.items[itemID].mentalRegen[0],player.inventory.items[itemID].mentalRegen[1]), randint(player.inventory.items[itemID].intelligenceIncrease[0],player.inventory.items[itemID].intelligenceIncrease[1]), randint(player.inventory.items[itemID].strengthChange[0],player.inventory.items[itemID].strengthChange[1]), false);
+    if (player.inventory.items[itemID].itemType == 'consumable') {
+        player = updatePlayer(player, randint(player.inventory.items[itemID].healthRegen[0],player.inventory.items[itemID].healthRegen[1]), randint(player.inventory.items[itemID].hungerRegen[0],player.inventory.items[itemID].hungerRegen[1]), randint(player.inventory.items[itemID].mentalRegen[0],player.inventory.items[itemID].mentalRegen[1]), randint(player.inventory.items[itemID].intelligenceIncrease[0],player.inventory.items[itemID].intelligenceIncrease[1]), randint(player.inventory.items[itemID].strengthChange[0],player.inventory.items[itemID].strengthChange[1]), false);
         await cutscene(`You consume the ${player.inventory.items[itemID].name}.`);
-    } else if (player.inventory.items[itemID].type == 'throwable') {
-        await cutscene(`You throw the ${player.inventory.items[itemID].name} towards your enemies.`);
+    } else if (player.inventory.items[itemID].itemType == 'throwable') {
+        //await cutscene(`You throw the ${player.inventory.items[itemID].name} towards your enemies.`);
         let result = await simulateAttack(player, enemies, player.inventory.items[itemID], true);
         player = result[0];
         enemy = result[1];
+    } else {
+        console.log(`unknown type ${player.inventory.items[itemID].type}`);
     }
     console.log(player);
     let quickConsume = player.inventory.items[itemID].quickConsume;
@@ -636,23 +3638,50 @@ async function playerTurn(player, enemies) {
                 let action =  await choice(`Choose Attack: `, attacks, true, true);
                 console.log(action);
                 if (action != -1) {
-                    console.log('start attack')
-                    let attackResult = await simulateAttack(player, enemies, action, true);
-                    player = attackResult[0];
-                    enemy = attackResult[1];
-                    canAttack = false;
-                    console.log('finished attack');
+                    let hasAmmo = false;
+                    if (action.consumption) {
+                        console.log(player.inventory.items);
+                        console.log(action);
+                        for (let i = player.inventory.items.length-1; i >= 0; i--) {
+                            console.log(i);
+                            if (player.inventory.items[i].name == action.ammo) {
+                                player.inventory.items[i].quantity--;
+                                if (player.inventory.items[i].quantity == 0) {
+                                    player.inventory.items.splice(i, 1);
+                                }
+                                hasAmmo = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        hasAmmo = true;
+                    }
+                    if (hasAmmo) {
+                        console.log('start attack')
+                        let attackResult = await simulateAttack(player, enemies, action, true);
+                        player = attackResult[0];
+                        enemy = attackResult[1];
+                        canAttack = false;
+                        console.log('finished attack');
+                    } else {
+                        await cutscene(`You don't have enough ammo to use this weapon.`);
+                    }
                 }
                 break;
             case 1:
-                console.log(`${String(await showInventory(player))} <br> Use item:`);
-                let item = await choice(`${String(await showInventory(player))} <br> Use item:`,player.inventory.items,true,false,true,false);
-                if (item != -1) {
-                    console.log(player);
-                    let itemResult = await useItem(player, enemies, item);
-                    player = itemResult[0];
-                    enemies = itemResult[1];
-                    canAttack = itemResult[2];
+                while (1) {
+                    console.log(`${String(await showInventory(player))} <br> Use item:`);
+                    let item = await choice(`${String(await showInventory(player))} <br> Use item:`,player.inventory.items,true,false,true,false);
+                    if (item != -1 && item.itemType != 'ammo') {
+                        console.log(player);
+                        let itemResult = await useItem(player, enemies, item);
+                        player = itemResult[0];
+                        enemies = itemResult[1];
+                        canAttack = itemResult[2];
+                        console.log('end item usage');
+                        break;
+                    }
+                    console.log('stuck in loop (incorrect input)');
                 }
                 break;
             case 2:
@@ -666,7 +3695,12 @@ async function playerTurn(player, enemies) {
                             await cutscene(`You compliment ${enemies[0].name} and hopefully weakens his will to fight.`);
                             break;
                         case 2:
-                            await cutscene(`You offer ${enemies[0].name} a stick you found on the ground. ${enemies[0].name} is not impressed.`);
+                            if (randint(0,5)){
+                                await cutscene(`You offer ${enemies[0].name} a ${descriptions.badGift} you found on the ground. ${enemies[0].name} is not impressed.`);
+                            } else {
+                                await cutscene(`You offer ${enemies[0].name} a ${descriptions.goodGift}. ${enemies[0].name} is fascinated by your gift.`);
+                                enemies.giveUp = true; // ¡ rework
+                            }
                             break;
                         default:
                             break;
@@ -679,6 +3713,11 @@ async function playerTurn(player, enemies) {
             default:
                 canAttack = true;
                 break;
+        }
+        console.log(enemies);
+        if (enemies.length == 0) {
+            console.log('all enemies dead');
+            break;
         }
     }
     return [player, enemies];
@@ -697,7 +3736,7 @@ async function enemyTurn(player, enemies) { // Enemy attacks Player (TODO: Enemy
             await cutscene(enemyLine); // TODO: Enemy needs better lines to say
         } else {
             // Enemy Attacks
-            let result = await simulateAttack(enemy, player);
+            let result = await simulateAttack(enemy, player, randchoice(enemy.attacks));
             player = result[1];
             enemy = result[0];
         }
@@ -756,7 +3795,7 @@ async function fight(player, enemy) {
         plural = 's';
     }
     await cutscene(`${enemy.length} ${enemy[0].name}${plural} ${randchoice(descriptions.enemyAppeared)}`);
-    updateEnemy(enemy);
+    await updateEnemy(enemy);
     while (1) {
         console.log('starting round');
         console.log(player);
@@ -766,7 +3805,7 @@ async function fight(player, enemy) {
         enemy = result[1];
         console.log('Player turn done!');
         updateStats(player);
-        updateEnemy(enemy);
+        await updateEnemy(enemy);
         console.log(player);
         console.log(enemy);
         for (let i=0; i<enemy.length; i++) {
@@ -782,7 +3821,7 @@ async function fight(player, enemy) {
         player = result[0];
         enemy = result[1];
         updateStats(player);
-        updateEnemy(enemy);
+        await updateEnemy(enemy);
         if (isDead(player)) {
             player = await LBozo(player); // player can revive if they are dedicated
         }
@@ -953,7 +3992,7 @@ async function level1(player) { // First level (get some starting items and esca
                         player = await giveItem(player, null, startingItems);
                         console.log(player);
                     } else {
-                        console.log(weapons.teir1);
+                        console.log(weapons.tier1);
                         player = await giveWeapon(player, null, weapons.tier1);
                         console.log(player);
                     }
@@ -990,7 +4029,7 @@ async function level1(player) { // First level (get some starting items and esca
     }
 };
 
-async function level(character, fights, enemiesList, description, itemList, weaponList) {
+async function level(character, fights, enemiesList, description, itemList, weaponList, maxArmour) {
     console.log(weaponList)
     console.log('Starting Level');
     let player = character;
@@ -1011,16 +4050,16 @@ async function level(character, fights, enemiesList, description, itemList, weap
             console.log(enemyList);
             player = await fight(player, enemyList);
         } else {
-            let a = [`You discover a deserted area with some useful items scattered about.`, `You find a deserted warehouse which still contains some items`, `you locate a store room containing some valuable items`];
+            let a = [`You discover a deserted area with some useful items scattered about.`, `You find a deserted warehouse which still contains some items`, `you locate a store room containing some valuable items`, `you enter a room containing some useful items`];
             await cutscene(randchoice(a));
-            let numItems = randint(2,5);
+            let numItems = randint(2,8);
             for (let i=0;i<numItems;i++) {
-                if (randint(0, 4)) { // 75% change to get items 25% change to get weapons
-                    if (randint(0, 3)) { // 66% item 33% armour
+                if (randint(0, 3)) { // 66% change to get items 33% chance to get weapons
+                    if (randint(0, 4)) { // 75% item 25% armour
                         player = await giveItem(player, null, itemList);
                         console.log(player);
                     } else {
-                        player = await equipArmour(player);
+                        player = await equipArmour(player, maxArmour);
                         console.log(player);
                     }
                 } else {
@@ -1042,7 +4081,7 @@ async function bossBattle(player) {
     console.log(player);
     console.log(enemies.taj[0]);
     updateStats(player);
-    updateEnemy([enemies.taj[0]]);
+    await updateEnemy([enemies.taj[0]]);
     await cutscene(`"Hello there," says Taj as he looks up from his Conflict of Nations game, "I have been expecting you,"`);
     await cutscene(`${randchoice(descriptions.rage)} you scream vehemently as you charge towards Taj the Terrorist.`);
     const actions = ['attack', 'attack', 'attack', 'attack', 'attack'];
@@ -1142,7 +4181,7 @@ async function bossBattle(player) {
                                     await cutscene(`You choose to kill Taj!`);
                                     await cutscene(`"Please!" screamed Taj, "You will break the balance of the world by killing me!"`);
                                     await cutscene(`"Think about the consequences!" shouted Taj as you swung your sword."`);
-                                    updateEnemy([enemies.taj[1]]);
+                                    await updateEnemy([enemies.taj[1]]);
                                     await cutscene(`You watch Taj's dead body collapse on the ground as your mind starts to clear.`);
                                     await cutscene(`No longer blinded by rage, doubt starts to creep into your mind.`);
                                     await cutscene(`"What has he ever done to me?" you wonder, "Why do I hate him so much?"`);
@@ -1182,28 +4221,57 @@ async function game(character) {
     let stay = true;
     while (stay) {
         console.log(weapons.tier1)
-        player = await level(player, randint(4,6), enemies.innovations, ['You find yourself on the island of innovations','You see an entrance to the next area'], t1Items, weapons.tier1);
-        stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
+        player = await level(player, randint(6,10), enemies.innovations, ['You find yourself on the island of innovations','You see an elevator door attached to seemingly nothing, a stark contrast to the tropical island around you'], t1Items, weapons.tier1, 4);
+        stay = await choice(`Do you enter?`, ['yes','no'],false,false,false,true);
         console.log(stay);
     }
     stay = true;
     while (stay) {
-        player = await level(player, randint(2,3), enemies.religious, ['You find yourself in the Tajism church','You see an entrance to the next area'], t2Items, weapons.tier2);
-        stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
+        player = await level(player, randint(4,7), enemies.religious, ['You find yourself in the Tajism church','Before you, an ancient mechanism slides a bookshelf out of the way, revealing a hidden passageway'], t2Items, weapons.tier2, 7);
+        stay = await choice(`Do you enter?`, ['yes','no'],false,false,false,true);
         console.log(stay);
     }
     stay = true;
     while (stay) {
-        player = await level(player, randint(4,7), enemies.default, ["You find yourself within Taj's basement",'You see an entrance to the next area'], t3Items, weapons.tier3);
-        stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
+        player = await level(player, randint(5,12), enemies.default, ["You find yourself within Taj's basement, a giant vault door, your only exit, slams shut behind you",'You see the vault door leading out of the basement open'], t3Items, weapons.tier3, 9);
+        stay = await choice(`Do you leave the basement?`, ['yes','no'],false,false,false,true);
         console.log(stay);
     }
     stay = true;
     while (stay) {
-        player = await level(player, randint(1,2), enemies.spedlords, ["You find yourself in the Taj's bastion",'You see an entrance to the next area'], t4Items, weapons.tier4);
+        player = await level(player, randint(1,3), enemies.spedlords, ["You find yourself within the Taj's bastion, your intuition tells you you're getting close...",'You see the hallway leading out of this wing of the bastion'], t4Items, weapons.tier4, 13);
         stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
         console.log(stay);
     }
+    while (1) {
+        await cutscene(`You stand before a majestic set of double doors. A powerful presence emanates from behind it, not quite evil, but not friendly either.`);
+        stay = await choice(`What do you do?`, ['turn back','enter'],false,false,false,true);
+        if (!stay) {
+            break;
+        }
+        await cutscene(`You turn back, wandering the hallways of Taj's bastion.`);
+        if (randint(0,5)) {
+            player = await level(player, randint(3,5), enemies.default, ["You seek out the only humanoid presences you can sense",'You return to the centre of the bastion'], t4Items, weapons.tier4, 13);
+        } else {
+            await cutscene(`You travel down an unfamiliar path, taking you out of the bastion.`);
+            await cutscene(`Soon, you find yourself travelling down a seemingly endless gravel path. The evil presences behind you fade away with every step you take.`);
+            await cutscene(`Somewhere along your journey, the path turned to sand, you trudge through an endless sea of sand, every step bringing you closer to freedom`);
+            await cutscene(`A quaint desert town emerges from the sand before you. Soon, you find yourself in the midst of perculiarly shaped buildings and lots of cacti.`);
+            if (await choice(`Do you choose to join the town and live a quiet life away from the Terrorist Taj's evil plans?`, ['join the tOOMwn','return to your original mission'],false,false,false,true)) {
+                window.open("https://the.toomwn.xyz");
+                await cutscene(`You have reached secret ending 5 out of 3. Reload the page to play again.`);
+                return;
+            } else {
+                await cutscene(`You decide to return to the bastion to kill Taj. You know that is the only way your mind can finally be at rest.`);
+                await cutscene(`The towners offer you an artifact to help you.`);
+                player = await giveWeapon(player, weapons.special.scythe);
+                await cutscene(`You return to the bastion and arrive at the only place you haven't entered.`);
+                await cutscene(`The double doors give off an even stronger aura now. Taking a deep breath, you ready yourself.`);
+                break;
+            }
+        }
+    }
+    await cutscene(`You push open the doors. Immediately, a wave of malice and despair hits you, bringing you to your knees. Before you, a lone figure seated on a throne, surrounded by dark energy awaits.`);
     bossBattle(player);
 };
 
@@ -1220,11 +4288,13 @@ async function init() {
     showTitle(`<h1>The Taj Game</h1>`);
     console.log('starting game!');
 
+    /* // Debug tools
     let boss = await choice('boss fight?', ['no', 'yes']);
     if (boss) {
         await bossBattle(bossPlayer);
         await cutscene('bossfight done!');
-    }
+    }*/
+    //player = await level(player, randint(4,6), enemies.innovations, ['You find yourself on the island of innovations','You see an entrance to the next area'], t1Items, weapons.tier1);
     await runGame();
     return 0;
 };
