@@ -4299,7 +4299,7 @@ async function level1(player) { // First level (get some starting items and esca
         'A vivid image of a trusted ally\'s face, twisted in betrayal, flashes in your mind as you struggle to understand how they could have turned against you.',
         'The image of a cracked purple amulet, inscribed with the letters \'WSM\', evokes a deep sense of greif and loss.',
         'A fleeting glimpse of a mysterious figure cloaked in shadows and wielding an obsidian scythe, triggers a surge of unease.',
-        'The echo of chants and the flickering glow of sacred flames in an ancient temple fill your mind, reminding you of the reverence and awe you once felt in the presence of long forgotten deities',
+        'The echo of chants and the flickering glow of sacred flames in an ancient temple fill your mind, reminding you of the reverence and awe you once felt in the presence of long forgotten deities.',
     ];
     await cutscene(`As the pain in your limbs slowly fades into the background, you contemplate your choices.`);
     while (1) {
@@ -4330,7 +4330,7 @@ async function level1(player) { // First level (get some starting items and esca
                     backstoryFragments = result[1];
                     console.log(backstory);
                     console.log(backstoryFragments);
-                    await cutscene(backstory);
+                    await cutscene(backstory[0], true);
                 } else {
                     console.log("no more backstories");
                     await cutscene("You can not remember anything else.");
