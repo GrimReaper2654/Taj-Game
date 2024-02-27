@@ -4545,23 +4545,35 @@ async function game(character) {
         console.log(stay);
     }
     stay = true;
+    await cutscene(`You step into the elevator.`);
+    await cutscene(`Rugged metal doors covered in hazard tape slam shut behind you as the gravity around you increases. Red warning lights flash in the corner of the elevator as the metal box begins to shake.`);
+    await cutscene(`Moments later, the elevator grinds to a halt. The metal doors slide open, accompanied with the screeching of metal. A dark stone hallway extends into the fog ahead of you.`);
+    await cutscene(`You step out of the elevator as it vanishes into the stone brick wall.`);
     while (stay) {
         player = await level(player, randint(4,7), enemies.religious, ['You find yourself in the Tajism church','Before you, an ancient mechanism slides a bookshelf out of the way, revealing a hidden passageway'], t2Items, weapons.tier2, 7);
         stay = await choice(`Do you enter?`, ['yes','no'],false,false,false,true);
         console.log(stay);
     }
+    await cutscene(`You step into the tunnel, which seals itself once your inside.`);
+    await cutscene(`You grope through the darkness, feeling a slight incline as you walk.`);
+    await cutscene(`Ahead of you, you see light. A clean concrete room lies at the end of the passageway.`);
+    await cutscene(`You step into the room.`);
     stay = true;
     while (stay) {
         player = await level(player, randint(5,12), enemies.default, ["You find yourself within Taj's basement, a giant vault door, your only exit, slams shut behind you",'You see the vault door leading out of the basement open'], t3Items, weapons.tier3, 9);
         stay = await choice(`Do you leave the basement?`, ['yes','no'],false,false,false,true);
         console.log(stay);
     }
+    await cutscene(`You ascend the staircase behind the vault door. "I swear there was supposed to be a tunnel there" you think to yourself.`);
+    await cutscene(`The staircase leads to a fortress of stone. You step onto the stone ramparts as the staircase behind you shimmers like a mirage and vanishes.`);
+    await cutscene(`You feel the gentle breeze on our cheeks and the warm sunlight on your back. It fills you with a sense of freedom and renews your fighting spirit.`);
     stay = true;
     while (stay) {
-        player = await level(player, randint(1,3), enemies.spedlords, ["You find yourself within the Taj's bastion, your intuition tells you you're getting close...",'You see the hallway leading out of this wing of the bastion'], t4Items, weapons.tier4, 13);
-        stay = await choice(`Do you exit the current area?`, ['yes','no'],false,false,false,true);
+        player = await level(player, randint(1,3), enemies.spedlords, ["You find yourself within the Taj's bastion, your intuition tells you you're getting close...",'You see the door leading to the interior of the bastion'], t4Items, weapons.tier4, 13);
+        stay = await choice(`Do you enter?`, ['yes','no'],false,false,false,true);
         console.log(stay);
     }
+    await cutscene(`You enter the bastion. A long halway stretches before you, gold statues flank the luxurious red carpet and crystal chandeliers hang from the high arched ceiling.`);
     while (1) {
         await cutscene(`You stand before a majestic set of double doors. A powerful presence emanates from behind it, not quite evil, but not friendly either.`);
         stay = await choice(`What do you do?`, ['turn back','enter'],false,false,false,true);
@@ -4572,7 +4584,7 @@ async function game(character) {
         if (randint(0,5)) {
             player = await level(player, randint(3,5), enemies.default, ["You seek out the only humanoid presences you can sense",'You return to the centre of the bastion'], t4Items, weapons.tier4, 13);
         } else {
-            await cutscene(`You travel down an unfamiliar path, taking you out of the bastion.`);
+            await cutscene(`You travel down an unfamiliar path, taking you out the main gate.`);
             await cutscene(`Soon, you find yourself travelling down a seemingly endless gravel path. The evil presences behind you fade away with every step you take.`);
             await cutscene(`Somewhere along your journey, the path turned to sand, you trudge through an endless sea of sand, every step bringing you closer to freedom`);
             await cutscene(`A quaint desert town emerges from the sand before you. Soon, you find yourself in the midst of perculiarly shaped buildings and lots of cacti.`);
