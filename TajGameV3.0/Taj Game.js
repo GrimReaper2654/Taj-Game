@@ -3570,6 +3570,10 @@ async function giveWeapon(player, weapon=null, weaponsList=null) {
     let decision = await choice(`You ${randchoice(descriptions.find)} a ${chosenItem.name} ${randchoice(descriptions.location)}`, ['take', 'leave']);
     if (!decision) {
         let slot = await choice(`Which weapon slot do you use?`, ['main 1', 'main 2'])
+        if (slot == -1) {
+            await cutscene(`You leave the ${chosenItem.name}`);
+            return player;
+        }
         if (slot) {
             console.log('replacing weapon slot 2');
             console.log(JSON.parse(JSON.stringify(chosenItem)));
@@ -3991,6 +3995,8 @@ async function playerTurn(player, enemies) {
                         canAttack = itemResult[2];
                         console.log('end item usage');
                         break;
+                    } else if (item == -1) {
+                        break;
                     }
                     console.log('stuck in loop (incorrect input)');
                 }
@@ -4288,10 +4294,12 @@ async function level1(player) { // First level (get some starting items and esca
         'look for exit',
         'talk'
     ];
-    let backstoryFragments = [ // somebody make up backstory
-        'no backstory for u',
-        '404 backstory not found',
-        'pay $10 to unlock the backstory of this game. What do you mean? This is not P2W!',
+    let backstoryFragments = [
+        'A fleeting vision of a towering obsidian wall, where you once stood victorious over a sea of blood and boddies, fills you with a sense of nostalgia and longing for better times.',
+        'A vivid image of a trusted ally\'s face, twisted in betrayal, flashes in your mind as you struggle to understand how they could have turned against you.',
+        'The image of a cracked purple amulet, inscribed with the letters \'WSM\', evokes a deep sense of greif and loss.',
+        'A fleeting glimpse of a mysterious figure cloaked in shadows and wielding an obsidian scythe, triggers a surge of unease.',
+        'The echo of chants and the flickering glow of sacred flames in an ancient temple fill your mind, reminding you of the reverence and awe you once felt in the presence of long forgotten deities',
     ];
     await cutscene(`As the pain in your limbs slowly fades into the background, you contemplate your choices.`);
     while (1) {
@@ -4619,4 +4627,16 @@ function load() {
 /*
 ------------------------------------------------------------Spedry------------------------------------------------------------<br>    health ▕█████████████████████████▏(1000/1000)       mental health ▕█████████████████████████▏(1000/1000)
     hunger ▕█████████████████████████▏(1000/1000)        intelligence ▕█████████████████████████▏(1000/1000)
+*/
+
+/*
+You painfully open your bruised eyes as pain shoots through your nerves like lightning. Fireworks exploded between your troubled neurons as your woefully indaequate brain struggled to comprehend your situation.
+"Where am I?" you whisper to yourself, staring into the endless void around you as you struggled to recall your final moments, "Did I die?"
+Your battered body collapses onto the jagged granite floor as incomprehensible agony tore at your mind.
+Decades old memories resurface, blurry images flash through your mind, too breif and unclear for you to understand. However, one memory stands out from all the others.
+You bearly manage to recall a towering figure excluding an oppressive aura. The rest of their appearance evades your memory but his name is engraved into your mind in jagged red letters.
+Taj the Terrorist
+You do not recall why, but the thought of him fills you with determination and bloodlust.
+There is only one thing you desire...
+REVENGE
 */
