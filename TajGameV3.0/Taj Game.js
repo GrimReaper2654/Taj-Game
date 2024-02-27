@@ -3145,11 +3145,12 @@ var player = {
     hunger: settings.stat_limit/4,
     mental_health: settings.stat_limit/2,
     intelligence: 250,
-    strength: 5,
+    strength: 1,
     isTerrorist: false,
     armour: {
         durability: 0,
         maxBlock: 0,
+        strengthIncease: 0
     },
     inventory: {
         weapons: {
@@ -3600,9 +3601,12 @@ async function equipArmour(player, maxArmour = null, armour = null) {
     let decision = await choice(`You ${randchoice(descriptions.find)} a ${armour.name}. You can only equip 1 armour at a time.`, ['equip', 'leave'],false,false,false,false);
     if (!decision) {
         await cutscene(`You put on the ${armour.name}`);
+        console.log(`armour change`);
+        console.log(player.strength);
         player.strength -= player.armour.strengthIncease;
         player.armour = JSON.parse(JSON.stringify(armour.armour));
         player.strength += armour.strengthIncease;
+        console.log(player.strength);
     } else {
         await cutscene(`You leave the ${armour.name}`);
     }
@@ -3614,7 +3618,10 @@ function updatePlayer(player, healthChange=0, hungerChange=0, mentalChange=0, in
     console.log(player);
     let oldPlayer = JSON.parse(JSON.stringify(player));
     if (strengthChange) {
+        console.log(`strength change`);
+        console.log(player.strength);
         player.strength += strengthChange;
+        console.log(player.strength);
     }
     if (healthChange) {
         player.health += healthChange;
