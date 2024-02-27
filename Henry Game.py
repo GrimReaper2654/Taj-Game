@@ -111,7 +111,7 @@ def resetVariables():
         ['flamethrower [q]  ', '[a] burned his enemies with a flamethrower dealing [dmg] damage', [15, 25], 'splash', False, 0, 0, 1, 3],  # 9
         ['plasma pistol [q] ', '[a] shot [b] with a plasma pistol', [20, 40], 'plasma', False, 0, 0.2, 4, 3],                              # 10
         ['revolver [q]      ', '[a] shot [b] with a revolver', [5, 10], 'physical', False, 0, 0.1, 6, 5],                                  # 11
-       ['laser pointer [q] ', '[a] beamed [b] with a laser pointer', [3, 10], 'true', False, 0, 0, 4, -1],                                # 12
+        ['laser pointer [q] ', '[a] beamed [b] with a laser pointer', [3, 10], 'true', False, 0, 0, 4, -1],                                # 12
         ['dynamite [q]      ', '[a] threw a stick of dynamite at [b]', [5, 15], 'splash', False, 0, 0, 1, 5],                              # 13
         ['combat knife      ', '[a] slashed at [b] with a combat knife', [10, 15], 'physical', True, 0.01, 0, 3, -1],                      # 14
     ]
@@ -847,3 +847,4 @@ Bar full (20×5=100)
 ▕████████████████████▏
 ▕███████████████████░▏
 '''
+

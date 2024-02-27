@@ -34,7 +34,7 @@ const none = 'none';
 
 const descriptions = {
     bodyParts: ["head", "shoulder", "knee", "toe", "arm", "hand", "chest", "foot", "hip", "wrist", "shin", "leg", "neck"],
-    naturalHazard: ["stick", "leaf", "Taj clone", "wall", "rock"],
+    naturalHazard: ["stick", "leaf", "Taj clone", "wall", "rock", "crack in the ground", "dirt mound"],
     strong: ["powerful", "deadly", "incredible", "amazing", "flawless"],
     general: ["mediocre", "average", "strong", "weak", "lackluster"],
     enemyPrep: ["gets into a battle stance", "intimidatingly waves his weapon", "charges up an attack", "flexes his muscles"],
@@ -42,7 +42,7 @@ const descriptions = {
     find: ['locate', 'stumble upon', 'discover', 'see'],
     location: ['in a wooden crate', 'hidden in a corner', 'on a rock', 'on the ground'],
     insults: ['Taj deez nuts', 'ur mum fat', 'you spedlord', 'you sped', 'L bozo + ratio'],
-    rage: [`"I hate you!"`, `"DIE!`]
+    rage: [`"I hate you!"`, `"DIE!"` , "[rage sfx]"]
 };
 
 // Constants
@@ -145,6 +145,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings wildly at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s punch with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -177,6 +178,7 @@ const weapons = {
                     '[attacker]\'s kick is blocked by [naturalHazard]!',
                     '[attacker] kicks at [defender] and loses ballence, missing [defender] by a wide margin!',
                     '[defender] dodges to the side, avoiding [attacker]\'s kick with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -201,6 +203,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] charges straight past [defender]!',
                     '[defender] dodges to the side, avoiding [attacker]\'s headbut with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -226,11 +229,36 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] charges straight past [defender]!',
                     '[defender] dodges to the side, avoiding [attacker]\'s bodyslam with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
     },
     enemy: {
+        bite: {
+            name: 'bite',
+            player_useable: false,
+            damage: [5,10],
+            baseAccuracy: 75,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[attacker] bit [defender] until he died!', 
+                ],
+                single: [
+                    '[attacker] bit [defender]\'s [body]!', 
+                    '[attacker] scratched at [defender]\'s [body]!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] charges wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s leap with some difficulty!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
+                ]
+            }
+        },
         baseballBat: {
             name: 'baseball bat',
             player_useable: false,
@@ -257,6 +285,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings his baseball bat wildly at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s baseball bat with some difficulty!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -362,6 +391,104 @@ const weapons = {
                 miss: [
                     '[attacker] trips on [naturalHazard] and makes a fool of himself!',
                     '[attacker] rambles on about nonsense infront of an irritated [defender]!',
+                ]
+            }
+        },
+        preach: {
+            name: 'preach',
+            player_useable: false,
+            damage: [60,140],
+            baseAccuracy: 75,
+            type: mental,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] inducts [defender] into Taj\'s terrorist cult!', 
+                    '[attacker] converts [defender] into a devout follower of the Taj!', 
+                ],
+                single: [
+                    '[attacker] preaches to [defender] about the glory of Tajism!', 
+                    '[attacker] preaches to [defender] to join the Taj!',
+                    '[attacker] gives [defender] bribes to join the Taj cult!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and makes a fool of himself!',
+                    '[attacker] rambles on about nonsense infront of an irritated [defender]!',
+                ]
+            }
+        },
+        salesPitch: {
+            name: 'sales pitch',
+            player_useable: false,
+            damage: [150,300],
+            baseAccuracy: 90,
+            type: mental,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] gets scammed of all his life savings after listening to [attacker]\'s advice!', 
+                    '[attacker] convinces [defender] to invest in his ponzi scheme!', 
+                    '[defender] falls into dispair after listening to [attacker]\'s droning voice!', 
+                ],
+                single: [
+                    '[attacker] drones on and on about his new marketing strategy, annoying [defender]!', 
+                    '[attacker] aggressively promotes his products, annoying [defender]!', 
+                    '[attacker] attempts to intrest [defender] with his premium insurance!', 
+                    '[attacker] attempts to intrest [defender] with some used cars!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and makes a fool of himself!',
+                    '[attacker] rambles on about nonsense infront of an irritated [defender]!',
+                ]
+            }
+        },
+        tieWhip: {
+            name: 'tie whip',
+            player_useable: false,
+            damage: [40,80],
+            baseAccuracy: 100,
+            type: normal,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] is choked to death by [attacker]\'s tie!', 
+                    '[attacker] lashes [defender] to death with a tie!', 
+                    '[defender] flees after taking [attacker]\'s [strong] attack!', 
+                ],
+                single: [
+                    '[attacker] whips [defender] with a tie!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and makes a fool of himself!',
+                    '[attacker] swings his tie at [defender] and misses!',
+                ]
+            }
+        },
+        sue: {
+            name: 'sue',
+            player_useable: false,
+            damage: [50,300],
+            baseAccuracy: 90,
+            type: mental,
+            multiplier: intel,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] is sentenced to life imprisonment by [attacker]!', 
+                    '[defender] is sentenced to death by [attacker]!', 
+                    '[defender] falls into depression after getting sued by [attacker]!', 
+                ],
+                single: [
+                    '[attacker] sues [defender] for harrassment!', 
+                    '[attacker] gets [defender] into complicated legal trouble!', 
+                    '[attacker] presses criminal charges against [defender]!', 
+                ],
+                miss: [
+                    '[attacker] fails to take [defender] to court!',
+                    '[attacker] loses the legal battle against [defender]!',
                 ]
             }
         },
@@ -741,6 +868,7 @@ const weapons = {
                     '[attacker] swings his bamboo spear wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with a bamboo spear and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s bamboo spear with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -774,6 +902,7 @@ const weapons = {
                     '[attacker] swings his twig wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with a twig and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s twig with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -807,6 +936,7 @@ const weapons = {
                     '[attacker] swings his stick wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with a stick and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s stick with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -840,6 +970,7 @@ const weapons = {
                     '[attacker] swings his tree branch wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with a tree branch and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s tree branch with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -868,6 +999,7 @@ const weapons = {
                     '[attacker] swings his log wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with a log and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s log with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -900,6 +1032,7 @@ const weapons = {
                     '[attacker] swings his sharp rock wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with a sharp rock and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s sharp rock with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -934,6 +1067,7 @@ const weapons = {
                     '[attacker] swings his rusty knife wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with a rusty knife and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s rusty knife with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -965,6 +1099,39 @@ const weapons = {
                     '[attacker] swings his rusty sword wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with a rusty sword and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s rusty sword with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
+                ]
+            }
+        },
+        sword: {
+            name: 'sword',
+            player_useable: true,
+            damage: [90,140],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,5],
+            attack_description: {
+                KO: [
+                    '[attacker] piered [defender]\'s heart with a sword!', 
+                    '[attacker] decapitates [defender] with a sword!', 
+                    '[defender] collapses after being stabbed by a sword!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                single: [
+                    '[attacker] slashed [defender]\'s [body] with a sword!', 
+                    '[attacker] stabbed [defender]\'s [body] with a sword!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of slashes on [defender]!',
+                    '[attacker] rapidly stabbed [defender] with a sword!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his sword wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with a sword and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s sword with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -995,6 +1162,7 @@ const weapons = {
                     '[attacker] swings his axe wildly at [defender] and misses!',
                     '[attacker] swipes at [defender] with an axe and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s axe with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1025,6 +1193,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings his mace wildly at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s mace with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1056,6 +1225,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings his hammer wildly at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s hammer with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1086,6 +1256,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings his pitchfork wildly at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s pitchfork with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1114,6 +1285,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings his pickaxe wildly at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s pickaxe with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1145,6 +1317,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings his sledgehammer wildly at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s sledgehammer with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1174,6 +1347,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings his katana wildly at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s katana with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1201,93 +1375,148 @@ const weapons = {
                 miss: [
                     '[attacker] charges at [defender] and misses!',
                     '[defender] dodges to the side, avoiding [attacker]\'s spear with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
+                ]
+            }
+        },
+        baseballBat: {
+            name: 'baseball bat',
+            player_useable: true,
+            damage: [30,50],
+            baseAccuracy: 60,
+            type: normal,
+            multiplier: str,
+            rapidfire: [1,3],
+            attack_description: {
+                KO: [
+                    '[attacker] knocks [defender] unconscious with a baseball bat!', 
+                    '[attacker] cracks [defender]\'s skull with a baseball bat!', 
+                    '[attacker] sends [defender] flying into a wall with a baseball bat!', 
+                ],
+                single: [
+                    '[attacker] hit [defender]\'s [body] with a baseball bat!', 
+                    '[attacker] swung a baseball bat into [defender]\'s [body]!', 
+                ],
+                multi: [
+                    '[attacker] landed [description] series of blows on [defender]!',
+                    '[attacker] rains down blows upon [defender] with a baseabll bat!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his baseball bat wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s baseball bat with some difficulty!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
+                ]
+            }
+        },
+        prototype: {
+            name: 'gravition fusion cannon',
+            player_useable: true,
+            damage: [1000000,1000000],
+            baseAccuracy: 10,
+            type: piercing,
+            multiplier: none,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[attacker] obliterates [defender] with a beam of high energy plasma and gravitions!', 
+                ],
+                single: [
+                    '[attacker] launches a beam of gravitions and plasma at [defender]!', 
+                ],
+                miss: [
+                    '[attacker] forgot to account for air resistance and missed his beam attack!',
+                    '[attacker]\'s prototype weapon malfunctions and fails to fire!',
+                    '[attacker]\'s prototype weapon overheats and fails to fire!',
+                    '[attacker]\'s poor aim resulted in a nearby [naturalHazard] being obliterated instead of [defender]!',
+                    '[defender] dodges to the side at just the right time, barely avoiding a beam of superheated plasma and gravitions!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
     },
     tier4: {
-        sledgehammer: {
-            name: 'sledgehammer',
+        penetrator: {
+            name: 'penetrator',
             player_useable: true,
-            damage: [150,200],
+            damage: [150,225],
             baseAccuracy: 90,
-            type: shatter,
-            multiplier: str,
-            rapidfire: [1,2],
-            attack_description: {
-                KO: [
-                    '[defender] collapses after being whacked by a sledgehammer!', 
-                    '[attacker] knocks [defender] unconscious with a sledgehammer!', 
-                    '[defender] flees after taking [strong] attack from [attacker]!',
-                ],
-                single: [
-                    '[attacker] hit [defender]\'s [body] with a sledgehammer!', 
-                    '[attacker] swing a sledgehammer into [defender]\'s [body]!', 
-                ],
-                multi: [
-                    '[attacker] wildly swing his sledgehammer, bashing [defender] multiple times!',
-                    '[attacker] repeatedly bashed [defender] with a sledgehammer!',
-                ],
-                miss: [
-                    '[attacker] trips on [naturalHazard] and misses!',
-                    '[attacker] swings his sledgehammer wildly at [defender] and misses!',
-                    '[defender] dodges to the side, avoiding [attacker]\'s sledgehammer with ease!',
-                ]
-            }
-        },
-        katana: {
-            name: 'katana',
-            player_useable: true,
-            damage: [50,70],
-            baseAccuracy: 90,
-            type: normal,
-            multiplier: str,
-            rapidfire: [1,6],
-            attack_description: {
-                KO: [
-                    '[defender] was decapitated by [attacker!', 
-                    '[attacker] kills [defender] with a katana!',
-                    '[defender] flees after taking [strong] attack from [attacker]!',
-                ],
-                single: [
-                    '[attacker] slashed [defender]\'s [body] with a katana!', 
-                ],
-                multi: [
-                    '[attacker] landed [description] series of hits on [defender]!',
-                    '[attacker] wildly swing his katana, cutting [defender] multiple times!',
-                    '[attacker] repeatedly cut [defender] with a katana!',
-                ],
-                miss: [
-                    '[attacker] trips on [naturalHazard] and misses!',
-                    '[attacker] swings his katana wildly at [defender] and misses!',
-                    '[defender] dodges to the side, avoiding [attacker]\'s katana with ease!',
-                ]
-            }
-        },
-        spear: {
-            name: 'spear',
-            player_useable: true,
-            damage: [10,150],
-            baseAccuracy: 95,
-            type: normal,
+            type: piercing,
             multiplier: str,
             rapidfire: [1,3],
             attack_description: {
                 KO: [
-                    '[attacker] pierced [defender\'s heart with a spear!',
-                    '[defender] flees after being stabbed by [attacker]!',
+                    '[defender] collapses after being penetrated by [attacker]!', 
+                    '[attacker] pierces [defender]\'s heart with the legendary spear Penetrator!', 
+                    '[defender] flees in terror at the sight of [attacker]!',
                 ],
                 single: [
-                    '[attacker] stabbed [defender]\'s [body] with a spear!', 
+                    '[attacker] jabbed [defender]\'s [body] with the legendary spear Penetratorr!', 
+                    '[attacker] stabbed [defender]\'s [body] with the legendary spear Penetrator!', 
                 ],
                 multi: [
-                    '[attacker] repeatedly stabbed [defender] with a spear!',
-                    '[attacker] repeatedly stabbed [defender]\'s [body] with a spear!',
-                    '[attacker] landed consecutive attacks on [defender] with a spear!',
+                    '[attacker] stabbed [defender] multiple times with the legendary spear Penetrator!',
+                    '[attacker] repeatedly pierced [defender] with the legendary spear Penetrator!',
                 ],
                 miss: [
-                    '[attacker] charges at [defender] and misses!',
-                    '[defender] dodges to the side, avoiding [attacker]\'s spear with ease!',
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his legendary spear wildly at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s thrust with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
+                ]
+            }
+        },
+        fusionCannon: {
+            name: 'fusion cannon',
+            player_useable: true,
+            damage: [650,900],
+            baseAccuracy: 80,
+            type: piercing,
+            multiplier: none,
+            rapidfire: [1,1],
+            attack_description: {
+                KO: [
+                    '[defender] was vaporised by [attacker]\'s beam of plasma!', 
+                    '[attacker] incinerates [defender] with superheated plamsa!', 
+                    '[attacker] obliterates [defender] with a beam of high energy plamsa!', 
+                ],
+                single: [
+                    '[attacker] fired a ball of high energy plasma at [defender]\'s [body]!', 
+                    '[attacker] fired a beam of superheated plasma at [defender]\'s [body]!', 
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] doesn\'t factor in air resistance when shooting at [defender] and misses!',
+                    '[defender] dodges to the side, avoiding the beam of plasma with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
+                ]
+            }
+        },
+        energySword: {
+            name: 'energy sword',
+            player_useable: true,
+            damage: [120,200],
+            baseAccuracy: 90,
+            type: normal,
+            multiplier: str,
+            rapidfire: [2,8],
+            attack_description: {
+                KO: [
+                    '[attacker] piered [defender]\'s heart with an energy sword!', 
+                    '[attacker] decapitates [defender] with an energy sword!', 
+                    '[defender] collapses after being stabbed by an energy sword!', 
+                    '[defender] flees after taking [strong] attack from [attacker]!',
+                ],
+                multi: [
+                    '[attacker] landed [description] series of slashes on [defender]!',
+                    '[attacker] rapidly stabbed [defender] with an energy sword!',
+                ],
+                miss: [
+                    '[attacker] trips on [naturalHazard] and misses!',
+                    '[attacker] swings his energy sword wildly at [defender] and misses!',
+                    '[attacker] swipes at [defender] with an energy sword and misses!',
+                    '[defender] dodges to the side, avoiding [attacker]\'s energy sword with ease!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1319,6 +1548,7 @@ const weapons = {
                     '[attacker] trips on [naturalHazard] and misses!',
                     '[attacker] swings his scythe wildly at [defender] and misses!',
                     '[defender] dodges to the side, narrowly avoiding [attacker]\'s swing!',
+                    '[defender] flew out of the way, avoiding [attacker]\'s attack with ease!',
                 ]
             }
         },
@@ -1674,12 +1904,72 @@ const enemies = {
             health: 75,
             strength: 0.5,
             attacks: [weapons.enemy.chant,weapons.body.punch,weapons.body.kick],
-            quotes: ["Hail Terrorist Taj!", "For Taj, our lord and saviour!", "I believe in th power of Taj"],
+            quotes: ["Hail Terrorist Taj!", "For Taj, our lord and saviour!", "I believe in the power of Taj"],
             last_words: ["You shall not defeat the Taj"],
             quantity: [3,6],
             can_die: true,
             evasionChance: 10,
-            romance: 7,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Tajism Preacher",
+            //         "_______________"
+            shortName: "Tajism Preacher",
+            maxHealth: 75,
+            health: 75,
+            strength: 1,
+            attacks: [weapons.enemy.chant,weapons.enemy.preach],
+            quotes: ["Become one with the Taj!", "For Taj, our lord and saviour!", "Join the Taj"],
+            last_words: ["You shall not defeat the Taj"],
+            quantity: [1,3],
+            can_die: true,
+            evasionChance: 10,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Maceline™ Salesman",
+            //         "_______________"
+            shortName: "       Salesman",
+            maxHealth: 200,
+            health: 200,
+            strength: 1,
+            attacks: [weapons.enemy.salesPitch, weapons.enemy.tieWhip, weapons.enemy.sue],
+            quotes: ['You shall buy Maceline™ products!', 'Maceline™ is superiour!', 'My marketing strategy is supreme!', 'Maceline™ is unrivaled!'],
+            last_words: ["How could you refuse Maceline™"],
+            quantity: [1,3],
+            can_die: true,
+            evasionChance: 10,
+            romance: -1,
+            armour: {
+                durability: 0,
+                maxBlock: 0,
+            },
+            lost: 0
+        },
+        {
+            name: "Rat",
+            //         "_______________"
+            shortName: "            Rat",
+            maxHealth: 10,
+            health: 10,
+            strength: 1,
+            attacks: [weapons.enemy.bite],
+            quotes: ['Hiss!', 'Squeak!'],
+            last_words: null,
+            quantity: [5,12],
+            can_die: true,
+            evasionChance: 10,
+            romance: -1,
             armour: {
                 durability: 0,
                 maxBlock: 0,
@@ -1688,7 +1978,6 @@ const enemies = {
         },
     ],
     innovations: [
-        /*
         {
             name: "Choyuni Farmer",
             //         "_______________"
@@ -1768,7 +2057,7 @@ const enemies = {
                 maxBlock: 25,
             },
             lost: 0
-        },*/
+        },
         {
             name: "Mace Incarnation",
             //         "_______________"
@@ -1789,7 +2078,6 @@ const enemies = {
             },
             lost: 0
         },
-        /*
         {
             name: "Witch doctor",
             //         "_______________"
@@ -1829,7 +2117,7 @@ const enemies = {
                 maxBlock: 0,
             },
             lost: 0
-        },*/
+        },
     ],
     spedlords: [
         {
@@ -2246,7 +2534,7 @@ const startingItems = [
         intelligenceIncrease: [0, 0],
         strengthChange: [0, 0],
         quickConsume: false,
-        quantity: 1,
+        quantity: [1],
         stackSize: 5
     },
     {
@@ -2857,7 +3145,7 @@ var player = {
     hunger: settings.stat_limit/4,
     mental_health: settings.stat_limit/2,
     intelligence: 250,
-    strength: 1,
+    strength: 5,
     isTerrorist: false,
     armour: {
         durability: 0,
@@ -2869,25 +3157,9 @@ var player = {
             feet: weapons.body.kick,
             main1: weapons.body.none,
             main2: weapons.body.none,
-            secondary: secondaries.bow
+            secondary: weapons.body.none
         },
         items: [
-            // Limit of strength*5 inventory slots, if inventory is too full items are ejected from the inventory
-            {
-                name: 'arrow',
-                itemType: 'ammunition',
-                quantity: 2,
-                stackSize: 16
-            },
-            {
-                name: 'frag grenade',
-                itemType: 'throwable',
-                damage: [250, 500],
-                quickConsume: true,
-                type: splash,
-                quantity: 5,
-                stackSize: 5
-            },
             {
                 name: 'grilled fish',
                 itemType: 'consumable',
@@ -2901,6 +3173,18 @@ var player = {
                 stackSize: 2,
             },
             {
+                name: 'apple',
+                itemType: 'consumable',
+                healthRegen: [15, 25],
+                hungerRegen: [50, 100],
+                mentalRegen: [50, 75],
+                intelligenceIncrease: [0, 0],
+                strengthChange: [0, 0],
+                quickConsume: true,
+                quantity: 2,
+                stackSize: 5
+            },
+            {
                 name: 'bandaid',
                 itemType: 'consumable',
                 healthRegen: [45, 75],
@@ -2909,7 +3193,7 @@ var player = {
                 intelligenceIncrease: [0, 0],
                 strengthChange: [0, 0],
                 quickConsume: true,
-                quantity: 16,
+                quantity: 12,
                 stackSize: 16
             },
         ],
@@ -3134,7 +3418,7 @@ function bar(displayName, size, value, lost, limit=settings.stat_limit, showValu
     }
     let remainder = value-filled*limit/size;
     filled++;
-    console.log(remainder, filled);
+    //console.log(remainder, filled);
     if (remainder > 2/3 * limit/size) {
         fill += '▓';
     } else if (remainder > 1/3 * limit/size) {
@@ -3238,13 +3522,13 @@ async function giveItem(player, item=null, items=null) {
     }
     console.log(chosenItem);
     console.log(player);
-    let decision = await choice(`You ${randchoice(descriptions.find)} some ${chosenItem.name} ${randchoice(descriptions.location)}`, ['take', 'leave'],false,false,false,false);
+    let newItem = JSON.parse(JSON.stringify(chosenItem));
+    newItem.quantity = randchoice(newItem.quantity);
+    let decision = await choice(`You ${randchoice(descriptions.find)} ${newItem.quantity} ${chosenItem.name} ${randchoice(descriptions.location)}`, ['take', 'leave'],false,false,false,false);
     if (!decision) {
         await cutscene(`You take the ${chosenItem.name}`);
         console.log('Taking item');
         console.log(player.inventory.items);
-        let newItem = JSON.parse(JSON.stringify(chosenItem));
-        newItem.quantity = randchoice(newItem.quantity);
         for (let i = 0; i < player.inventory.items.length; i++) {
             if (player.inventory.items[i].name == newItem.name && player.inventory.items[i].quantity < player.inventory.items[i].stackSize) {
                 let shift = Math.min(player.inventory.items[i].stackSize-player.inventory.items[i].quantity, newItem.quantity);
@@ -3330,7 +3614,7 @@ function updatePlayer(player, healthChange=0, hungerChange=0, mentalChange=0, in
     console.log(player);
     let oldPlayer = JSON.parse(JSON.stringify(player));
     if (strengthChange) {
-        player.strength += strengthChange/100;
+        player.strength += strengthChange;
     }
     if (healthChange) {
         player.health += healthChange;
@@ -3514,7 +3798,27 @@ async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) 
             console.log(`attacker gets ${attacks} hits`);
             for (let i = 0; i < attacks; i++) {
                 let damage = randint(attack.damage[0],attack.damage[1]);
-                damage = Math.min(attacker.strength*damage, attack.damage[1]*1.5);
+                if (attack.multiplier) {
+                    if (attack.multiplier == str) {
+                        console.log('strength multiplier');
+                        console.log(`strength ${attacker.strength}`);
+                        console.log(`max damage ${attack.damage[1]*1.5}`);
+                        console.log(damage);
+                        if (!attacker.strength) attacker.strength = 1;
+                        damage = Math.min(attacker.strength*damage, attack.damage[1]*1.5);
+                        console.log(damage);
+                    }
+                    if (attack.multiplier == intel) {
+                        console.log('intelligence multiplier');
+                        console.log(`wisdom ${attacker.intelligence}`);
+                        console.log(`max damage ${attack.damage[1]*1.5}`);
+                        console.log(damage);
+                        if (!attacker.intelligence) attacker.intelligence = 1;
+                        damage = Math.min(attacker.intelligence*damage, attack.damage[1]*1.5);
+                        console.log(damage);
+                    }
+                }
+                
                 console.log(defender.health);
                 console.log(`attack damage: ${damage}`);
                 switch (attack.type) {
@@ -3553,31 +3857,31 @@ async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) 
             console.log('logging messages');
             if (defenderDied) {
                 let msg = randchoice(attack.attack_description.KO);
-                msg = msg.replace('[attacker]', attacker.name);
-                msg = msg.replace('[defender]', defender.name);
-                msg = msg.replace('[strong]', randchoice(descriptions.strong));
-                msg = msg.replace('[description]', randchoice(descriptions.general));
-                msg = msg.replace('[naturalHazard]', randchoice(descriptions.naturalHazard));
-                msg = msg.replace('[body]', randchoice(descriptions.bodyParts));
+                msg = msg.replaceAll('[attacker]', attacker.name);
+                msg = msg.replaceAll('[defender]', defender.name);
+                msg = msg.replaceAll('[strong]', randchoice(descriptions.strong));
+                msg = msg.replaceAll('[description]', randchoice(descriptions.general));
+                msg = msg.replaceAll('[naturalHazard]', randchoice(descriptions.naturalHazard));
+                msg = msg.replaceAll('[body]', randchoice(descriptions.bodyParts));
                 await cutscene(msg);
                 await cutscene(`${defender.name} has been defeated!`);
             } else if (attacks == 1) {
                 let msg = randchoice(attack.attack_description.single);
-                msg = msg.replace('[attacker]', attacker.name);
-                msg = msg.replace('[defender]', defender.name);
-                msg = msg.replace('[strong]', randchoice(descriptions.strong));
-                msg = msg.replace('[description]', randchoice(descriptions.general));
-                msg = msg.replace('[naturalHazard]', randchoice(descriptions.naturalHazard));
-                msg = msg.replace('[body]', randchoice(descriptions.bodyParts));
+                msg = msg.replaceAll('[attacker]', attacker.name);
+                msg = msg.replaceAll('[defender]', defender.name);
+                msg = msg.replaceAll('[strong]', randchoice(descriptions.strong));
+                msg = msg.replaceAll('[description]', randchoice(descriptions.general));
+                msg = msg.replaceAll('[naturalHazard]', randchoice(descriptions.naturalHazard));
+                msg = msg.replaceAll('[body]', randchoice(descriptions.bodyParts));
                 await cutscene(msg);
             } else if (attacks > 1) {
                 let msg = randchoice(attack.attack_description.multi);
-                msg = msg.replace('[attacker]', attacker.name);
-                msg = msg.replace('[defender]', defender.name);
-                msg = msg.replace('[strong]', randchoice(descriptions.strong));
-                msg = msg.replace('[description]', randchoice(descriptions.general));
-                msg = msg.replace('[naturalHazard]', randchoice(descriptions.naturalHazard));
-                msg = msg.replace('[body]', randchoice(descriptions.bodyParts));
+                msg = msg.replaceAll('[attacker]', attacker.name);
+                msg = msg.replaceAll('[defender]', defender.name);
+                msg = msg.replaceAll('[strong]', randchoice(descriptions.strong));
+                msg = msg.replaceAll('[description]', randchoice(descriptions.general));
+                msg = msg.replaceAll('[naturalHazard]', randchoice(descriptions.naturalHazard));
+                msg = msg.replaceAll('[body]', randchoice(descriptions.bodyParts));
                 await cutscene(msg);
             }
         } else {
@@ -3585,12 +3889,12 @@ async function simulateAttack(attacker, defenders, attack=null, isPlayer=false) 
             console.log(attack)
             let msg = randchoice(attack.attack_description.miss);
             console.log(msg);
-            msg = msg.replace('[attacker]', attacker.name);
-            msg = msg.replace('[defender]', defender.name);
-            msg = msg.replace('[strong]', randchoice(descriptions.strong));
-            msg = msg.replace('[description]', randchoice(descriptions.general));
-            msg = msg.replace('[naturalHazard]', randchoice(descriptions.naturalHazard));
-            msg = msg.replace('[body]', randchoice(descriptions.bodyParts));
+            msg = msg.replaceAll('[attacker]', attacker.name);
+            msg = msg.replaceAll('[defender]', defender.name);
+            msg = msg.replaceAll('[strong]', randchoice(descriptions.strong));
+            msg = msg.replaceAll('[description]', randchoice(descriptions.general));
+            msg = msg.replaceAll('[naturalHazard]', randchoice(descriptions.naturalHazard));
+            msg = msg.replaceAll('[body]', randchoice(descriptions.bodyParts));
             console.log(msg);
             await cutscene(msg);
         }
